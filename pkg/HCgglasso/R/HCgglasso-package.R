@@ -1,0 +1,42 @@
+#' @import gglasso MASS Matrix fastcluster FactoMineR
+#' 
+#' @title HCgglasso
+#' @docType package
+#' @aliases HCgglasso-package
+#' @name HCgglasso-package
+#' @description  
+#' Group-Lasso with Hierarchical Clustering
+#'
+#' 
+#' @details
+#' 
+#'   \tabular{ll}{
+#' Package: \tab HCgglasso\cr
+#' Type: \tab Package\cr
+#' Version: \tab 0.2.5\cr
+#' Date: \tab 2016-08-25\cr
+#' License: \tab GPL (>=2) \cr
+#' }
+#' 
+#' 
+#' This package presents a method combining Hierarchical Clustering and Group-lasso. Usually, a single partition of the covariates is used in the group-lasso.
+#' Here, we provides several partition from the hierarchical tree.
+#' 
+#' A post-treatment method based on statistical test (with FWER and FDR control) for selecting the regularization parameter and the optimal group for this value is provided.
+#' This method can be applied for the classical group-lasso and our method.  
+#' 
+#' 
+#' @author Quentin Grimonprez 
+#' 
+#' Maintainer: Quentin Grimonprez  <quentin.grimonprez@@inria.fr>
+#'  
+#' 
+#' @examples 
+#' X=simuBlockGaussian(50,12,5,0.7)
+#' y=drop(X[,c(2,7,12)]%*%c(2,2,-2)+rnorm(50,0,0.5))
+#' res=HCgglasso(X,y)
+#' 
+#' @seealso \link{HCgglasso}, \link{cv.HCgglasso}
+#' 
+#' @keywords package
+NULL

@@ -1,0 +1,21 @@
+Version 0.2.5 (25/08/2016):
+- change parameters of selFDR and selFWER functions
+
+Version 0.2.4 (01/08/2016):
+- add hierarchical testing procedure
+- add fullProcess function performing HC + Glasso + Hierarchical Testing 
+- correction in stability.HCgglasso for the generation of lambda values 
+
+Version 0.2.3 (20/01/2016):
+- change the level information in HCgglasso structure output
+
+Version 0.2.2 (06/10/2015):
+- correction for infinite weight in weightLevelGroup
+- use hclust from fastcluster package
+- update documentation
+
+Version 0.2.1:
+- in levelMinWeight function, change minLevelWeight in sqrt(minLevelWeight)
+
+Version 0.2:
+- first version of HCgglasso

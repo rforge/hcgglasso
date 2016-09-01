@@ -1,0 +1,18 @@
+Package: HCgglasso
+Type: Package
+Title: Group-Lasso with Hierarchical Clustering
+Version: 0.2.5
+Date: 2015-08-25
+Author: Quentin Grimonprez
+Maintainer: Quentin Grimonprez <quentin.grimonprez@inria.fr>
+Copyright: Inria 2015-2016
+Description: Group-lasso with hierarchical clustering.
+License: GPL (>=2)
+Imports:
+    gglasso,
+    MASS,
+    Matrix,
+    fastcluster,
+    FactoMineR
+Roxygen: list(wrap = FALSE)
+RoxygenNote: 5.0.1
