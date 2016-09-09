@@ -2,7 +2,7 @@
 % Please edit documentation in R/fullProcess.R
 \name{fullProcess}
 \alias{fullProcess}
-\title{Full process of HCgglasso}
+\title{Full process of MLGL}
 \usage{
 fullProcess(X, y, control = c("FWER", "FDR"), alpha = 0.05,
   test = partialFtest, hc = NULL, plot = TRUE, ...)
@@ -27,7 +27,7 @@ fullProcess(X, y, control = c("FWER", "FDR"), alpha = 0.05,
 \value{
 a list containing :
 \describe{
-  \item{res}{output of \link{HCgglasso} function}
+  \item{res}{output of \link{MLGL} function}
   \item{lambdaOpt}{lambda values maximizing the number of rejects}
   \item{var}{A vector containing the index of selected variables for \code{lambdaOpt}}
   \item{group}{A vector containing the values index of selected groups for \code{lambdaOpt}}
@@ -39,7 +39,7 @@ Run hierarchical clustering following by a group-lasso on all the different part
 \details{
 Divide the n individuals in two samples. Then the three following steps are done :
 1) Hierarchical CLustering of the variables of X based on the first sample of individuals
-2) HCgglasso on the second sample of individuals
+2) MLGL on the second sample of individuals
 3) Hierarchical testing procedure on the first sample of individuals.
 }
 \examples{
@@ -55,6 +55,6 @@ res <- fullProcess(X, y)
 Quentin Grimonprez
 }
 \seealso{
-\link{HCgglasso}, \link{hierarchicalFDR}, \link{hierarchicalFWER}, \link{selFDR}, \link{selFWER}
+\link{MLGL}, \link{hierarchicalFDR}, \link{hierarchicalFWER}, \link{selFDR}, \link{selFWER}
 }
 

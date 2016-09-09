@@ -28,7 +28,7 @@ overlapgglasso(X, y, var, group, lambda = NULL, weight = NULL,
 \item{...}{Others parameters for \code{\link{gglasso}} function}
 }
 \value{
-a HCgglasso object containing :
+a MLGL object containing :
 \describe{
   \item{lambda}{lambda values}
   \item{b0}{intercept values for \code{lambda}}

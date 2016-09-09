@@ -159,7 +159,7 @@ hierarchicalTesting <- function(indRoot, hierMat, group, grouplm, X, y, test = p
 #'   }
 #'
 #' @details
-#' Version of the hierarchical testing procedure of Meinshausen for HCgglasso output. You can use th \link{selFWER} function to select groups
+#' Version of the hierarchical testing procedure of Meinshausen for MLGL output. You can use th \link{selFWER} function to select groups
 #' at a desired level alph
 #' 
 #' 
@@ -167,7 +167,7 @@ hierarchicalTesting <- function(indRoot, hierMat, group, grouplm, X, y, test = p
 #' set.seed(42)
 #' X = simuBlockGaussian(50,12,5,0.7)
 #' y = drop(X[,c(2,7,12)]%*%c(2,2,-2)+rnorm(50,0,0.5))
-#' res = HCgglasso(X,y)
+#' res = MLGL(X,y)
 #' test = hierarchicalFWER(X, y, res$group[[20]], res$var[[20]])
 #' 
 #' 
@@ -245,7 +245,7 @@ hierarchicalFWER <- function(X, y, group, var, test = partialFtest, Shaffer = FA
 #' set.seed(42)
 #' X = simuBlockGaussian(50,12,5,0.7)
 #' y = drop(X[,c(2,7,12)]%*%c(2,2,-2)+rnorm(50,0,0.5))
-#' res = HCgglasso(X,y)
+#' res = MLGL(X,y)
 #' test = hierarchicalFWER(X, y, res$group[[20]], res$var[[20]])
 #' sel = selFWER (test, alpha = 0.05)
 #' 

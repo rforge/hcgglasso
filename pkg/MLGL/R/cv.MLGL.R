@@ -1,6 +1,6 @@
-#' k-fold cross validation for \code{\link{HCgglasso}}
+#' V-fold cross validation for \code{\link{MLGL}} fucntion
 #'
-#' @title cv.HCgglasso
+#' @title  Multi-Layer Group-Lasso with cross V-fold validation
 #' @author Quentin Grimonprez
 #' @param X matrix of size n*p
 #' @param y vector of size n
@@ -14,7 +14,7 @@
 #' @param ... Others parameters for \code{\link{cv.gglasso}} function
 #'
 #'
-#' @return a cv.HCgglasso object containing :
+#' @return a cv.MLGL object containing :
 #' \describe{
 #' \item{lambda}{values of \code{lambda}.}
 #' \item{cvm}{the mean cross-validated error.}
@@ -27,16 +27,24 @@
 #' } 
 #'
 #'
+#' @details 
+#' Hierarhical clustering is performed with all the variables. Then, the partitions from the different
+#'  levels of the hierarchy are used in the differents run of MLGL for cross validation.
+#'
 #' @examples 
 #' set.seed(42)
-#' X = simuBlockGaussian(50,12,5,0.7)
-#' y = drop(X[,c(2,7,12)]%*%c(2,2,-2)+rnorm(50,0,0.5))
-#' res = cv.HCgglasso(X,y)
+#' set.seed(42)
+#' # Simulate gaussian data with block-diagonal variance matrix containing 12 blocks of size 5
+#' X <- simuBlockGaussian(50, 12, 5, 0.7)
+#' # Generate a response variable
+#' y <- drop(X[,c(2,7,12)]%*%c(2,2,-2)+rnorm(50,0,0.5))
+#' # Apply cv.MLGL method
+#' res <- cv.MLGL(X,y)
 #' 
-#' @seealso \link{HCgglasso}, \link{stability.HCgglasso}, \link{predict.cv.gglasso}, \link{coef.cv.HCgglasso}, \link{plot.cv.HCgglasso}
+#' @seealso \link{MLGL}, \link{stability.MLGL}, \link{predict.cv.gglasso}, \link{coef.cv.MLGL}, \link{plot.cv.MLGL}
 #' 
 #' @export
-cv.HCgglasso <- function(X, y, nfolds = 5, lambda = NULL, hc = NULL, weightLevel = NULL, weightSizeGroup = NULL, intercept = TRUE, verbose = FALSE,...)
+cv.MLGL <- function(X, y, nfolds = 5, lambda = NULL, hc = NULL, weightLevel = NULL, weightSizeGroup = NULL, intercept = TRUE, verbose = FALSE,...)
 {
   
   #check parameters 
@@ -48,7 +56,7 @@ cv.HCgglasso <- function(X, y, nfolds = 5, lambda = NULL, hc = NULL, weightLevel
   if(!.is.wholenumber(nfolds) | nfolds<=2  |nfolds > nrow(X))# restriction >=3 comes from cv.gglasso function 
     stop("nfolds must be an integer greater than 3.")
   
-  ################################ same as HCgglasso function
+  ################################ same as MLGL function
   #define some usefull variables
   n <- nrow(X)
   p <- ncol(X)
@@ -81,7 +89,7 @@ cv.HCgglasso <- function(X, y, nfolds = 5, lambda = NULL, hc = NULL, weightLevel
   if(verbose)
     cat("DONE in ",(t2-t1)[3],"s\n")
     
-  ################################ END same as HCgglasso function
+  ################################ END same as MLGL function
   
   
   
@@ -105,7 +113,7 @@ cv.HCgglasso <- function(X, y, nfolds = 5, lambda = NULL, hc = NULL, weightLevel
   
   res$time = c(tcah[3],tgglasso[3])
   names(res$time) = c("hclust","glasso")   
-  class(res) = "cv.HCgglasso"
+  class(res) = "cv.MLGL"
   
   
   return(res)

@@ -1,21 +1,25 @@
 #'
 #' Obtain a sparse matrix of the coefficients of the path
 #' 
-#' @param x \code{\link{HCgglasso}} object
+#' @param x \code{\link{MLGL}} object
 #' @param row "lambda" or "covariates". If row="covariates", each row of the output matrix represents a covariates else ff row="lambda", it represents a value of lambda.
 #'
 #' @return a sparse matrix containing the estimated coefficients for different values of lambda
 #'
-#' @details This functions can be used with a \code{\link{HCgglasso}} object to obtain a matrix with all estimated coefficients for the p original variables.
+#' @details This functions can be used with a \code{\link{MLGL}} object to obtain a matrix with all estimated coefficients for the p original variables.
 #' In case of overlapping groups, coefficients from repeated variables are summed. 
 #'
 #' @examples 
-#' X=simuBlockGaussian(50,12,5,0.7)
-#' y=drop(X[,c(2,7,12)]%*%c(2,2,-2)+rnorm(50,0,0.5))
-#' res=HCgglasso(X,y)
-#' beta=listToMatrix(res)
+#' # Simulate gaussian data with block-diagonal variance matrix containing 12 blocks of size 5
+#' X <- simuBlockGaussian(50, 12, 5, 0.7)
+#' # Generate a response variable
+#' y <- drop(X[,c(2,7,12)]%*%c(2,2,-2)+rnorm(50,0,0.5))
+#' # Apply MLGL method
+#' res <- MLGL(X,y)
+#' # Convert output in sparse matrix format
+#' beta <- listToMatrix(res)
 #'
-#' @seealso \link{HCgglasso}, \link{overlapgglasso}
+#' @seealso \link{MLGL}, \link{overlapgglasso}
 #'
 #' @export
 listToMatrix <- function(x, row = c("covariates","lambda"))
@@ -49,27 +53,31 @@ listToMatrix <- function(x, row = c("covariates","lambda"))
 }
 
 #'
-#' Plot the path obtained from \code{\link{HCgglasso}} function
+#' Plot the path obtained from \code{\link{MLGL}} function
 #'
-#' @param x \code{\link{HCgglasso}} object
+#' @param x \code{\link{MLGL}} object
 #' @param log.lambda If TRUE, use log(lambda) instead of lambda in abscissa
 #' @param lambda.lines if TRUE, add vertical lines at lambda values
 #' @param ... Other parameters for plot function
 #' 
 #' @examples
 #' \dontrun{
-#' X=simuBlockGaussian(50,12,5,0.7)
-#' y=drop(X[,c(2,7,12)]%*%c(2,2,-2)+rnorm(50,0,0.5))
-#' res=HCgglasso(X,y)
+#' # Simulate gaussian data with block-diagonal variance matrix containing 12 blocks of size 5
+#' X <- simuBlockGaussian(50, 12, 5, 0.7)
+#' # Generate a response variable
+#' y <- drop(X[,c(2,7,12)]%*%c(2,2,-2)+rnorm(50,0,0.5))
+#' # Apply MLGL method
+#' res <- MLGL(X,y)
+#' # Plot the solution path
 #' plot(res) 
 #' }
 #' 
-#' @method plot HCgglasso
+#' @method plot MLGL
 #' 
-#' @seealso \link{HCgglasso}
+#' @seealso \link{MLGL}
 #' 
 #' @export
-plot.HCgglasso <- function(x, log.lambda = FALSE, lambda.lines = FALSE,...)
+plot.MLGL <- function(x, log.lambda = FALSE, lambda.lines = FALSE,...)
 {
   #check log
   if(length(log.lambda)!=1)
@@ -101,26 +109,31 @@ plot.HCgglasso <- function(x, log.lambda = FALSE, lambda.lines = FALSE,...)
 
 
 #'
-#' Plot the cross-validation obtained from \code{\link{cv.HCgglasso}} function
+#' Plot the cross-validation obtained from \code{\link{cv.MLGL}} function
 #'
-#' @param x \code{\link{cv.HCgglasso}} object
+#' @param x \code{\link{cv.MLGL}} object
 #' @param log.lambda If TRUE, use log(lambda) instead of lambda in abscissa
 #' @param ... Other parameters for plot function
 #' 
 #' @examples
 #' \dontrun{
-#' X=simuBlockGaussian(50,12,5,0.7)
-#' y=drop(X[,c(2,7,12)]%*%c(2,2,-2)+rnorm(50,0,0.5))
-#' res=cv.HCgglasso(X,y)
+#' set.seed(42)
+#' # Simulate gaussian data with block-diagonal variance matrix containing 12 blocks of size 5
+#' X <- simuBlockGaussian(50, 12, 5, 0.7)
+#' # Generate a response variable
+#' y <- drop(X[,c(2,7,12)]%*%c(2,2,-2)+rnorm(50,0,0.5))
+#' # Apply cv.MLGL method
+#' res <- cv.MLGL(X,y)
+#' # Plot the cv error curve
 #' plot(res) 
 #' }
 #' 
-#' @method plot cv.HCgglasso
+#' @method plot cv.MLGL
 #' 
-#' @seealso \link{cv.HCgglasso}
+#' @seealso \link{cv.MLGL}
 #' 
 #' @export
-plot.cv.HCgglasso <- function(x, log.lambda = FALSE,...)
+plot.cv.MLGL <- function(x, log.lambda = FALSE,...)
 {
   #check log
   if(length(log.lambda)!=1)
@@ -145,9 +158,9 @@ plot.cv.HCgglasso <- function(x, log.lambda = FALSE,...)
 
 
 #'
-#' Plot the stability path obtained from \code{\link{stability.HCgglasso}} function
+#' Plot the stability path obtained from \code{\link{stability.MLGL}} function
 #'
-#' @param x \code{\link{stability.HCgglasso}} object
+#' @param x \code{\link{stability.MLGL}} object
 #' @param log.lambda If TRUE, use log(lambda) instead of lambda in abscissa
 #' @param threshold Threshold for selection frequency
 #' @param ... Other parameters for plot function
@@ -161,19 +174,23 @@ plot.cv.HCgglasso <- function(x, log.lambda = FALSE,...)
 #' 
 #' @examples
 #' \dontrun{
-#' X=simuBlockGaussian(50,12,5,0.7)
-#' y=drop(X[,c(2,7,12)]%*%c(2,2,-2)+rnorm(50,0,0.5))
-#' res=stability.HCgglasso(X,y)
-#' selected=plot(res)
+#' set.seed(42)
+#' # Simulate gaussian data with block-diagonal variance matrix containing 12 blocks of size 5
+#' X <- simuBlockGaussian(50, 12, 5, 0.7)
+#' # Generate a response variable
+#' y <- drop(X[,c(2,7,12)]%*%c(2,2,-2)+rnorm(50,0,0.5))
+#' # Apply stability.MLGL method
+#' res <- stability.MLGL(X,y)
+#' selected <- plot(res)
 #' print(selected)
 #' }
 #' 
-#' @method plot stability.HCgglasso
+#' @method plot stability.MLGL
 #' 
-#' @seealso \link{stability.HCgglasso}
+#' @seealso \link{stability.MLGL}
 #' 
 #' @export
-plot.stability.HCgglasso <- function(x, log.lambda = FALSE, threshold = 0.75,...)
+plot.stability.MLGL <- function(x, log.lambda = FALSE, threshold = 0.75,...)
 {
   #check log
   if(length(log.lambda)!=1)

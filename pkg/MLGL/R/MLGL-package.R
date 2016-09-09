@@ -1,9 +1,9 @@
 #' @import gglasso MASS Matrix fastcluster FactoMineR
 #' 
-#' @title HCgglasso
+#' @title MLGL
 #' @docType package
-#' @aliases HCgglasso-package
-#' @name HCgglasso-package
+#' @aliases MLGL-package
+#' @name MLGL-package
 #' @description  
 #' Group-Lasso with Hierarchical Clustering
 #'
@@ -13,8 +13,8 @@
 #'   \tabular{ll}{
 #' Package: \tab HCgglasso\cr
 #' Type: \tab Package\cr
-#' Version: \tab 0.2.5\cr
-#' Date: \tab 2016-08-25\cr
+#' Version: \tab 0.3\cr
+#' Date: \tab 2016-09-09\cr
 #' License: \tab GPL (>=2) \cr
 #' }
 #' 
@@ -32,11 +32,14 @@
 #'  
 #' 
 #' @examples 
-#' X=simuBlockGaussian(50,12,5,0.7)
-#' y=drop(X[,c(2,7,12)]%*%c(2,2,-2)+rnorm(50,0,0.5))
-#' res=HCgglasso(X,y)
+#' # Simulate gaussian data with block-diagonal variance matrix containing 12 blocks of size 5
+#' X <- simuBlockGaussian(50, 12, 5, 0.7)
+#' # Generate a response variable
+#' y <- drop(X[,c(2,7,12)]%*%c(2,2,-2)+rnorm(50,0,0.5))
+#' # Apply MLGL method
+#' res <- MLGL(X,y)
 #' 
-#' @seealso \link{HCgglasso}, \link{cv.HCgglasso}
+#' @seealso \link{MLGL}, \link{cv.MLGL}
 #' 
 #' @keywords package
 NULL

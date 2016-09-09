@@ -1,9 +1,9 @@
 #'
-#' Predict fitted values from a \code{\link{HCgglasso}} object
+#' Predict fitted values from a \code{\link{MLGL}} object
 #' 
 #' @author original code from \pkg{gglasso} package Author: Yi Yang <yiyang@@umn.edu>, Hui Zou <hzou@@stat.umn.edu>
 #'
-#' @param object \code{\link{HCgglasso}} object
+#' @param object \code{\link{MLGL}} object
 #' @param newx matrix with new individuals for prediction. If type="coefficients", the parameter has to be NULL
 #' @param s values of lambda. If NULL, use values from object
 #' @param type if "fit", return the fitted values for each values of s, if "coefficients", return the estimated coefficients for each s
@@ -11,12 +11,12 @@
 #' 
 #' @return A matrix with fitted values or estimated coefficients for given values of s.
 #' 
-#' @method predict HCgglasso
+#' @method predict MLGL
 #' 
-#' @seealso \link{HCgglasso}
+#' @seealso \link{MLGL}
 #' 
 #' @export
-predict.HCgglasso <- function(object, newx = NULL, s = NULL, type = c("fit","coefficients"),...)
+predict.MLGL <- function(object, newx = NULL, s = NULL, type = c("fit","coefficients"),...)
 {
   #check values of type
   type = match.arg(type)
@@ -52,11 +52,11 @@ predict.HCgglasso <- function(object, newx = NULL, s = NULL, type = c("fit","coe
 }
 
 #'
-#' Predict fitted values from a \code{\link{cv.HCgglasso}} object
+#' Predict fitted values from a \code{\link{cv.MLGL}} object
 #' 
 #' @author Quentin Grimonprez
 #'
-#' @param object \code{\link{cv.HCgglasso}} object
+#' @param object \code{\link{cv.MLGL}} object
 #' @param newx matrix with new individuals for prediction. If type="coefficients", the parameter has to be NULL
 #' @param s Either "lambda.1se" or "lambda.min"
 #' @param type if "fit", return the fitted values for each values of s, if "coefficients", return the estimated coefficients for each s
@@ -64,12 +64,12 @@ predict.HCgglasso <- function(object, newx = NULL, s = NULL, type = c("fit","coe
 #' 
 #' @return A matrix with fitted values or estimated coefficients for given values of s.
 #' 
-#' @method predict cv.HCgglasso
+#' @method predict cv.MLGL
 #' 
-#' @seealso \link{cv.HCgglasso}
+#' @seealso \link{cv.MLGL}
 #' 
 #' @export
-predict.cv.HCgglasso <- function(object, newx = NULL, s = c("lambda.1se","lambda.min"), type = c("fit","coefficients"),...)
+predict.cv.MLGL <- function(object, newx = NULL, s = c("lambda.1se","lambda.min"), type = c("fit","coefficients"),...)
 {
   #check s
   s=match.arg(s)
@@ -85,44 +85,44 @@ predict.cv.HCgglasso <- function(object, newx = NULL, s = c("lambda.1se","lambda
 
 
 #'
-#' Get coefficients from a \code{\link{HCgglasso}} object
+#' Get coefficients from a \code{\link{MLGL}} object
 #' 
 #' @author Quentin Grimonprez
 #'
-#' @param object \code{\link{HCgglasso}} object
+#' @param object \code{\link{MLGL}} object
 #' @param s values of lambda. If NULL, use values from object
 #' @param ... Not used. Other arguments to predict.
 #' 
 #' @return A matrix with estimated coefficients for given values of s.
 #' 
-#' @method coef HCgglasso
+#' @method coef MLGL
 #' 
-#' @seealso \link{HCgglasso}, \link{predict.HCgglasso}
+#' @seealso \link{MLGL}, \link{predict.MLGL}
 #' 
 #' @export
-coef.HCgglasso <- function(object, s = NULL,...)
+coef.MLGL <- function(object, s = NULL,...)
 { 
   return(predict(object, s = s, type = "coefficients",...))
 }
 
 
 #'
-#' Get coefficients from a \code{\link{cv.HCgglasso}} object
+#' Get coefficients from a \code{\link{cv.MLGL}} object
 #' 
 #' @author Quentin Grimonprez
 #'
-#' @param object \code{\link{cv.HCgglasso}} object
+#' @param object \code{\link{cv.MLGL}} object
 #' @param s Either "lambda.1se" or "lambda.min"
 #' @param ... Not used. Other arguments to predict.
 #' 
 #' @return A matrix with estimated coefficients for given values of s.
 #' 
-#' @method coef cv.HCgglasso
+#' @method coef cv.MLGL
 #' 
-#' @seealso \link{cv.HCgglasso}, \link{predict.cv.HCgglasso}
+#' @seealso \link{cv.MLGL}, \link{predict.cv.MLGL}
 #' 
 #' @export
-coef.cv.HCgglasso <- function(object, s = c("lambda.1se","lambda.min"),...)
+coef.cv.MLGL <- function(object, s = c("lambda.1se","lambda.min"),...)
 {
   #check s
   s = match.arg(s)

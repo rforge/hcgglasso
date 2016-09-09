@@ -1,8 +1,8 @@
-Package: HCgglasso
+Package: MLGL
 Type: Package
-Title: Group-Lasso with Hierarchical Clustering
-Version: 0.2.5
-Date: 2015-08-25
+Title: Multi-Layer Goup-Lasso
+Version: 0.3
+Date: 2016-09-09
 Author: Quentin Grimonprez
 Maintainer: Quentin Grimonprez <quentin.grimonprez@inria.fr>
 Copyright: Inria 2015-2016

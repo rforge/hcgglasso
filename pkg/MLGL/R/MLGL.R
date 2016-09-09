@@ -1,4 +1,6 @@
-#' Run hierarchical clustering following by a group-lasso on all the different partition.
+#' Run hierarchical clustering following by a group-lasso on all the different partitions.
+#'
+#' @title Multi-Layer Group-Lasso
 #'
 #' @author Quentin Grimonprez
 #' @param X matrix of size n*p
@@ -11,7 +13,7 @@
 #' @param verbose print some information
 #' @param ... Others parameters for \code{\link{gglasso}} function
 #'
-#' @return a HCgglasso object containing :
+#' @return a MLGL object containing :
 #' \describe{
 #'   \item{lambda}{lambda values}
 #'   \item{b0}{intercept values for \code{lambda}}
@@ -32,14 +34,17 @@
 #'
 #' @examples 
 #' set.seed(42)
-#' X = simuBlockGaussian(50,12,5,0.7)
-#' y = drop(X[,c(2,7,12)]%*%c(2,2,-2)+rnorm(50,0,0.5))
-#' res = HCgglasso(X,y)
+#' # Simulate gaussian data with block-diagonal variance matrix containing 12 blocks of size 5
+#' X <- simuBlockGaussian(50, 12, 5, 0.7)
+#' # Generate a response variable
+#' y <- drop(X[,c(2,7,12)]%*%c(2,2,-2)+rnorm(50,0,0.5))
+#' # Apply MLGL method
+#' res <- MLGL(X,y)
 #' 
-#' @seealso \link{cv.HCgglasso}, \link{stability.HCgglasso}, \link{listToMatrix}, \link{predict.HCgglasso}, \link{coef.HCgglasso}, \link{plot.cv.HCgglasso}
+#' @seealso \link{cv.MLGL}, \link{stability.MLGL}, \link{listToMatrix}, \link{predict.MLGL}, \link{coef.MLGL}, \link{plot.cv.MLGL}
 #' 
 #' @export
-HCgglasso <- function(X, y, hc = NULL, lambda = NULL, weightLevel = NULL, weightSizeGroup = NULL, intercept = TRUE, verbose = FALSE,...)
+MLGL <- function(X, y, hc = NULL, lambda = NULL, weightLevel = NULL, weightSizeGroup = NULL, intercept = TRUE, verbose = FALSE,...)
 {
   #check parameters 
   .checkParameters(X, y, hc, lambda, weightLevel, weightSizeGroup, intercept, verbose)
@@ -105,7 +110,7 @@ HCgglasso <- function(X, y, hc = NULL, lambda = NULL, weightLevel = NULL, weight
   res2$time = c(tcah[3],tgglasso[3])
   res2$call = match.call()
   names(res2$time) = c("hclust","glasso")    
-  class(res2) = "HCgglasso"
+  class(res2) = "MLGL"
   
   
   return(res2)
@@ -187,7 +192,7 @@ levelGroupHC <- function(hc)
 
 
 #
-# preliminary step for HCgglasso. Compute weight, active variables and groups
+# preliminary step for MLGL. Compute weight, active variables and groups
 #
 preliminaryStep <- function(hc, weightLevel = NULL, weightSizeGroup = NULL)
 {
@@ -239,7 +244,7 @@ preliminaryStep <- function(hc, weightLevel = NULL, weightSizeGroup = NULL)
   return(list(group=group,var=var,weight=weightb,level=lv))
 }
 
-# check parameters of HCgglasso function
+# check parameters of MLGL function
 .checkParameters <- function(X, y, hc, lambda, weightLevel, weightSizeGroup, intercept, verbose)
 {
   #check X

@@ -10,7 +10,7 @@
 #' @param intercept should an intercept be included in the model ?
 #' @param ... Others parameters for \code{\link{gglasso}} function
 #' 
-#' @return a HCgglasso object containing :
+#' @return a MLGL object containing :
 #' \describe{
 #'   \item{lambda}{lambda values}
 #'   \item{b0}{intercept values for \code{lambda}}
@@ -84,7 +84,7 @@ overlapgglasso <- function(X, y, var, group, lambda = NULL, weight = NULL, inter
   res2$structure = list(group=groupb, var=varord, weight=weight)
   res2$dim = dim(X)
   res2$time = (t2-t1)[3]    
-  class(res2) = "HCgglasso"
+  class(res2) = "MLGL"
   
   return(res2)
 }

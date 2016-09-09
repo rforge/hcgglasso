@@ -1,6 +1,6 @@
-#' Stability selection for \code{\link{HCgglasso}}
+#' Stability selection for \code{\link{MLGL}}
 #'
-#' @title Stability Selection
+#' @title Stability Selection for Multi-Layer Group-lasso
 #'
 #' @author Quentin Grimonprez
 #' @param X matrix of size n*p
@@ -15,7 +15,7 @@
 #' @param verbose print some informations
 #' @param ... Others parameters for \code{\link{gglasso}} function
 #'
-#' @return a stability.HCgglasso object containing :
+#' @return a stability.MLGL object containing :
 #' \describe{
 #' \item{lambda}{sequence of \code{lambda}.}
 #' \item{B}{Number of bootstrap samples.}
@@ -25,20 +25,26 @@
 #' \item{time}{computation time}
 #' } 
 #'
-#'
 #' @references Meinshausen and Buhlmann (2010). Stability selection. In : Journal of the Royal Statistical Society : Series B (Statistical Methodology) 72.4, p. 417-473.
-
 #'
+#' @details 
+#' Hierarhical clustering is performed with all the variables. Then, the partitions from the different
+#' levels of the hierarchy are used in the differents run of MLGL for estimating the probability of selection of each group.
+#'  
 #' @examples 
 #' set.seed(42)
-#' X = simuBlockGaussian(50,12,5,0.7)
-#' y = drop(X[,c(2,7,12)]%*%c(2,2,-2)+rnorm(50,0,0.5))
-#' res = stability.HCgglasso(X,y)
+#' set.seed(42)
+#' # Simulate gaussian data with block-diagonal variance matrix containing 12 blocks of size 5
+#' X <- simuBlockGaussian(50, 12, 5, 0.7)
+#' # Generate a response variable
+#' y <- drop(X[,c(2,7,12)]%*%c(2,2,-2)+rnorm(50,0,0.5))
+#' # Apply stability.MLGL method
+#' res <- stability.MLGL(X,y)
 #' 
-#' @seealso \link{cv.HCgglasso}, \link{HCgglasso}
+#' @seealso \link{cv.MLGL}, \link{MLGL}
 #' 
 #' @export
-stability.HCgglasso <- function(X, y, B = 50, fraction = 0.5, hc = NULL, lambda = NULL, weightLevel = NULL, weightSizeGroup = NULL, intercept = TRUE, verbose = FALSE,...)
+stability.MLGL <- function(X, y, B = 50, fraction = 0.5, hc = NULL, lambda = NULL, weightLevel = NULL, weightSizeGroup = NULL, intercept = TRUE, verbose = FALSE,...)
 {
   
   #check parameters 
@@ -55,7 +61,7 @@ stability.HCgglasso <- function(X, y, B = 50, fraction = 0.5, hc = NULL, lambda 
   if( (fraction<0) | (fraction>1) ) 
     stop("fraction must be a positive real lesser than 1.")
   
-  ################################ same as HCgglasso function
+  ################################ same as MLGL function
   #define some usefull variables
   n <- nrow(X)
   p <- ncol(X)
@@ -88,7 +94,7 @@ stability.HCgglasso <- function(X, y, B = 50, fraction = 0.5, hc = NULL, lambda 
   if(verbose)
     cat("DONE in ",(t2-t1)[3],"s\n")
   
-  ################################ END same as HCgglasso function
+  ################################ END same as MLGL function
   
   
   ######## stability selection
@@ -144,7 +150,7 @@ stability.HCgglasso <- function(X, y, B = 50, fraction = 0.5, hc = NULL, lambda 
   res$group = prelim$group
   res$time = c(tcah[3],(t2-t1)[3])
   names(res$time) = c("hclust","stability")   
-  class(res) = "stability.HCgglasso"
+  class(res) = "stability.MLGL"
   
   
   return(res)

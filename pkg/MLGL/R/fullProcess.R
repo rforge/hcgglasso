@@ -1,6 +1,6 @@
 #' Run hierarchical clustering following by a group-lasso on all the different partition and a hierarchical testing procedure.
 #'
-#' @title Full process of HCgglasso
+#' @title Full process of MLGL
 #' 
 #' @author Quentin Grimonprez
 #' @param X matrix of size n*p
@@ -14,7 +14,7 @@
 #'
 #' @return a list containing :
 #' \describe{
-#'   \item{res}{output of \link{HCgglasso} function}
+#'   \item{res}{output of \link{MLGL} function}
 #'   \item{lambdaOpt}{lambda values maximizing the number of rejects}
 #'   \item{var}{A vector containing the index of selected variables for \code{lambdaOpt}}
 #'   \item{group}{A vector containing the values index of selected groups for \code{lambdaOpt}}
@@ -23,7 +23,7 @@
 #' @details
 #' Divide the n individuals in two samples. Then the three following steps are done :
 #' 1) Hierarchical CLustering of the variables of X based on the first sample of individuals
-#' 2) HCgglasso on the second sample of individuals
+#' 2) MLGL on the second sample of individuals
 #' 3) Hierarchical testing procedure on the first sample of individuals.
 #'
 #' @examples
@@ -34,7 +34,7 @@
 #' res <- fullProcess(X, y)
 #'}
 #'
-#' @seealso \link{HCgglasso}, \link{hierarchicalFDR}, \link{hierarchicalFWER}, \link{selFDR}, \link{selFWER}
+#' @seealso \link{MLGL}, \link{hierarchicalFDR}, \link{hierarchicalFWER}, \link{selFDR}, \link{selFWER}
 #'
 #' @export
 fullProcess <- function(X, y, control = c("FWER", "FDR"), alpha = 0.05, test = partialFtest, hc = NULL, plot = TRUE, ...)
@@ -66,7 +66,7 @@ fullProcess <- function(X, y, control = c("FWER", "FDR"), alpha = 0.05, test = p
   
   
   ##### part 2 : group-lasso
-  res <- HCgglasso(X[ind2,], y[ind2], hc = hc)
+  res <- MLGL(X[ind2,], y[ind2], hc = hc)
   
   
   ##### part 3 : testing procedure
@@ -107,7 +107,7 @@ fullProcess <- function(X, y, control = c("FWER", "FDR"), alpha = 0.05, test = p
   indLambdaOpt <- which.max(nbReject)
   
   
-  # plot the number of groups selevted by HCgglasso before and after the testing procedure
+  # plot the number of groups selevted by MLGL before and after the testing procedure
   if(plot)
   {
     matplot(res$lambda, cbind(res$nGroup, nbReject), type ="l", lwd = 1.5, xlab = expression(lambda), ylab = "Number of groups")
@@ -127,7 +127,7 @@ fullProcess <- function(X, y, control = c("FWER", "FDR"), alpha = 0.05, test = p
 }
 
 
-# check parameters of HCgglasso function
+# check parameters of MLGL function
 .checkFullProcess <- function(X, y, hc, plot, alpha, test)
 {
   #check X
