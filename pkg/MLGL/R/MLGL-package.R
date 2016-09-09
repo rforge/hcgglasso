@@ -1,3 +1,5 @@
+#' @importFrom graphics abline legend matplot
+#' @importFrom stats anova approx dist lm p.adjust predict 
 #' @import gglasso MASS Matrix fastcluster FactoMineR
 #' 
 #' @title MLGL

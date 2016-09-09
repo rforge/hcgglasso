@@ -32,7 +32,7 @@
 #' levels of the hierarchy are used in the differents run of MLGL for estimating the probability of selection of each group.
 #'  
 #' @examples 
-#' set.seed(42)
+#' \dontrun{
 #' set.seed(42)
 #' # Simulate gaussian data with block-diagonal variance matrix containing 12 blocks of size 5
 #' X <- simuBlockGaussian(50, 12, 5, 0.7)
@@ -40,6 +40,7 @@
 #' y <- drop(X[,c(2,7,12)]%*%c(2,2,-2)+rnorm(50,0,0.5))
 #' # Apply stability.MLGL method
 #' res <- stability.MLGL(X,y)
+#' }
 #' 
 #' @seealso \link{cv.MLGL}, \link{MLGL}
 #' 
