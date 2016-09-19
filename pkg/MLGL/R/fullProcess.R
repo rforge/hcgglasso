@@ -89,7 +89,7 @@ fullProcess <- function(X, y, control = c("FWER", "FDR"), alpha = 0.05, test = p
     {
       # hierarchical testing and selection
       resTest <- hierTestFunction(X[ind1,], y[ind1], res$group[[i]], res$var[[i]], test)
-      resSel <- selFunction(resTest$adjPvalues, resTest$hierMatrix, alpha, ...)
+      resSel <- selFunction(resTest, alpha, ...)
       
       # keep outerNode (need for FDR outer = FALSE, do not change in other cases)
       groupSel <- outerNode(resSel$toSel, resTest$hierMatrix)
