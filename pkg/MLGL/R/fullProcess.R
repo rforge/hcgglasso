@@ -83,23 +83,39 @@ fullProcess <- function(X, y, control = c("FWER", "FDR"), alpha = 0.05, test = p
   # testing procedure for each lambda
   REJECT <- list()
   nbReject <- rep(0, length(res$lambda))
+  prevSelGroup = selGroup <- c()
   for(i in 1:length(res$lambda))
   {
+    #if no groups are selected we do nothing
     if(length(res$group[[i]])>0)
     {
-      # hierarchical testing and selection
-      resTest <- hierTestFunction(X[ind1,], y[ind1], res$group[[i]], res$var[[i]], test)
-      resSel <- selFunction(resTest, alpha, ...)
       
-      # keep outerNode (need for FDR outer = FALSE, do not change in other cases)
-      groupSel <- outerNode(resSel$toSel, resTest$hierMatrix)
-      # Id of rejected groups
-      REJECT[[i]] = (resSel$groupId[resSel$toSel])[groupSel] 
+      selGroup = unique(res$group[[i]])
       
-      # number of rejects for the lambda value
-      nbReject[i] = length(REJECT[[i]])
-      
+      #if the selected groups have not changed compared with the last iteration, we copy the result
+      if(setequal(prevSelGroup, selGroup))
+      {
+        REJECT[[i]] = REJECT[[i-1]]
+        nbReject[i] = nbReject[i-1]
+      }
+      else
+      {
+        # hierarchical testing and selection
+        resTest <- hierTestFunction(X[ind1,], y[ind1], res$group[[i]], res$var[[i]], test)
+        resSel <- selFunction(resTest, alpha, ...)
+        
+        # keep outerNode (need for FDR outer = FALSE, do not change in other cases)
+        groupSel <- outerNode(resSel$toSel, resTest$hierMatrix)
+        # Id of rejected groups
+        REJECT[[i]] = (resSel$groupId[resSel$toSel])[groupSel] 
+        
+        # number of rejects for the lambda value
+        nbReject[i] = length(REJECT[[i]])
+      }
+
     }
+    
+    prevSelGroup = selGroup
     
   }# end for lambda
   
