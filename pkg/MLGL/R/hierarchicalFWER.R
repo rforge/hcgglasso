@@ -214,8 +214,7 @@ hierarchicalFWER <- function(X, y, group, var, test = partialFtest, Shaffer = FA
     
     # stock results in output
     pvalues[indGrHierRoot]    = out$pvalues
-    #adjPvalues[indGrHierRoot] = pmin(out$adjPvalues * length(indGrTop), 1)# adjustement for multiple tree #each tree as the same weight as a single variable
-    adjPvalues[indGrHierRoot] = pmin(out$adjPvalues * length(indLeaves), 1)# adjustement for multiple tree # each tree is penalized by its size
+    adjPvalues[indGrHierRoot] = pmin(out$adjPvalues * length(indGrTop)/length(indLeaves), 1)# adjustement for multiple tree # each tree is penalized by its size
     
   }# end for root
   

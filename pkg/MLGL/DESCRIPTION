@@ -1,8 +1,8 @@
 Package: MLGL
 Type: Package
 Title: Multi-Layer Goup-Lasso
-Version: 0.3
-Date: 2016-09-09
+Version: 0.3.1
+Date: 2016-09-22
 Author: Quentin Grimonprez
 Maintainer: Quentin Grimonprez <quentin.grimonprez@inria.fr>
 Copyright: Inria 2015-2016

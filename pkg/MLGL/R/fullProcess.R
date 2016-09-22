@@ -86,13 +86,13 @@ fullProcess <- function(X, y, control = c("FWER", "FDR"), alpha = 0.05, test = p
   prevSelGroup = selGroup <- c()
   for(i in 1:length(res$lambda))
   {
-    #if no groups are selected we do nothing
+    # if no groups are selected we do nothing
     if(length(res$group[[i]])>0)
     {
       
       selGroup = unique(res$group[[i]])
       
-      #if the selected groups have not changed compared with the last iteration, we copy the result
+      # if the selected groups have not changed compared with the last iteration, we copy the result
       if(setequal(prevSelGroup, selGroup))
       {
         REJECT[[i]] = REJECT[[i-1]]
@@ -113,7 +113,7 @@ fullProcess <- function(X, y, control = c("FWER", "FDR"), alpha = 0.05, test = p
         nbReject[i] = length(REJECT[[i]])
       }
 
-    }
+    }# end if no selection
     
     prevSelGroup = selGroup
     

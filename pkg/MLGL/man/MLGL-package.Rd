@@ -11,8 +11,8 @@ Group-Lasso with Hierarchical Clustering
 \tabular{ll}{
 Package: \tab HCgglasso\cr
 Type: \tab Package\cr
-Version: \tab 0.3\cr
-Date: \tab 2016-09-09\cr
+Version: \tab 0.3.1\cr
+Date: \tab 2016-09-22\cr
 License: \tab GPL (>=2) \cr
 }
 
