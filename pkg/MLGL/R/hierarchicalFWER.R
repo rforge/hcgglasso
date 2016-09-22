@@ -186,7 +186,8 @@ hierarchicalFWER <- function(X, y, group, var, test = partialFtest, Shaffer = FA
   hierInfo <- groupHier(group, var)
   grdif    <- unique(hierInfo$groupTot)
   grouplm  <- unique(hierInfo$grouplm)
-  
+  # total number of leaves
+  m <- length(grouplm)
   # lm with leaves represented by their first principal component
   reslm <- acpOLStest(X, y, hierInfo$grouplm, hierInfo$varlm)
   
@@ -214,7 +215,7 @@ hierarchicalFWER <- function(X, y, group, var, test = partialFtest, Shaffer = FA
     
     # stock results in output
     pvalues[indGrHierRoot]    = out$pvalues
-    adjPvalues[indGrHierRoot] = pmin(out$adjPvalues * length(indGrTop)/length(indLeaves), 1)# adjustement for multiple tree # each tree is penalized by its size
+    adjPvalues[indGrHierRoot] = pmin(out$adjPvalues * m/length(indLeaves), 1)# adjustement for multiple tree # each tree is penalized by its size
     
   }# end for root
   
