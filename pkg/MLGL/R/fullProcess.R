@@ -57,7 +57,7 @@ fullProcess <- function(X, y, control = c("FWER", "FDR"), alpha = 0.05, test = p
     Xb = scale(Xb, center = FALSE, scale = sqrt(colSums(X^2)/n))
     
     # enclidian distance
-    d <- dist(t(Xb))
+    d <- dist(t(Xb[ind1,]))
     
     # hierarchical clustering
     hc = fastcluster::hclust(d, method = "ward.D2")
