@@ -21,17 +21,17 @@ acpOLStest <- function(X, y, group, var)
     return(respca$ind$coord)
   }))
   #colnames(newdata) = unique(group)
-  colnames(newdata) = unique(group)[order(unique(tapply(var, group, NULL)))]
+  colnames(newdata) = sort(unique(group))
   
   
   #ols on new data
-  reslm = lm(y ~ newdata)
-  sumlm = summary(reslm)
-  
-  rownames(sumlm$coefficients)[-1] = colnames(newdata)
+#   reslm = lm(y ~ newdata)
+#   sumlm = summary(reslm)
+#   
+#   rownames(sumlm$coefficients)[-1] = colnames(newdata)
   
   #return pval
-  return(list(lm = sumlm, newdata = newdata, y = y, group = as.numeric(colnames(newdata))))
+  return(list(newdata = newdata, y = y, group = as.numeric(colnames(newdata)))) #lm = sumlm, 
 }
 
 

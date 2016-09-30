@@ -168,10 +168,11 @@ groupHier <- function(group, var, addRoot = FALSE)
   
   
   #groupes contenant d'autres groupes
-  grContGr <- which(rowSums(hierMat)!=1)
+  rSumHM <- rowSums(hierMat)
+  grContGr <- which(rSumHM!=1)
   
   # is there a root (a group containing all the other group)
-  isRoot <- (max(rowSums(hierMat)) == length(grdif))
+  isRoot <- (max(rSumHM) == length(grdif))
   
   #groupe ne contenant pas d'autres groupes
   grNotCont <- grdif
@@ -242,8 +243,13 @@ groupHier <- function(group, var, addRoot = FALSE)
   grouplm    <- grouplm[ordGroupLm]
   varlm      <- varlm[ordGroupLm]
   
-  hierMatTot <- compHierMat(groupTot, varTot)
   
+  if(setequal(groupTot, group))
+  {
+    hierMatTot <- hierMat
+  }else{
+    hierMatTot <- compHierMat(groupTot, varTot)
+  }
   
   return(list(hier = hierMat, group = group, var = var, groupComp = groupComp, varComp = varComp,
               varlm = varlm, grouplm = grouplm, varTot = varTot, groupTot = groupTot, hierTot = hierMatTot))

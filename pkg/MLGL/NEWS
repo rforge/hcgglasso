@@ -1,3 +1,6 @@
+Version 0.3.2 (30/09/2016): IN PROGRESS
+- optimization of hierarchicalFWER
+
 Version 0.3.1 (22/09/2016):
 - bug correction in hierarchicalFWER
 - optimization of fullProcess

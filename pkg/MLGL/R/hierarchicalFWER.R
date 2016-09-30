@@ -66,8 +66,9 @@ hierarchicalAdjustement <- function(pvalue, gr, hierMat, adjPvalues, sizeRoot, s
 hierarchicalTesting <- function(indRoot, hierMat, group, grouplm, X, y, test = partialFtest, Shaffer = FALSE)
 {
   # all Leaves in the hierarchical matrix
-  allLeaves <- which(rowSums(hierMat) == 1)
-  indcont   <- which(rowSums(hierMat)!=1)
+  a <- (rowSums(hierMat) == 1)
+  allLeaves <- which(a)
+  indcont   <- which(!a)
   
   # all group included in the root indRoot
   indGrInHier <- which(hierMat[indRoot,])
@@ -137,6 +138,124 @@ hierarchicalTesting <- function(indRoot, hierMat, group, grouplm, X, y, test = p
   
   return(list(pvalues = pvalues, adjPvalues = adjPvalues))
 }
+
+
+# hierarchicalTestingNew <- function(indRoot, hierMat, group, grouplm, X, y, test = partialFtest, Shaffer = FALSE)
+# {
+#   # all Leaves in the hierarchical matrix
+#   a <- (rowSums(hierMat) == 1)
+#   allLeaves <- which(a)
+#   indcont   <- which(!a)
+#   
+#   # all group included in the root indRoot
+#   indGrInHier <- which(hierMat[indRoot,])
+#   grInHier <- group[indGrInHier]
+#   
+#   # Only the leaves of the hierarchy with root indRoot    
+#   grRoot   <- intersect(indGrInHier, allLeaves)
+#   sizeRoot <- length(grRoot) # number of leaves in the tree
+#   
+#   # Number of groups (leaves and no leaves in the hierarchy)
+#   sizeHier <- length(grInHier)
+#   
+#   # output
+#   pvalues = adjPvalues <- rep(NA, sizeHier)
+#   
+#   continue = TRUE
+#   
+#   # Index of the non rejected group to test at the current level
+#   indToTest <- indRoot
+#   
+#   
+#   sizeGrInLeaves <- rep(0,nrow(grInHier))
+#   i <- 1
+#   for(gr in indGrInHier)
+#   {
+#     
+#     ### Find the leaves of the group
+#     # group included in gr
+#     subGroup <- group[setdiff(which(hierMat[gr,]),gr)]
+#     if(length(subGroup)==0)
+#       subGroup = group[gr]
+#     
+#     # only group corresponding to leaves    
+#     subLeaves <- intersect(subGroup, group[grRoot])
+#     
+#     sizeGrInLeaves[i] = length(subLeaves) 
+#     sizeGr <- sizeGrInLeaves[i]
+#     
+#     toTest0 <- which(grouplm %in% subLeaves)
+#     
+#     pvalues[indGrOutObj]    = test(X, y, toTest0)
+#     if(length(indGrOutObj)>1)
+#     {
+#       adjPvalues[indGrOutObj] = hierarchicalAdjustement(pvalues[indGrOutObj], indGrOutObj, hierMat[indGrInHier, indGrInHier], adjPvalues, sizeRoot, sizeGr, Shaffer)
+#     }
+#     else
+#     {
+#       adjPvalues[indGrOutObj] = pvalues[indGrOutObj]
+#     }   
+#   
+#     # TODO
+#     # ajustement par la taille : ok
+#     # ajustement hiérarchique à voir : faire une liste ancestor pvaladj[gr] = max(pval[gr],pval[ancestor[[gr]]]) : pval contient ceux déjà ajusté par la taille
+#     # mettre shaffer = FALSE
+#     
+#     i <- i + 1
+#   }# fin for group hier
+#   
+# #   
+# #   #hierarchical testing
+# #   while(continue)
+# #   {  
+# #     continue = FALSE
+# #     indToTestTemp = c()
+# #     
+# #     #for each  group of the current level
+# #     for(gr in indToTest)
+# #     {
+# #       # group included in gr
+# #       subGroup <- group[setdiff(which(hierMat[gr,]),gr)]
+# #       if(length(subGroup)==0)
+# #         subGroup = group[gr]
+# #       
+# #       # only group corresponding to leaves    
+# #       subLeaves <- intersect(subGroup, group[grRoot])
+# #       sizeGr   <- length(subLeaves)
+# #       toTest0 <- which(grouplm %in% subLeaves)
+# #       
+# #       indGrOutObj <- match(group[gr], grInHier)
+# #       
+# #       pvalues[indGrOutObj]    = test(X, y, toTest0)
+# #       if(length(indGrOutObj)>1)
+# #       {
+# #         adjPvalues[indGrOutObj] = hierarchicalAdjustement(pvalues[indGrOutObj], indGrOutObj, hierMat[indGrInHier, indGrInHier], adjPvalues, sizeRoot, sizeGr, Shaffer)
+# #       }
+# #       else
+# #       {
+# #         adjPvalues[indGrOutObj] = pvalues[indGrOutObj]
+# #       }   
+# #     }#end for group
+# #     
+# #     for(j in 1:length(indToTest))
+# #     {
+# #       child = children(indToTest[j], hierMat)
+# #       if(length(child) > 0)
+# #       {
+# #         indToTestTemp = c(indToTestTemp, child)
+# #         continue = TRUE
+# #       }
+# #       
+# #     }# end for selected group
+# #     indToTest = indToTestTemp
+# #     
+# #   }#end while hierarchy
+# #   
+#   
+#   return(list(pvalues = pvalues, adjPvalues = adjPvalues))
+# }
+
+
 
 #'
 #' Apply hierarchical test for each hierarchy, and test external variables for FWER control at level alpha   
