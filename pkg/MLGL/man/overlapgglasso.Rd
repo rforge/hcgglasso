@@ -8,12 +8,12 @@ Laurent Jacob, Guillaume Obozinski, and Jean-Philippe Vert. 2009. Group lasso wi
 }
 \usage{
 overlapgglasso(X, y, var, group, lambda = NULL, weight = NULL,
-  intercept = TRUE, ...)
+  loss = c("ls", "logit"), intercept = TRUE, ...)
 }
 \arguments{
 \item{X}{matrix of size n*p}
 
-\item{y}{vector of size n}
+\item{y}{vector of size n. If loss = "logit", elements of y must be in {-1,1}}
 
 \item{var}{vector containing the variable to use}
 
@@ -22,6 +22,8 @@ overlapgglasso(X, y, var, group, lambda = NULL, weight = NULL,
 \item{lambda}{lambda values for group lasso. If not provided, the function generates its own values of lambda}
 
 \item{weight}{a vector the weight for each group. Default is the sqaure root of the size of each group}
+
+\item{loss}{a character string specifying the loss function to use, valid options are: "ls" least squares loss (regression) and "logit" logistic loss (classification)}
 
 \item{intercept}{should an intercept be included in the model ?}
 
@@ -52,12 +54,22 @@ Each variable j of the original matrix \code{X} is paste k(j) times in a new dat
 The new dataset is used to solve the group-lasso with overlapping groups running a group-lasso algorithm.
 }
 \examples{
+# Least square loss
 set.seed(42)
-X = simuBlockGaussian(50,12,5,0.7)
-y = drop(X[,c(2,7,12)]\%*\%c(2,2,-2)+rnorm(50,0,0.5))
-var = c(1:60,1:8,7:15)
-group = c(rep(1:12,each=5),rep(13,8),rep(14,9))
-res = overlapgglasso(X,y,var,group)
+X <- simuBlockGaussian(50, 12, 5, 0.7)
+y <- drop(X[, c(2, 7, 12)]\%*\%c(2, 2, -2) + rnorm(50, 0, 0.5))
+var <- c(1:60, 1:8, 7:15)
+group <- c(rep(1:12, each = 5), rep(13, 8), rep(14, 9))
+res <- overlapgglasso(X, y, var, group)
+
+# Logistic loss
+y <- 2*(rowSums(X[,1:4])>0)-1
+var <- c(1:60, 1:8, 7:15)
+group <- c(rep(1:12, each = 5), rep(13, 8), rep(14, 9))
+res <- overlapgglasso(X, y, var, group, loss = "logit")
+
+
+
 
 }
 \seealso{

@@ -5,14 +5,15 @@
 \title{Multi-Layer Group-Lasso}
 \usage{
 MLGL(X, y, hc = NULL, lambda = NULL, weightLevel = NULL,
-  weightSizeGroup = NULL, intercept = TRUE, verbose = FALSE, ...)
+  weightSizeGroup = NULL, intercept = TRUE, loss = c("ls", "logit"),
+  verbose = FALSE, ...)
 }
 \arguments{
 \item{X}{matrix of size n*p}
 
-\item{y}{vector of size n}
+\item{y}{vector of size n. If loss = "logit", elements of y must be in {-1,1}}
 
-\item{hc}{output of \code{\link{hclust}} function. If not provided, \code{\link{hclust}} is run with ward.D2 method}
+\item{hc}{output of \code{\link{hclust}} function. If not provided, \code{\link{hclust}} is run with \code{ward.D2} method}
 
 \item{lambda}{lambda values for group lasso. If not provided, the function generates its own values of lambda}
 
@@ -21,6 +22,8 @@ MLGL(X, y, hc = NULL, lambda = NULL, weightLevel = NULL,
 \item{weightSizeGroup}{a vector of size 2*p-1 containing the weight for each group. Default is the square root of the size of each group}
 
 \item{intercept}{should an intercept be included in the model ?}
+
+\item{loss}{a character string specifying the loss function to use, valid options are: "ls" least squares loss (regression) and "logit" logistic loss (classification)}
 
 \item{verbose}{print some information}
 

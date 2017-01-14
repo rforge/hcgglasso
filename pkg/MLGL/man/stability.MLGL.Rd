@@ -5,13 +5,13 @@
 \title{Stability Selection for Multi-Layer Group-lasso}
 \usage{
 stability.MLGL(X, y, B = 50, fraction = 0.5, hc = NULL, lambda = NULL,
-  weightLevel = NULL, weightSizeGroup = NULL, intercept = TRUE,
-  verbose = FALSE, ...)
+  weightLevel = NULL, weightSizeGroup = NULL, loss = c("ls", "logit"),
+  intercept = TRUE, verbose = FALSE, ...)
 }
 \arguments{
 \item{X}{matrix of size n*p}
 
-\item{y}{vector of size n}
+\item{y}{vector of size n. If loss = "logit", elements of y must be in {-1,1}}
 
 \item{B}{number of bootstrap sample}
 
@@ -24,6 +24,8 @@ stability.MLGL(X, y, B = 50, fraction = 0.5, hc = NULL, lambda = NULL,
 \item{weightLevel}{a vector of size p for each level of the hierarchy. A zero indicates that the level will be ignored. If not provided, use 1/(height between 2 successive levels)}
 
 \item{weightSizeGroup}{a vector}
+
+\item{loss}{a character string specifying the loss function to use, valid options are: "ls" least squares loss (regression) and "logit" logistic loss (classification)}
 
 \item{intercept}{should an intercept be included in the model ?}
 

@@ -4,12 +4,13 @@
 #'
 #' @author Quentin Grimonprez
 #' @param X matrix of size n*p
-#' @param y vector of size n
-#' @param hc output of \code{\link{hclust}} function. If not provided, \code{\link{hclust}} is run with ward.D2 method
+#' @param y vector of size n. If loss = "logit", elements of y must be in {-1,1} 
+#' @param hc output of \code{\link{hclust}} function. If not provided, \code{\link{hclust}} is run with \code{ward.D2} method
 #' @param lambda lambda values for group lasso. If not provided, the function generates its own values of lambda
 #' @param weightLevel a vector of size p for each level of the hierarchy. A zero indicates that the level will be ignored. If not provided, use 1/(height between 2 successive levels)
 #' @param weightSizeGroup a vector of size 2*p-1 containing the weight for each group. Default is the square root of the size of each group
 #' @param intercept should an intercept be included in the model ?
+#' @param loss a character string specifying the loss function to use, valid options are: "ls" least squares loss (regression) and "logit" logistic loss (classification)
 #' @param verbose print some information
 #' @param ... Others parameters for \code{\link{gglasso}} function
 #'
@@ -44,16 +45,16 @@
 #' @seealso \link{cv.MLGL}, \link{stability.MLGL}, \link{listToMatrix}, \link{predict.MLGL}, \link{coef.MLGL}, \link{plot.cv.MLGL}
 #' 
 #' @export
-MLGL <- function(X, y, hc = NULL, lambda = NULL, weightLevel = NULL, weightSizeGroup = NULL, intercept = TRUE, verbose = FALSE,...)
+MLGL <- function(X, y, hc = NULL, lambda = NULL, weightLevel = NULL, weightSizeGroup = NULL, intercept = TRUE, loss = c("ls", "logit"), verbose = FALSE, ...)
 {
   #check parameters 
-  .checkParameters(X, y, hc, lambda, weightLevel, weightSizeGroup, intercept, verbose)
-  
-  
+  loss <- match.arg(loss)
+  .checkParameters(X, y, hc, lambda, weightLevel, weightSizeGroup, intercept, verbose, loss)
+
   # define some usefull variables
-  n = nrow(X)
-  p = ncol(X)
-  tcah = rep(NA,3)
+  n <- nrow(X)
+  p <- ncol(X)
+  tcah <- rep(NA,3)
   
   ######## hierarchical clustering
   #if no hc output provided, we make one
@@ -62,10 +63,10 @@ MLGL <- function(X, y, hc = NULL, lambda = NULL, weightLevel = NULL, weightSizeG
     if(verbose)
       cat("Computing hierarchical clustering...")
     
-    t1 = proc.time()
-    d = dist(t(X))
+    t1 <- proc.time()
+    d <- dist(t(X))
     hc = fastcluster::hclust(d, method = "ward.D2")
-    t2 = proc.time()
+    t2 <- proc.time()
     tcah = t2-t1
     if(verbose)
       cat("DONE in ",tcah[3],"s\n")
@@ -75,11 +76,11 @@ MLGL <- function(X, y, hc = NULL, lambda = NULL, weightLevel = NULL, weightSizeG
   if(verbose)
     cat("Preliminary step...")
   t1 = proc.time()
-  prelim = preliminaryStep(hc, weightLevel, weightSizeGroup)  
+  prelim <- preliminaryStep(hc, weightLevel, weightSizeGroup)  
 
 
   #duplicate data
-  Xb = X[,prelim$var]
+  Xb <- X[,prelim$var]
   t2 = proc.time()
   if(verbose)
     cat("DONE in ",(t2-t1)[3],"s\n")
@@ -88,14 +89,14 @@ MLGL <- function(X, y, hc = NULL, lambda = NULL, weightLevel = NULL, weightSizeG
   if(verbose)
     cat("Computing group-lasso...")
   t1 = proc.time()
-  res = gglasso(Xb,y,prelim$group,pf=prelim$weight,lambda=lambda,intercept=intercept,...)
+  res <- gglasso(Xb, y, prelim$group, pf = prelim$weight, lambda = lambda, intercept = intercept, loss = loss, ...)
   t2 = proc.time()
-  tgglasso = t2-t1
+  tgglasso <- t2-t1
   if(verbose)
     cat("DONE in ",tgglasso[3],"s\n")
   
   ########  create output object
-  res2 = list()
+  res2 <- list()
   res2$lambda = res$lambda
   non0 = apply(res$beta,2,FUN=function(x){which(x!=0)})
   res2$var = lapply(non0,FUN=function(x){prelim$var[x]})
@@ -124,25 +125,25 @@ MLGL <- function(X, y, hc = NULL, lambda = NULL, weightLevel = NULL, weightSizeG
 #
 levelMinWeight <- function(hc, weightLevel = NULL)
 {
-  p=length(hc$order)
+  p <- length(hc$order)
   
   # highest level at which cluster are seen for the last time
   # the p first are the single variables and the p-2 next are the cluster in the order of apparition
-  lvSingle = sapply((-1):(-p),FUN=function(i){which(hc$merge==i)%%(p-1)})
-  lvCluster = sapply(1:(p-2),FUN=function(i){which(hc$merge==i)%%(p-1)})
+  lvSingle <- sapply((-1):(-p), FUN=function(i){which(hc$merge==i)%%(p-1)})
+  lvCluster <- sapply(1:(p-2), FUN=function(i){which(hc$merge==i)%%(p-1)})
   lvCluster[lvCluster==0] = p-1
-  lvCluster = c(lvCluster,p)
+  lvCluster = c(lvCluster, p)
   
   # branch length. The first one is associated with the partition in 2 clusters
   if(is.null(weightLevel))
     weightLevel = c(0,sqrt(1/diff(hc$height)),0)
     
   # minimum weight of levels of each cluster
-  minLevelWeight = rep(0, 2*p-1)
+  minLevelWeight <- rep(0, 2*p-1)
   # minimal weight of single variable
-  minLevelWeight[1:p] = sapply(lvSingle,FUN=function(i){ind=(weightLevel[1:i]!=0);ifelse(sum(ind),min(weightLevel[1:i][ind]),0)})#If there is only 0, we return 0, else we return the min > 0
+  minLevelWeight[1:p] = sapply(lvSingle, FUN = function(i){ind=(weightLevel[1:i]!=0);ifelse(sum(ind),min(weightLevel[1:i][ind]),0)})#If there is only 0, we return 0, else we return the min > 0
   # mininmal weight for groups of 2 and more variables
-  minLevelWeight[(p+1):(2*p-1)] = sapply(1:length(lvCluster),FUN=function(i){ind=(weightLevel[(i+1):lvCluster[i]]!=0);ifelse(sum(ind),min(weightLevel[(i+1):lvCluster[i]][ind]),0)})
+  minLevelWeight[(p+1):(2*p-1)] = sapply(1:length(lvCluster), FUN = function(i){ind=(weightLevel[(i+1):lvCluster[i]]!=0);ifelse(sum(ind),min(weightLevel[(i+1):lvCluster[i]][ind]),0)})
   
   return(minLevelWeight)
 }
@@ -197,11 +198,11 @@ levelGroupHC <- function(hc)
 preliminaryStep <- function(hc, weightLevel = NULL, weightSizeGroup = NULL)
 {
   #find unique groups of the hclust output
-  uni = uniqueGroupHclust(hc)
+  uni <- uniqueGroupHclust(hc)
   
   ######## Compute weights
   #compute the minimal weight of partition
-  weightLevelGroup = levelMinWeight(hc, weightLevel)
+  weightLevelGroup <- levelMinWeight(hc, weightLevel)
   
   # CORRECTION : If weight is infinite, we change in 0 and it will be ignored
   weightLevelGroup[which(is.infinite(weightLevelGroup))] = 0
@@ -211,41 +212,41 @@ preliminaryStep <- function(hc, weightLevel = NULL, weightSizeGroup = NULL)
     weightSizeGroup = as.vector(sqrt(table(uni$indexGroup)))
   
   #weight for each group
-  weight = weightSizeGroup*weightLevelGroup
+  weight <- weightSizeGroup * weightLevelGroup
   
   # new weight without ignored groups
-  weightb = weight
-  ignoredGroup = which(weight==0)#groups with 0 weights
+  weightb <- weight
+  ignoredGroup <- which(weight == 0)#groups with 0 weights
   weightb = weightb[-ignoredGroup]#we delete zeros weight
   
   #level of hc associated to groups
-  p = length(hc$order)
-  lv = levelGroupHC(hc)
+  p <- length(hc$order)
+  lv <- levelGroupHC(hc)
   lv = lv[,-ignoredGroup]
   
   ######## Create data for gglasso
-  varToDelete = uni$indexGroup%in%ignoredGroup
-  var = uni$varGroup[!varToDelete]
-  group = uni$indexGroup[!varToDelete]
+  varToDelete <- uni$indexGroup%in%ignoredGroup
+  var <- uni$varGroup[!varToDelete]
+  group <- uni$indexGroup[!varToDelete]
   
   #group must be consecutively numbered 1,2,3,...
   #need a correction when some groups have to be ignored
   if(length(ignoredGroup)>0)
   {
-    difNumber = rep(0,length(group))
+    difNumber <- rep(0, length(group))
     for(i in 1:length(ignoredGroup))
     {
-      ind = which(group>ignoredGroup[i])
-      difNumber[ind] = difNumber[ind]-1
+      ind <- which(group > ignoredGroup[i])
+      difNumber[ind] = difNumber[ind] - 1
     }
     group = group + difNumber
   }
   
-  return(list(group=group,var=var,weight=weightb,level=lv))
+  return(list(group = group, var = var, weight = weightb, level = lv))
 }
 
 # check parameters of MLGL function
-.checkParameters <- function(X, y, hc, lambda, weightLevel, weightSizeGroup, intercept, verbose)
+.checkParameters <- function(X, y, hc, lambda, weightLevel, weightSizeGroup, intercept, verbose, loss)
 {
   #check X
   if(!is.matrix(X)) 
@@ -260,6 +261,8 @@ preliminaryStep <- function(hc, weightLevel = NULL, weightSizeGroup = NULL)
     stop("y has to be a vector of real.")
   if(any(is.na(y))) 
     stop("Missing values in y not allowed.")
+  if (loss == "logit" && any(y %in% c(-1, 1) == FALSE)) 
+    stop("Classification method requires the response y to be in {-1,1}")
   
   #check if X and y are compatible
   if(nrow(X)!=length(drop(y)))

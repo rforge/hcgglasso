@@ -1,1 +1,4 @@
 - details dans description HCgglasso + page package
+- logistic
+- size sample
+- bug fullProcess, groupe indicé à -1 ne ressort pas les variables

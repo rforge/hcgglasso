@@ -5,12 +5,13 @@
 \title{Multi-Layer Group-Lasso with cross V-fold validation}
 \usage{
 cv.MLGL(X, y, nfolds = 5, lambda = NULL, hc = NULL, weightLevel = NULL,
-  weightSizeGroup = NULL, intercept = TRUE, verbose = FALSE, ...)
+  weightSizeGroup = NULL, loss = c("ls", "logit"), intercept = TRUE,
+  verbose = FALSE, ...)
 }
 \arguments{
 \item{X}{matrix of size n*p}
 
-\item{y}{vector of size n}
+\item{y}{vector of size n. If loss = "logit", elements of y must be in {-1,1}}
 
 \item{nfolds}{number of folds}
 
@@ -21,6 +22,8 @@ cv.MLGL(X, y, nfolds = 5, lambda = NULL, hc = NULL, weightLevel = NULL,
 \item{weightLevel}{a vector of size p for each level of the hierarchy. A zero indicates that the level will be ignored. If not provided, use 1/(height between 2 successive levels)}
 
 \item{weightSizeGroup}{a vector}
+
+\item{loss}{a character string specifying the loss function to use, valid options are: "ls" least squares loss (regression) and "logit" logistic loss (classification)}
 
 \item{intercept}{should an intercept be included in the model ?}
 

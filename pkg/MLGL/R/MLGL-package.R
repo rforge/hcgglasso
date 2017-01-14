@@ -15,8 +15,8 @@
 #'   \tabular{ll}{
 #' Package: \tab HCgglasso\cr
 #' Type: \tab Package\cr
-#' Version: \tab 0.3.2\cr
-#' Date: \tab 2016-09-30\cr
+#' Version: \tab 0.4\cr
+#' Date: \tab 2017-01-14\cr
 #' License: \tab GPL (>=2) \cr
 #' }
 #' 
