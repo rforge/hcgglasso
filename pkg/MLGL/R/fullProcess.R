@@ -10,6 +10,7 @@
 #' @param alpha control elvel for testing procedure
 #' @param test test used in the testing procedure. Default is partialFtest
 #' @param plot If TRUE plot the number of groups selected before and after the testing procedure
+#' @param fractionSampleMLGL a real between 0 and 1 : the fraction of individuals to use in the sample for MLGL (see Details).
 #' @param ... Others parameters 
 #'
 #' @return a list containing :
@@ -37,17 +38,17 @@
 #' @seealso \link{MLGL}, \link{hierarchicalFDR}, \link{hierarchicalFWER}, \link{selFDR}, \link{selFWER}
 #'
 #' @export
-fullProcess <- function(X, y, control = c("FWER", "FDR"), alpha = 0.05, test = partialFtest, hc = NULL, plot = TRUE, ...)
+fullProcess <- function(X, y, control = c("FWER", "FDR"), alpha = 0.05, test = partialFtest, hc = NULL, plot = TRUE, fractionSampleMLGL = 1/2,...)
 {
   control = match.arg(control)
-  .checkFullProcess(X, y, hc, plot, alpha, test)
+  .checkFullProcess(X, y, hc, plot, alpha, test, fractionSampleMLGL)
     
   n <- nrow(X)
   
   # Split the data in 2
-  ind1 <- sample(n, floor(n/2))
-  ind2 <- (1:n)[-ind1]
-  
+  ind2 <- sample(n, floor(n * fractionSampleMLGL))
+  ind1 <- (1:n)[-ind2]
+
   ##### part 1 : hierarchical clustering with half of the data
   if(is.null(hc))
   {
@@ -144,7 +145,7 @@ fullProcess <- function(X, y, control = c("FWER", "FDR"), alpha = 0.05, test = p
 
 
 # check parameters of MLGL function
-.checkFullProcess <- function(X, y, hc, plot, alpha, test)
+.checkFullProcess <- function(X, y, hc, plot, alpha, test, fractionSampleMLGL)
 {
   #check X
   if(!is.matrix(X)) 
@@ -192,6 +193,11 @@ fullProcess <- function(X, y, control = c("FWER", "FDR"), alpha = 0.05, test = p
   if(!is.function(test))
     stop("test must be a function.")
   
+  # fractionSampleMLGL
+  if(length(fractionSampleMLGL)!=1)
+    stop("fractionSampleMLGL must be a real between 0 and 1.")
+  if((fractionSampleMLGL <=0) || (fractionSampleMLGL>=1))
+    stop("fractionSampleMLGL must be a real between 0 and 1.")
   
   invisible(return(NULL))
 }

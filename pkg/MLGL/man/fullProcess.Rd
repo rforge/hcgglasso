@@ -5,7 +5,8 @@
 \title{Full process of MLGL}
 \usage{
 fullProcess(X, y, control = c("FWER", "FDR"), alpha = 0.05,
-  test = partialFtest, hc = NULL, plot = TRUE, ...)
+  test = partialFtest, hc = NULL, plot = TRUE, fractionSampleMLGL = 1/2,
+  ...)
 }
 \arguments{
 \item{X}{matrix of size n*p}
@@ -21,6 +22,8 @@ fullProcess(X, y, control = c("FWER", "FDR"), alpha = 0.05,
 \item{hc}{output of \code{\link{hclust}} function. If not provided, \code{\link{hclust}} is run with ward.D2 method}
 
 \item{plot}{If TRUE plot the number of groups selected before and after the testing procedure}
+
+\item{fractionSampleMLGL}{a real between 0 and 1 : the fraction of individuals to use in the sample for MLGL (see Details).}
 
 \item{...}{Others parameters}
 }
