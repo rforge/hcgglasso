@@ -289,6 +289,10 @@ hierarchicalTesting <- function(indRoot, hierMat, group, grouplm, X, y, test = p
 #' res = MLGL(X,y)
 #' test = hierarchicalFWER(X, y, res$group[[20]], res$var[[20]])
 #' 
+#' # logistic loss
+#' y <- 2*(rowSums(X[,1:4])>0)-1
+#' res = MLGL(X,y, loss = "logit")
+#' test = hierarchicalFWER(X, y, res$group[[80]], res$var[[80]], test = partialChisqtest)
 #' 
 #' @references Meinshausen, Nicolai. "Hierarchical Testing of Variable Importance." Biometrika 95.2 (2008): 265-78.
 #' 

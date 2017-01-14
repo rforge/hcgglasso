@@ -5,21 +5,23 @@
 \title{Full process of MLGL}
 \usage{
 fullProcess(X, y, control = c("FWER", "FDR"), alpha = 0.05,
-  test = partialFtest, hc = NULL, plot = TRUE, fractionSampleMLGL = 1/2,
-  ...)
+  test = partialFtest, hc = NULL, loss = c("ls", "logit"), plot = TRUE,
+  fractionSampleMLGL = 1/2, ...)
 }
 \arguments{
 \item{X}{matrix of size n*p}
 
-\item{y}{vector of size n}
+\item{y}{vector of size n. If loss = "logit", elements of y must be in {-1,1}}
 
 \item{control}{either "FDR" or "FWER"}
 
 \item{alpha}{control elvel for testing procedure}
 
-\item{test}{test used in the testing procedure. Default is partialFtest}
+\item{test}{test used in the testing procedure. Default is partialFtest for loss = "ls" and partialChisqTest for loss = "logit"}
 
 \item{hc}{output of \code{\link{hclust}} function. If not provided, \code{\link{hclust}} is run with ward.D2 method}
+
+\item{loss}{a character string specifying the loss function to use, valid options are: "ls" least squares loss (regression) and "logit" logistic loss (classification)}
 
 \item{plot}{If TRUE plot the number of groups selected before and after the testing procedure}
 
@@ -46,12 +48,16 @@ Divide the n individuals in two samples. Then the three following steps are done
 3) Hierarchical testing procedure on the first sample of individuals.
 }
 \examples{
-\dontrun{
+# least quare lsos
 set.seed(42)
-X <- simuBlockGaussian(50,12,5,0.7)
-y <- drop(X[,c(2,7,12)]\%*\%c(2,2,-2)+rnorm(50,0,0.5))
+X <- simuBlockGaussian(50, 12, 5, 0.7)
+y <- drop(X[,c(2,7,12)]\%*\%c(2,2,-2) + rnorm(50, 0, 0.5))
 res <- fullProcess(X, y)
-}
+
+# Logistic loss
+y <- 2*(rowSums(X[,1:4])>0)-1
+res <- fullProcess(X, y, loss = "logit", test = partialChisqtest)
+
 
 }
 \author{

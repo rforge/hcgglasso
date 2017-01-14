@@ -4,12 +4,13 @@
 #' 
 #' @author Quentin Grimonprez
 #' @param X matrix of size n*p
-#' @param y vector of size n
+#' @param y vector of size n. If loss = "logit", elements of y must be in {-1,1} 
 #' @param hc output of \code{\link{hclust}} function. If not provided, \code{\link{hclust}} is run with ward.D2 method
 #' @param control either "FDR" or "FWER"
 #' @param alpha control elvel for testing procedure
-#' @param test test used in the testing procedure. Default is partialFtest
+#' @param test test used in the testing procedure. Default is partialFtest for loss = "ls" and partialChisqTest for loss = "logit"
 #' @param plot If TRUE plot the number of groups selected before and after the testing procedure
+#' @param loss a character string specifying the loss function to use, valid options are: "ls" least squares loss (regression) and "logit" logistic loss (classification)
 #' @param fractionSampleMLGL a real between 0 and 1 : the fraction of individuals to use in the sample for MLGL (see Details).
 #' @param ... Others parameters 
 #'
@@ -28,20 +29,27 @@
 #' 3) Hierarchical testing procedure on the first sample of individuals.
 #'
 #' @examples
-#' \dontrun{
+#' # least quare lsos
 #' set.seed(42)
-#' X <- simuBlockGaussian(50,12,5,0.7)
-#' y <- drop(X[,c(2,7,12)]%*%c(2,2,-2)+rnorm(50,0,0.5))
+#' X <- simuBlockGaussian(50, 12, 5, 0.7)
+#' y <- drop(X[,c(2,7,12)]%*%c(2,2,-2) + rnorm(50, 0, 0.5))
 #' res <- fullProcess(X, y)
-#'}
+#' 
+#'# Logistic loss
+#' y <- 2*(rowSums(X[,1:4])>0)-1
+#' res <- fullProcess(X, y, loss = "logit", test = partialChisqtest)
+#'
 #'
 #' @seealso \link{MLGL}, \link{hierarchicalFDR}, \link{hierarchicalFWER}, \link{selFDR}, \link{selFWER}
 #'
 #' @export
-fullProcess <- function(X, y, control = c("FWER", "FDR"), alpha = 0.05, test = partialFtest, hc = NULL, plot = TRUE, fractionSampleMLGL = 1/2,...)
+fullProcess <- function(X, y, control = c("FWER", "FDR"), alpha = 0.05, test = partialFtest, hc = NULL, loss = c("ls", "logit"), plot = TRUE, fractionSampleMLGL = 1/2,...)
 {
   control = match.arg(control)
-  .checkFullProcess(X, y, hc, plot, alpha, test, fractionSampleMLGL)
+  loss = match.arg(loss)
+  if(loss == "logit" & identical(test, partialFtest))
+    test = partialChisqtest
+  .checkFullProcess(X, y, hc, plot, alpha, test, fractionSampleMLGL, loss)
     
   n <- nrow(X)
   
@@ -67,7 +75,7 @@ fullProcess <- function(X, y, control = c("FWER", "FDR"), alpha = 0.05, test = p
   
   
   ##### part 2 : group-lasso
-  res <- MLGL(X[ind2,], y[ind2], hc = hc)
+  res <- MLGL(X[ind2,], y[ind2], hc = hc, loss = loss)
   
   
   ##### part 3 : testing procedure
@@ -145,7 +153,7 @@ fullProcess <- function(X, y, control = c("FWER", "FDR"), alpha = 0.05, test = p
 
 
 # check parameters of MLGL function
-.checkFullProcess <- function(X, y, hc, plot, alpha, test, fractionSampleMLGL)
+.checkFullProcess <- function(X, y, hc, plot, alpha, test, fractionSampleMLGL, loss)
 {
   #check X
   if(!is.matrix(X)) 
@@ -160,6 +168,8 @@ fullProcess <- function(X, y, control = c("FWER", "FDR"), alpha = 0.05, test = p
     stop("y has to be a vector of real.")
   if(any(is.na(y))) 
     stop("Missing values in y not allowed.")
+  if (loss == "logit" && any(y %in% c(-1, 1) == FALSE)) 
+    stop("Classification method requires the response y to be in {-1,1}")
   
   #check if X and y are compatible
   if(nrow(X)!=length(drop(y)))
