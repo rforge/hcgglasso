@@ -198,7 +198,7 @@ hierarchicalTesting <- function(indRoot, hierMat, group, grouplm, X, y, test = p
 #   
 #     # TODO
 #     # ajustement par la taille : ok
-#     # ajustement hiérarchique à voir : faire une liste ancestor pvaladj[gr] = max(pval[gr],pval[ancestor[[gr]]]) : pval contient ceux déjà ajusté par la taille
+#     # ajustement hierarchique a voir : faire une liste ancestor pvaladj[gr] = max(pval[gr],pval[ancestor[[gr]]]) : pval contient ceux deja ajuste par la taille
 #     # mettre shaffer = FALSE
 #     
 #     i <- i + 1

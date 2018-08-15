@@ -4,7 +4,8 @@
 \alias{plot.stability.MLGL}
 \title{Plot the stability path obtained from \code{\link{stability.MLGL}} function}
 \usage{
-\method{plot}{stability.MLGL}(x, log.lambda = FALSE, threshold = 0.75, ...)
+\method{plot}{stability.MLGL}(x, log.lambda = FALSE, threshold = 0.75,
+  ...)
 }
 \arguments{
 \item{x}{\code{\link{stability.MLGL}} object}
@@ -43,4 +44,3 @@ print(selected)
 \seealso{
 \link{stability.MLGL}
 }
-

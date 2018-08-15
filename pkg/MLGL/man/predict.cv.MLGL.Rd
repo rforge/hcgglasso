@@ -24,10 +24,9 @@ A matrix with fitted values or estimated coefficients for given values of s.
 \description{
 Predict fitted values from a \code{\link{cv.MLGL}} object
 }
-\author{
-Quentin Grimonprez
-}
 \seealso{
 \link{cv.MLGL}
 }
-
+\author{
+Quentin Grimonprez
+}

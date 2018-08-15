@@ -75,4 +75,3 @@ res <- overlapgglasso(X, y, var, group, loss = "logit")
 \seealso{
 \code{\link{listToMatrix}}
 }
-

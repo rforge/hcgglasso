@@ -1,12 +1,12 @@
 Package: MLGL
 Type: Package
-Title: Multi-Layer Goup-Lasso
+Title: Multi-Layer Group-Lasso
 Version: 0.4
-Date: 2017-01-14
+Date: 2018-08-15
 Author: Quentin Grimonprez
 Maintainer: Quentin Grimonprez <quentin.grimonprez@inria.fr>
-Copyright: Inria 2015-2016
-Description: Group-lasso with hierarchical clustering.
+Copyright: Inria
+Description: It implements a new procedure of variable selection in the context of redundancy between explanatory variables, which holds true with high dimensional data.
 License: GPL (>=2)
 Imports:
     gglasso,
@@ -15,4 +15,5 @@ Imports:
     fastcluster,
     FactoMineR
 Roxygen: list(wrap = FALSE)
-RoxygenNote: 5.0.1
+RoxygenNote: 6.1.0
+Encoding: UTF-8

@@ -34,4 +34,3 @@ plot(res)
 \seealso{
 \link{MLGL}
 }
-

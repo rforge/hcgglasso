@@ -40,4 +40,3 @@ Meinshausen, Nicolai. "Hierarchical Testing of Variable Importance." Biometrika 
 \seealso{
 \link{hierarchicalFWER}
 }
-

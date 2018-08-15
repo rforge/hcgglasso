@@ -27,4 +27,3 @@ X = simuBlockGaussian(50,12,5,0.7)
 \author{
 Quentin Grimonprez
 }
-

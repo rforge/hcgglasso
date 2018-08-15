@@ -48,4 +48,3 @@ Yekutieli, Daniel. "Hierarchical False Discovery Rate-Controlling Methodology." 
 \seealso{
 \link{selFDR}, \link{hierarchicalFWER}
 }
-

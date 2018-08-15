@@ -61,10 +61,9 @@ y <- drop(X[,c(2,7,12)]\%*\%c(2,2,-2)+rnorm(50,0,0.5))
 res <- MLGL(X,y)
 
 }
-\author{
-Quentin Grimonprez
-}
 \seealso{
 \link{cv.MLGL}, \link{stability.MLGL}, \link{listToMatrix}, \link{predict.MLGL}, \link{coef.MLGL}, \link{plot.cv.MLGL}
 }
-
+\author{
+Quentin Grimonprez
+}

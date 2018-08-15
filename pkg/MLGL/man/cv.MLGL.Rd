@@ -4,9 +4,9 @@
 \alias{cv.MLGL}
 \title{Multi-Layer Group-Lasso with cross V-fold validation}
 \usage{
-cv.MLGL(X, y, nfolds = 5, lambda = NULL, hc = NULL, weightLevel = NULL,
-  weightSizeGroup = NULL, loss = c("ls", "logit"), intercept = TRUE,
-  verbose = FALSE, ...)
+cv.MLGL(X, y, nfolds = 5, lambda = NULL, hc = NULL,
+  weightLevel = NULL, weightSizeGroup = NULL, loss = c("ls",
+  "logit"), intercept = TRUE, verbose = FALSE, ...)
 }
 \arguments{
 \item{X}{matrix of size n*p}
@@ -62,10 +62,9 @@ y <- drop(X[,c(2,7,12)]\%*\%c(2,2,-2)+rnorm(50,0,0.5))
 res <- cv.MLGL(X,y)
 
 }
-\author{
-Quentin Grimonprez
-}
 \seealso{
 \link{MLGL}, \link{stability.MLGL}, \link{predict.cv.gglasso}, \link{coef.cv.MLGL}, \link{plot.cv.MLGL}
 }
-
+\author{
+Quentin Grimonprez
+}

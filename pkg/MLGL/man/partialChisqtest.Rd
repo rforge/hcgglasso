@@ -32,4 +32,3 @@ reduced : ln(P(y=1|X)/(1-P(y=1|X))) = X * beta[-varToTest] + epsilon
 \seealso{
 \link{partialFtest}
 }
-

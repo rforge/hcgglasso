@@ -35,4 +35,3 @@ beta <- listToMatrix(res)
 \seealso{
 \link{MLGL}, \link{overlapgglasso}
 }
-

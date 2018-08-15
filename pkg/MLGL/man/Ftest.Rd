@@ -32,4 +32,3 @@ reduced : the null model
 \seealso{
 \link{partialFtest}
 }
-

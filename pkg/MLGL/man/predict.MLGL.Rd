@@ -24,10 +24,9 @@ A matrix with fitted values or estimated coefficients for given values of s.
 \description{
 Predict fitted values from a \code{\link{MLGL}} object
 }
-\author{
-original code from \pkg{gglasso} package Author: Yi Yang <yiyang@umn.edu>, Hui Zou <hzou@stat.umn.edu>
-}
 \seealso{
 \link{MLGL}
 }
-
+\author{
+original code from \pkg{gglasso} package Author: Yi Yang <yiyang@umn.edu>, Hui Zou <hzou@stat.umn.edu>
+}

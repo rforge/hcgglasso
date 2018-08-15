@@ -28,4 +28,3 @@ res <- uniqueGroupHclust(hc)
 \author{
 Quentin Grimonprez
 }
-

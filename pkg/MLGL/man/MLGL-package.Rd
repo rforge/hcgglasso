@@ -5,18 +5,10 @@
 \alias{MLGL-package}
 \title{MLGL}
 \description{
-Group-Lasso with Hierarchical Clustering
+It implements a new procedure of variable selection in the context of 
+redundancy between explanatory variables, which holds true with high dimensional data.
 }
 \details{
-\tabular{ll}{
-Package: \tab HCgglasso\cr
-Type: \tab Package\cr
-Version: \tab 0.4\cr
-Date: \tab 2017-01-14\cr
-License: \tab GPL (>=2) \cr
-}
-
-
 This package presents a method combining Hierarchical Clustering and Group-lasso. Usually, a single partition of the covariates is used in the group-lasso.
 Here, we provides several partition from the hierarchical tree.
 
@@ -32,13 +24,15 @@ y <- drop(X[,c(2,7,12)]\%*\%c(2,2,-2)+rnorm(50,0,0.5))
 res <- MLGL(X,y)
 
 }
+\references{
+"MLGL: An R package implementing correlated variable selection by hierarchical clustering and group-Lasso.", Quentin Grimonprez, Samuel Blanck, Alain Celisse, Guillemette Marot (2018). \url{https://hal.inria.fr/hal-01857242}
+}
+\seealso{
+\link{MLGL}, \link{cv.MLGL}
+}
 \author{
 Quentin Grimonprez 
 
 Maintainer: Quentin Grimonprez  <quentin.grimonprez@inria.fr>
 }
-\seealso{
-\link{MLGL}, \link{cv.MLGL}
-}
 \keyword{package}
-

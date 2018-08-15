@@ -19,10 +19,9 @@ A matrix with estimated coefficients for given values of s.
 \description{
 Get coefficients from a \code{\link{MLGL}} object
 }
-\author{
-Quentin Grimonprez
-}
 \seealso{
 \link{MLGL}, \link{predict.MLGL}
 }
-
+\author{
+Quentin Grimonprez
+}

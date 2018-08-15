@@ -5,8 +5,8 @@
 \title{Full process of MLGL}
 \usage{
 fullProcess(X, y, control = c("FWER", "FDR"), alpha = 0.05,
-  test = partialFtest, hc = NULL, loss = c("ls", "logit"), plot = TRUE,
-  fractionSampleMLGL = 1/2, ...)
+  test = partialFtest, hc = NULL, loss = c("ls", "logit"),
+  plot = TRUE, fractionSampleMLGL = 1/2, ...)
 }
 \arguments{
 \item{X}{matrix of size n*p}
@@ -60,10 +60,9 @@ res <- fullProcess(X, y, loss = "logit", test = partialChisqtest)
 
 
 }
-\author{
-Quentin Grimonprez
-}
 \seealso{
 \link{MLGL}, \link{hierarchicalFDR}, \link{hierarchicalFWER}, \link{selFDR}, \link{selFWER}
 }
-
+\author{
+Quentin Grimonprez
+}

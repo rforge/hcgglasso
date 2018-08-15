@@ -32,4 +32,3 @@ reduced : y = X * beta[-varToTest] + epsilon
 \seealso{
 \link{Ftest}
 }
-
