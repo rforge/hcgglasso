@@ -52,7 +52,7 @@ Hierarhical clustering is performed with all the variables. Then, the partitions
 levels of the hierarchy are used in the differents run of MLGL for estimating the probability of selection of each group.
 }
 \examples{
-\dontrun{
+\donttest{
 set.seed(42)
 # Simulate gaussian data with block-diagonal variance matrix containing 12 blocks of size 5
 X <- simuBlockGaussian(50, 12, 5, 0.7)

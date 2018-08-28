@@ -1,4 +1,4 @@
-#' V-fold cross validation for \code{\link{MLGL}} fucntion
+#' V-fold cross validation for \code{\link{MLGL}} function
 #'
 #' @title  Multi-Layer Group-Lasso with cross V-fold validation
 #' @author Quentin Grimonprez
@@ -34,13 +34,12 @@
 #'
 #' @examples 
 #' set.seed(42)
-#' set.seed(42)
 #' # Simulate gaussian data with block-diagonal variance matrix containing 12 blocks of size 5
 #' X <- simuBlockGaussian(50, 12, 5, 0.7)
 #' # Generate a response variable
-#' y <- drop(X[,c(2,7,12)]%*%c(2,2,-2)+rnorm(50,0,0.5))
+#' y <- drop(X[, c(2,7,12)] %*% c(2, 2, -2) + rnorm(50,0,0.5))
 #' # Apply cv.MLGL method
-#' res <- cv.MLGL(X,y)
+#' res <- cv.MLGL(X, y)
 #' 
 #' @seealso \link{MLGL}, \link{stability.MLGL}, \link{predict.cv.gglasso}, \link{coef.cv.MLGL}, \link{plot.cv.MLGL}
 #' 

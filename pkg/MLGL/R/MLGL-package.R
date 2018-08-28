@@ -7,16 +7,16 @@
 #' @aliases MLGL-package
 #' @name MLGL-package
 #' @description  
-#' It implements a new procedure of variable selection in the context of 
-#' redundancy between explanatory variables, which holds true with high dimensional data.
-#'
-#' 
-#' @details 
 #' This package presents a method combining Hierarchical Clustering and Group-lasso. Usually, a single partition of the covariates is used in the group-lasso.
 #' Here, we provides several partition from the hierarchical tree.
 #' 
 #' A post-treatment method based on statistical test (with FWER and FDR control) for selecting the regularization parameter and the optimal group for this value is provided.
 #' This method can be applied for the classical group-lasso and our method.  
+#'
+#' 
+#' @details 
+#' The function \link{MLGL} performs the hierarchical clustering and the group-lasso. The post-treatment method can be performed with \link{hierarchicalFWER} and \link{selFWER} functions.
+#' The whole process can be run with the \link{fullProcess} function.
 #' 
 #' 
 #' @author Quentin Grimonprez 
@@ -29,11 +29,11 @@
 #' # Simulate gaussian data with block-diagonal variance matrix containing 12 blocks of size 5
 #' X <- simuBlockGaussian(50, 12, 5, 0.7)
 #' # Generate a response variable
-#' y <- drop(X[,c(2,7,12)]%*%c(2,2,-2)+rnorm(50,0,0.5))
+#' y <- drop(X[,c(2,7,12)] %*% c(2, 2, -2) + rnorm(50, 0, 0.5))
 #' # Apply MLGL method
-#' res <- MLGL(X,y)
+#' res <- MLGL(X, y)
 #' 
-#' @seealso \link{MLGL}, \link{cv.MLGL}
+#' @seealso \link{MLGL}, \link{cv.MLGL}, \link{fullProcess}, \link{hierarchicalFWER} 
 #' 
 #' @keywords package
 NULL

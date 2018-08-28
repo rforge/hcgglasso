@@ -19,7 +19,7 @@
 Plot the path obtained from \code{\link{MLGL}} function
 }
 \examples{
-\dontrun{
+\donttest{
 # Simulate gaussian data with block-diagonal variance matrix containing 12 blocks of size 5
 X <- simuBlockGaussian(50, 12, 5, 0.7)
 # Generate a response variable

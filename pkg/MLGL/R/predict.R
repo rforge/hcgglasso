@@ -21,7 +21,7 @@ predict.MLGL <- function(object, newx = NULL, s = NULL, type = c("fit","coeffici
   #check values of type
   type = match.arg(type)
   
-  if( (type=="fit") & is.null(newx) )
+  if( (type=="fit") & is.null(newx))
     stop("newx is missing with type='fit'.")
     
   

@@ -61,7 +61,7 @@ listToMatrix <- function(x, row = c("covariates","lambda"))
 #' @param ... Other parameters for plot function
 #' 
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' # Simulate gaussian data with block-diagonal variance matrix containing 12 blocks of size 5
 #' X <- simuBlockGaussian(50, 12, 5, 0.7)
 #' # Generate a response variable
@@ -116,7 +116,7 @@ plot.MLGL <- function(x, log.lambda = FALSE, lambda.lines = FALSE,...)
 #' @param ... Other parameters for plot function
 #' 
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' set.seed(42)
 #' # Simulate gaussian data with block-diagonal variance matrix containing 12 blocks of size 5
 #' X <- simuBlockGaussian(50, 12, 5, 0.7)
@@ -173,7 +173,7 @@ plot.cv.MLGL <- function(x, log.lambda = FALSE,...)
 #' } 
 #' 
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' set.seed(42)
 #' # Simulate gaussian data with block-diagonal variance matrix containing 12 blocks of size 5
 #' X <- simuBlockGaussian(50, 12, 5, 0.7)

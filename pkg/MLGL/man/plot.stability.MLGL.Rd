@@ -28,7 +28,7 @@ A list containing :
 Plot the stability path obtained from \code{\link{stability.MLGL}} function
 }
 \examples{
-\dontrun{
+\donttest{
 set.seed(42)
 # Simulate gaussian data with block-diagonal variance matrix containing 12 blocks of size 5
 X <- simuBlockGaussian(50, 12, 5, 0.7)

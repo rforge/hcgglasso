@@ -29,14 +29,14 @@
 #' 3) Hierarchical testing procedure on the first sample of individuals.
 #'
 #' @examples
-#' # least quare lsos
+#' # least square loss
 #' set.seed(42)
 #' X <- simuBlockGaussian(50, 12, 5, 0.7)
-#' y <- drop(X[,c(2,7,12)]%*%c(2,2,-2) + rnorm(50, 0, 0.5))
+#' y <- drop(X[,c(2,7,12)] %*% c(2,2,-2) + rnorm(50, 0, 0.5))
 #' res <- fullProcess(X, y)
 #' 
-#'# Logistic loss
-#' y <- 2*(rowSums(X[,1:4])>0)-1
+#' # Logistic loss
+#' y <- 2*(rowSums(X[,1:4]) > 0) - 1
 #' res <- fullProcess(X, y, loss = "logit", test = partialChisqtest)
 #'
 #'
@@ -145,7 +145,7 @@ fullProcess <- function(X, y, control = c("FWER", "FDR"), alpha = 0.05, test = p
   indGroupSel <- res$group[[indLambdaOpt]]%in% REJECT[[indLambdaOpt]]
   group <- res$group[[indLambdaOpt]][indGroupSel]
   var   <- res$var[[indLambdaOpt]][indGroupSel]
-  
+
   
   return(list(res = res, lambdaOpt = res$lambda[indLambdaOpt], selectedGroups = REJECT[[indLambdaOpt]], group = group, var = var))
   

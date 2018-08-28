@@ -48,14 +48,14 @@ Divide the n individuals in two samples. Then the three following steps are done
 3) Hierarchical testing procedure on the first sample of individuals.
 }
 \examples{
-# least quare lsos
+# least square loss
 set.seed(42)
 X <- simuBlockGaussian(50, 12, 5, 0.7)
-y <- drop(X[,c(2,7,12)]\%*\%c(2,2,-2) + rnorm(50, 0, 0.5))
+y <- drop(X[,c(2,7,12)] \%*\% c(2,2,-2) + rnorm(50, 0, 0.5))
 res <- fullProcess(X, y)
 
 # Logistic loss
-y <- 2*(rowSums(X[,1:4])>0)-1
+y <- 2*(rowSums(X[,1:4]) > 0) - 1
 res <- fullProcess(X, y, loss = "logit", test = partialChisqtest)
 
 

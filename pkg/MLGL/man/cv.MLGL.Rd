@@ -45,7 +45,7 @@ a cv.MLGL object containing :
 }
 }
 \description{
-V-fold cross validation for \code{\link{MLGL}} fucntion
+V-fold cross validation for \code{\link{MLGL}} function
 }
 \details{
 Hierarhical clustering is performed with all the variables. Then, the partitions from the different
@@ -53,13 +53,12 @@ Hierarhical clustering is performed with all the variables. Then, the partitions
 }
 \examples{
 set.seed(42)
-set.seed(42)
 # Simulate gaussian data with block-diagonal variance matrix containing 12 blocks of size 5
 X <- simuBlockGaussian(50, 12, 5, 0.7)
 # Generate a response variable
-y <- drop(X[,c(2,7,12)]\%*\%c(2,2,-2)+rnorm(50,0,0.5))
+y <- drop(X[, c(2,7,12)] \%*\% c(2, 2, -2) + rnorm(50,0,0.5))
 # Apply cv.MLGL method
-res <- cv.MLGL(X,y)
+res <- cv.MLGL(X, y)
 
 }
 \seealso{

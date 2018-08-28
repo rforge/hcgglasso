@@ -1,3 +1,7 @@
+Version 0.4.1 (22/08/2018): 
+- documentation correction
+- update DESCRIPTION file with authors
+
 Version 0.4 (14/01/2017): 
 - add logistic loss in MLGL, cv.MLGL, stability and overlap
 - add test for logistic loss
