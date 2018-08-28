@@ -2,7 +2,7 @@ Package: MLGL
 Type: Package
 Title: Multi-Layer Group-Lasso
 Version: 0.4.1
-Date: 2018-08-22
+Date: 2018-08-28
 Author: Quentin Grimonprez
 Authors@R: c(person("Quentin", "Grimonprez", role = c("aut", "cre"), email = "quentin.grimonprez@inria.fr"),
              person("Samuel", "Blanck", role = "ctb"),

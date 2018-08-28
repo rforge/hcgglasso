@@ -54,7 +54,7 @@ MLGL <- function(X, y, hc = NULL, lambda = NULL, weightLevel = NULL, weightSizeG
   # define some usefull variables
   n <- nrow(X)
   p <- ncol(X)
-  tcah <- rep(NA,3)
+  tcah <- rep(NA, 3)
   
   ######## hierarchical clustering
   #if no hc output provided, we make one
@@ -110,6 +110,8 @@ MLGL <- function(X, y, hc = NULL, lambda = NULL, weightLevel = NULL, weightSizeG
   res2$hc = hc
   res2$time = c(tcah[3],tgglasso[3])
   res2$call = match.call()
+  res2$intercept = intercept
+  res2$loss = loss
   names(res2$time) = c("hclust","glasso")    
   class(res2) = "MLGL"
   
