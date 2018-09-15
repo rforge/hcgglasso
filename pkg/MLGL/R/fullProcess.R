@@ -48,7 +48,7 @@
 #' @seealso \link{MLGL}, \link{hierarchicalFDR}, \link{hierarchicalFWER}, \link{selFDR}, \link{selFWER}
 #'
 #' @export
-fullProcess <- function(X, y, control = c("FWER", "FDR"), alpha = 0.05, test = partialFtest, hc = NULL, loss = c("ls", "logit"), fractionSampleMLGL = 1/2,...)
+fullProcess <- function(X, y, control = c("FWER", "FDR"), alpha = 0.05, test = partialFtest, hc = NULL, loss = c("ls", "logit"), fractionSampleMLGL = 1/2, ...)
 {
   control = match.arg(control)
   loss = match.arg(loss)
@@ -156,6 +156,33 @@ fullProcess <- function(X, y, control = c("FWER", "FDR"), alpha = 0.05, test = p
   return(outObj)
 }
 
+
+#' @param formula an object of class "formula" (or one that can be coerced to that class): a symbolic description of the model to be fitted. 
+#' @param data an optional data frame, list or environment (or object coercible by as.data.frame to a data frame) containing the variables in the model. If not found in data, the variables are taken from environment(formula)
+#'
+#'
+#' @rdname fullProcess
+#' 
+#' @export
+fullProcess.formula <- function(formula, data, control = c("FWER", "FDR"), alpha = 0.05, test = partialFtest, hc = NULL, loss = c("ls", "logit"), fractionSampleMLGL = 1/2, ...)
+{
+  cl <- match.call()
+  mf <- match.call(expand.dots = FALSE)
+  m <- match(c("formula", "data"), names(mf), 0L)
+  mf <- mf[c(1L, m)]
+  mf$drop.unused.levels <- TRUE
+  mf[[1L]] <- quote(stats::model.frame)
+  mf <- eval(mf, parent.frame())
+  mt <- attr(mf, "terms")
+  
+  y <- model.response(mf, "numeric")
+  X <- model.matrix(mt, mf)
+  X = as.matrix(X)
+  
+  res <- fullProcess(X, y, control, alpha, test, hc, loss, fractionSampleMLGL, ...)
+  
+  return(res)
+}
 
 # check parameters of MLGL function
 .checkFullProcess <- function(X, y, hc, alpha, test, fractionSampleMLGL, loss)
