@@ -37,7 +37,9 @@ a list containing :
   \item{selectedGroups}{Selected groups for the first \code{lambdaOpt} value}
   \item{reject}{Selected groups for all lambda values}
   \item{alpha}{Control level}
-  \item{test}{test used in the testing procedure}
+  \item{test}{Test used in the testing procedure}
+  \item{control}{"FDR" or "FWER"}
+  \item{time}{Elapsed time}
 }
 }
 \description{

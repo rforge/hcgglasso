@@ -22,7 +22,9 @@
 #'   \item{selectedGroups}{Selected groups for the first \code{lambdaOpt} value}
 #'   \item{reject}{Selected groups for all lambda values}
 #'   \item{alpha}{Control level}
-#'   \item{test}{test used in the testing procedure}
+#'   \item{test}{Test used in the testing procedure}
+#'   \item{control}{"FDR" or "FWER"}
+#'   \item{time}{Elapsed time}
 #' } 
 #'
 #' @details
@@ -82,7 +84,7 @@ fullProcess <- function(X, y, control = c("FWER", "FDR"), alpha = 0.05, test = p
   
   
   ##### part 3 : testing procedure
-  
+  t1 <- proc.time()
   # choose the right function
   hierTestFunction <- hierarchicalFWER
   selFunction <- selFWER
@@ -131,6 +133,11 @@ fullProcess <- function(X, y, control = c("FWER", "FDR"), alpha = 0.05, test = p
     prevSelGroup = selGroup
     
   }# end for lambda
+  t2 <- proc.time()
+  
+  hierTestTime <- (t2-t1)[3]
+  time = c(res$time, hierTestTime)
+  names(time) = c(res$time, "test")
   
   # indice of optimal lambda : the one with the greatest number of reject
   indLambdaOpt <- which(nbReject == max(nbReject))
@@ -143,7 +150,7 @@ fullProcess <- function(X, y, control = c("FWER", "FDR"), alpha = 0.05, test = p
   var   <- res$var[[indLambdaOpt[1]]][indGroupSel]
 
   outObj <- list(res = res, lambdaOpt = res$lambda[indLambdaOpt], selectedGroups = REJECT[[indLambdaOpt[1]]], 
-                 group = group, var = var, test = test, alpha = alpha, reject = REJECT)
+                 group = group, var = var, test = test, alpha = alpha, reject = REJECT, control = control, time = time)
   class(outObj) = "fullProcess"
   
   return(outObj)
