@@ -1,7 +1,8 @@
-Version 0.4.1 (28/08/2018): 
+Version 0.4.1 (15/09/2018): 
 - documentation correction
 - update DESCRIPTION file with authors
-- add print and sumamry functions for MLGL
+- add print and summary functions for MLGL
+- add plot function for fullProcess
 
 Version 0.4 (14/01/2017): 
 - add logistic loss in MLGL, cv.MLGL, stability and overlap

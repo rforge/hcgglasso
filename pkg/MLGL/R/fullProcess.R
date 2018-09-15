@@ -111,6 +111,7 @@ fullProcess <- function(X, y, control = c("FWER", "FDR"), alpha = 0.05, test = p
       {
         # hierarchical testing and selection
         resTest <- hierTestFunction(X[ind1,], y[ind1], res$group[[i]], res$var[[i]], test)
+
         resSel <- selFunction(resTest, alpha, ...)
         
         # keep outerNode (need for FDR outer = FALSE, do not change in other cases)
@@ -146,9 +147,10 @@ fullProcess <- function(X, y, control = c("FWER", "FDR"), alpha = 0.05, test = p
   group <- res$group[[indLambdaOpt]][indGroupSel]
   var   <- res$var[[indLambdaOpt]][indGroupSel]
 
+  outObj <- list(res = res, lambdaOpt = res$lambda[indLambdaOpt], selectedGroups = REJECT[[indLambdaOpt]], group = group, var = var, test = test, alpha = alpha, reject = REJECT)
+  class(outObj) = "fullProcess"
   
-  return(list(res = res, lambdaOpt = res$lambda[indLambdaOpt], selectedGroups = REJECT[[indLambdaOpt]], group = group, var = var))
-  
+  return(outObj)
 }
 
 

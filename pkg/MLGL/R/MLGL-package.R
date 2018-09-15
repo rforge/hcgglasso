@@ -1,4 +1,4 @@
-#' @importFrom graphics abline legend matplot
+#' @importFrom graphics abline legend matplot plot par text
 #' @importFrom stats anova approx dist lm p.adjust predict binomial glm
 #' @import gglasso MASS Matrix fastcluster FactoMineR
 #' 

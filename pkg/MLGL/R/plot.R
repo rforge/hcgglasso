@@ -8,7 +8,6 @@
 #' @param ... Other parameters for plot function
 #' 
 #' @examples
-#' \donttest{
 #' # Simulate gaussian data with block-diagonal variance matrix containing 12 blocks of size 5
 #' X <- simuBlockGaussian(50, 12, 5, 0.7)
 #' # Generate a response variable
@@ -17,7 +16,7 @@
 #' res <- MLGL(X,y)
 #' # Plot the solution path
 #' plot(res) 
-#' }
+#' 
 #' 
 #' @method plot MLGL
 #' 
@@ -46,7 +45,7 @@ plot.MLGL <- function(x, log.lambda = FALSE, lambda.lines = FALSE,...)
   
   #plot
   matplot(absc, bet, type = "l", lty = 1, xlab = ifelse(log.lambda, expression(paste("log(",lambda,")")), expression(lambda)),
-          ylab = "Coefficients",...)
+          ylab = "Coefficients", main = "Solution path", ...)
   
   #add vertical lines for lambda values
   if(lambda.lines)
@@ -63,7 +62,6 @@ plot.MLGL <- function(x, log.lambda = FALSE, lambda.lines = FALSE,...)
 #' @param ... Other parameters for plot function
 #' 
 #' @examples
-#' \donttest{
 #' set.seed(42)
 #' # Simulate gaussian data with block-diagonal variance matrix containing 12 blocks of size 5
 #' X <- simuBlockGaussian(50, 12, 5, 0.7)
@@ -73,7 +71,7 @@ plot.MLGL <- function(x, log.lambda = FALSE, lambda.lines = FALSE,...)
 #' res <- cv.MLGL(X,y)
 #' # Plot the cv error curve
 #' plot(res) 
-#' }
+#' 
 #' 
 #' @method plot cv.MLGL
 #' 
@@ -99,7 +97,7 @@ plot.cv.MLGL <- function(x, log.lambda = FALSE,...)
   
   #plot
   matplot(absc, cbind(x$cvm,x$cvupper,x$cvlower), type = "l", lty = c(1,2,2), col = c(1,2,2),
-          xlab = ifelse(log.lambda, expression(paste("log(",lambda,")")), expression(lambda)), ylab = "Error",...)
+          xlab = ifelse(log.lambda, expression(paste("log(",lambda,")")), expression(lambda)), ylab = "Error", ...)
   abline(v = lam, col = "blue", lty = "dashed")
 }
 
@@ -170,7 +168,50 @@ plot.stability.MLGL <- function(x, log.lambda = FALSE, threshold = 0.75,...)
   #determine selected groups and variables
   selectedGroup <- which(col==2)
   indsel <- x$group%in%selectedGroup
+  
   return(list(var = x$var[indsel], group = x$group[indsel], threshold = threshold))
 }
 
 
+
+#'
+#' Plot the path obtained from \code{\link{fullProcess}} function
+#'
+#' @param x \code{\link{fullProcess}} object
+#' @param log.lambda If TRUE, use log(lambda) instead of lambda in abscissa
+#' @param lambda.lines if TRUE, add vertical lines at lambda values
+#' @param ... Other parameters for plot function
+#' 
+#' @examples
+#' # Simulate gaussian data with block-diagonal variance matrix containing 12 blocks of size 5
+#' X <- simuBlockGaussian(50, 12, 5, 0.7)
+#' # Generate a response variable
+#' y <- drop(X[,c(2, 7, 12)]%*%c(2, 2, -2) + rnorm(50, 0, 0.5))
+#' # Apply MLGL method
+#' res <- fullProcess(X, y)
+#' # Plot the solution path
+#' plot(res) 
+#' 
+#' 
+#' @method plot fullProcess
+#' 
+#' @seealso \link{fullProcess}
+#' 
+#' @export
+plot.fullProcess <- function(x, log.lambda = FALSE, lambda.lines = FALSE, ...)
+{
+  par(mfrow = c(2, 1))
+  plot(x$res, ...)
+  abline(v = ifelse(log.lambda, log(x$lambdaOpt), x$lambdaOpt), col = "red", lty = "dotted")
+  text(ifelse(log.lambda, log(x$lambdaOpt), x$lambdaOpt), 0, labels = expression(lambda[opt]), col = "red", pos = 1)
+  
+  abscissa <- x$res$lambda
+  if(log.lambda) 
+    abscissa = log(abscissa)
+  
+  matplot(abscissa, cbind(x$res$nGroup, sapply(x$reject, length)), type = "l", col = c(1, 4), xlab = ifelse(log.lambda, expression(paste("log(",lambda,")")), expression(lambda)),
+          ylab = "Number of groups", main = "Number of groups in MLGL path", ...)
+  abline(v = ifelse(log.lambda, log(x$lambdaOpt), x$lambdaOpt), col = "red", lty = "dotted")
+  text(ifelse(log.lambda, log(x$lambdaOpt), x$lambdaOpt), 0, labels = expression(lambda[opt]), col = "red", pos = 2)
+  legend("topright", c("before testing", "after testing"), col = c(1, 4), lty = 1:2, cex = 0.6)
+}

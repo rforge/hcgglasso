@@ -2,13 +2,11 @@ Package: MLGL
 Type: Package
 Title: Multi-Layer Group-Lasso
 Version: 0.4.1
-Date: 2018-08-28
+Date: 2018-09-15
 Authors@R: c(person("Quentin", "Grimonprez", role = c("aut", "cre"), email = "quentin.grimonprez@inria.fr"),
              person("Samuel", "Blanck", role = "ctb"),
              person("Alain", "Celisse", role = "ths"),
-             person("Guillemette", "Marot", role = "ths"),
-             person("Hui", "Zan", role = "ctb"),
-             person("Yi", "Yang", role = "ctb"))
+             person("Guillemette", "Marot", role = "ths"))
 Copyright: Inria
 Description: It implements a new procedure of variable selection in the context of redundancy between explanatory variables, which holds true with high dimensional data (Grimonprez et al. (2018) <hal-01857242>).
 License: GPL (>=2)
