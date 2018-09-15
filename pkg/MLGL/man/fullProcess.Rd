@@ -6,7 +6,7 @@
 \usage{
 fullProcess(X, y, control = c("FWER", "FDR"), alpha = 0.05,
   test = partialFtest, hc = NULL, loss = c("ls", "logit"),
-  plot = TRUE, fractionSampleMLGL = 1/2, ...)
+  fractionSampleMLGL = 1/2, ...)
 }
 \arguments{
 \item{X}{matrix of size n*p}
@@ -15,15 +15,13 @@ fullProcess(X, y, control = c("FWER", "FDR"), alpha = 0.05,
 
 \item{control}{either "FDR" or "FWER"}
 
-\item{alpha}{control elvel for testing procedure}
+\item{alpha}{control level for testing procedure}
 
 \item{test}{test used in the testing procedure. Default is partialFtest for loss = "ls" and partialChisqTest for loss = "logit"}
 
 \item{hc}{output of \code{\link{hclust}} function. If not provided, \code{\link{hclust}} is run with ward.D2 method}
 
 \item{loss}{a character string specifying the loss function to use, valid options are: "ls" least squares loss (regression) and "logit" logistic loss (classification)}
-
-\item{plot}{If TRUE plot the number of groups selected before and after the testing procedure}
 
 \item{fractionSampleMLGL}{a real between 0 and 1 : the fraction of individuals to use in the sample for MLGL (see Details).}
 
@@ -34,8 +32,12 @@ a list containing :
 \describe{
   \item{res}{output of \link{MLGL} function}
   \item{lambdaOpt}{lambda values maximizing the number of rejects}
-  \item{var}{A vector containing the index of selected variables for \code{lambdaOpt}}
-  \item{group}{A vector containing the values index of selected groups for \code{lambdaOpt}}
+  \item{var}{A vector containing the index of selected variables for the first \code{lambdaOpt} value}
+  \item{group}{A vector containing the values index of selected groups for the first \code{lambdaOpt} value}
+  \item{selectedGroups}{Selected groups for the first \code{lambdaOpt} value}
+  \item{reject}{Selected groups for all lambda values}
+  \item{alpha}{Control level}
+  \item{test}{test used in the testing procedure}
 }
 }
 \description{

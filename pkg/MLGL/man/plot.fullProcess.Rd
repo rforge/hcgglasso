@@ -5,14 +5,16 @@
 \title{Plot the path obtained from \code{\link{fullProcess}} function}
 \usage{
 \method{plot}{fullProcess}(x, log.lambda = FALSE, lambda.lines = FALSE,
-  ...)
+  lambda.opt = c("min", "max", "both"), ...)
 }
 \arguments{
 \item{x}{\code{\link{fullProcess}} object}
 
 \item{log.lambda}{If TRUE, use log(lambda) instead of lambda in abscissa}
 
-\item{lambda.lines}{if TRUE, add vertical lines at lambda values}
+\item{lambda.lines}{If TRUE, add vertical lines at lambda values}
+
+\item{lambda.opt}{If there is several optimal lambdas, which one to print "min", "max" or "both"}
 
 \item{...}{Other parameters for plot function}
 }

@@ -179,7 +179,8 @@ plot.stability.MLGL <- function(x, log.lambda = FALSE, threshold = 0.75,...)
 #'
 #' @param x \code{\link{fullProcess}} object
 #' @param log.lambda If TRUE, use log(lambda) instead of lambda in abscissa
-#' @param lambda.lines if TRUE, add vertical lines at lambda values
+#' @param lambda.lines If TRUE, add vertical lines at lambda values
+#' @param lambda.opt If there is several optimal lambdas, which one to print "min", "max" or "both"
 #' @param ... Other parameters for plot function
 #' 
 #' @examples
@@ -198,12 +199,18 @@ plot.stability.MLGL <- function(x, log.lambda = FALSE, threshold = 0.75,...)
 #' @seealso \link{fullProcess}
 #' 
 #' @export
-plot.fullProcess <- function(x, log.lambda = FALSE, lambda.lines = FALSE, ...)
+plot.fullProcess <- function(x, log.lambda = FALSE, lambda.lines = FALSE, lambda.opt = c("min", "max", "both"), ...)
 {
+  lambda.opt = match.arg(lambda.opt)
+  
+  lambdaOpt <- switch(lambda.opt,
+                      "min" = x$lambdaOpt[1],
+                      "max" = x$lambdaOpt[length(x$lambdaOpt)],
+                      "both" = c(1, x$lambdaOpt[length(x$lambdaOpt)]))
   par(mfrow = c(2, 1))
   plot(x$res, ...)
-  abline(v = ifelse(log.lambda, log(x$lambdaOpt), x$lambdaOpt), col = "red", lty = "dotted")
-  text(ifelse(log.lambda, log(x$lambdaOpt), x$lambdaOpt), 0, labels = expression(lambda[opt]), col = "red", pos = 1)
+  abline(v = ifelse(log.lambda, log(lambdaOpt), lambdaOpt), col = "red", lty = "dotted")
+  text(ifelse(log.lambda, log(lambdaOpt), lambdaOpt), 0, labels = expression(lambda[opt]), col = "red", pos = 1)
   
   abscissa <- x$res$lambda
   if(log.lambda) 
@@ -211,7 +218,7 @@ plot.fullProcess <- function(x, log.lambda = FALSE, lambda.lines = FALSE, ...)
   
   matplot(abscissa, cbind(x$res$nGroup, sapply(x$reject, length)), type = "l", col = c(1, 4), xlab = ifelse(log.lambda, expression(paste("log(",lambda,")")), expression(lambda)),
           ylab = "Number of groups", main = "Number of groups in MLGL path", ...)
-  abline(v = ifelse(log.lambda, log(x$lambdaOpt), x$lambdaOpt), col = "red", lty = "dotted")
-  text(ifelse(log.lambda, log(x$lambdaOpt), x$lambdaOpt), 0, labels = expression(lambda[opt]), col = "red", pos = 2)
+  abline(v = ifelse(log.lambda, log(lambdaOpt), lambdaOpt), col = "red", lty = "dotted")
+  text(ifelse(log.lambda, log(lambdaOpt), lambdaOpt), 0, labels = expression(lambda[opt]), col = "red", pos = 2)
   legend("topright", c("before testing", "after testing"), col = c(1, 4), lty = 1:2, cex = 0.6)
 }

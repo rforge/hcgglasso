@@ -7,9 +7,8 @@
 #' @param y vector of size n. If loss = "logit", elements of y must be in {-1,1} 
 #' @param hc output of \code{\link{hclust}} function. If not provided, \code{\link{hclust}} is run with ward.D2 method
 #' @param control either "FDR" or "FWER"
-#' @param alpha control elvel for testing procedure
+#' @param alpha control level for testing procedure
 #' @param test test used in the testing procedure. Default is partialFtest for loss = "ls" and partialChisqTest for loss = "logit"
-#' @param plot If TRUE plot the number of groups selected before and after the testing procedure
 #' @param loss a character string specifying the loss function to use, valid options are: "ls" least squares loss (regression) and "logit" logistic loss (classification)
 #' @param fractionSampleMLGL a real between 0 and 1 : the fraction of individuals to use in the sample for MLGL (see Details).
 #' @param ... Others parameters 
@@ -18,8 +17,12 @@
 #' \describe{
 #'   \item{res}{output of \link{MLGL} function}
 #'   \item{lambdaOpt}{lambda values maximizing the number of rejects}
-#'   \item{var}{A vector containing the index of selected variables for \code{lambdaOpt}}
-#'   \item{group}{A vector containing the values index of selected groups for \code{lambdaOpt}}
+#'   \item{var}{A vector containing the index of selected variables for the first \code{lambdaOpt} value}
+#'   \item{group}{A vector containing the values index of selected groups for the first \code{lambdaOpt} value}
+#'   \item{selectedGroups}{Selected groups for the first \code{lambdaOpt} value}
+#'   \item{reject}{Selected groups for all lambda values}
+#'   \item{alpha}{Control level}
+#'   \item{test}{test used in the testing procedure}
 #' } 
 #'
 #' @details
@@ -43,13 +46,13 @@
 #' @seealso \link{MLGL}, \link{hierarchicalFDR}, \link{hierarchicalFWER}, \link{selFDR}, \link{selFWER}
 #'
 #' @export
-fullProcess <- function(X, y, control = c("FWER", "FDR"), alpha = 0.05, test = partialFtest, hc = NULL, loss = c("ls", "logit"), plot = TRUE, fractionSampleMLGL = 1/2,...)
+fullProcess <- function(X, y, control = c("FWER", "FDR"), alpha = 0.05, test = partialFtest, hc = NULL, loss = c("ls", "logit"), fractionSampleMLGL = 1/2,...)
 {
   control = match.arg(control)
   loss = match.arg(loss)
   if(loss == "logit" & identical(test, partialFtest))
     test = partialChisqtest
-  .checkFullProcess(X, y, hc, plot, alpha, test, fractionSampleMLGL, loss)
+  .checkFullProcess(X, y, hc, alpha, test, fractionSampleMLGL, loss)
     
   n <- nrow(X)
   
@@ -129,25 +132,18 @@ fullProcess <- function(X, y, control = c("FWER", "FDR"), alpha = 0.05, test = p
     
   }# end for lambda
   
-  # indice of optimal lambda : the one with the gretest number of reject
-  indLambdaOpt <- which.max(nbReject)
+  # indice of optimal lambda : the one with the greatest number of reject
+  indLambdaOpt <- which(nbReject == max(nbReject))
   
-  
-  # plot the number of groups selevted by MLGL before and after the testing procedure
-  if(plot)
-  {
-    matplot(res$lambda, cbind(res$nGroup, nbReject), type ="l", lwd = 1.5, xlab = expression(lambda), ylab = "Number of groups")
-    # vertical line for optimal lambda
-    abline(v = res$lambda[indLambdaOpt], lwd = 1, lty = "dotted")
-    legend("topright", legend = c("groups",  "rejected groups"), lty = 1:2, lwd = 1.5, col = 1:2)
-  }
+
   
   # group selected for the lambda optimal
-  indGroupSel <- res$group[[indLambdaOpt]]%in% REJECT[[indLambdaOpt]]
-  group <- res$group[[indLambdaOpt]][indGroupSel]
-  var   <- res$var[[indLambdaOpt]][indGroupSel]
+  indGroupSel <- res$group[[indLambdaOpt[1]]] %in% REJECT[[indLambdaOpt[1]]]
+  group <- res$group[[indLambdaOpt[1]]][indGroupSel]
+  var   <- res$var[[indLambdaOpt[1]]][indGroupSel]
 
-  outObj <- list(res = res, lambdaOpt = res$lambda[indLambdaOpt], selectedGroups = REJECT[[indLambdaOpt]], group = group, var = var, test = test, alpha = alpha, reject = REJECT)
+  outObj <- list(res = res, lambdaOpt = res$lambda[indLambdaOpt], selectedGroups = REJECT[[indLambdaOpt[1]]], 
+                 group = group, var = var, test = test, alpha = alpha, reject = REJECT)
   class(outObj) = "fullProcess"
   
   return(outObj)
@@ -155,7 +151,7 @@ fullProcess <- function(X, y, control = c("FWER", "FDR"), alpha = 0.05, test = p
 
 
 # check parameters of MLGL function
-.checkFullProcess <- function(X, y, hc, plot, alpha, test, fractionSampleMLGL, loss)
+.checkFullProcess <- function(X, y, hc, alpha, test, fractionSampleMLGL, loss)
 {
   #check X
   if(!is.matrix(X)) 
@@ -195,12 +191,6 @@ fullProcess <- function(X, y, control = c("FWER", "FDR"), alpha = 0.05, test = p
   if((alpha <=0) || (alpha>1))
     stop("alpha must be a real between 0 and 1.")
   
-  #check if plot is a boolean
-  if(length(plot)!=1)
-    stop("plot must be a boolean.")
-  if(!is.logical(plot))
-    stop("plot must be a boolean.")
-
   # check if test is a function
   if(!is.function(test))
     stop("test must be a function.")
