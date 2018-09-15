@@ -109,7 +109,6 @@ hierarchicalTesting <- function(indRoot, hierMat, group, grouplm, X, y, test = p
       toTest0 <- which(grouplm %in% subLeaves)
       
       indGrOutObj <- match(group[gr], grInHier)
-      
       pvalues[indGrOutObj]    = test(X, y, toTest0)
       if(length(indGrOutObj)>1)
       {
@@ -313,7 +312,7 @@ hierarchicalFWER <- function(X, y, group, var, test = partialFtest, Shaffer = FA
   m <- length(grouplm)
   # lm with leaves represented by their first principal component
   reslm <- acpOLStest(X, y, hierInfo$grouplm, hierInfo$varlm)
-  
+
   # new hierMat with complementary group
   hierMatTot <- hierInfo$hierTot    
   
@@ -494,9 +493,9 @@ selFWER <- function(out, alpha = 0.05)
   # adjPvalues
   if(!is.numeric(adjPvalues))
     stop("adjPvalues has to be a vector of real between 0 and 1.")
-  if(any(is.na(adjPvalues))) 
-    stop("Missing values in adjPvalues not allowed.")
-  if(any((adjPvalues <=0) || (adjPvalues>1)))
+  # if(any(is.na(adjPvalues))) 
+  #   stop("Missing values in adjPvalues not allowed.")
+  if(any((adjPvalues[!is.na(adjPvalues)] <= 0) || (adjPvalues[!is.na(adjPvalues)]  > 1)))
     stop("adjPvalues has to be a vector of real between 0 and 1.")
   
   invisible(return(NULL))
