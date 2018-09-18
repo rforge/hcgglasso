@@ -80,7 +80,7 @@ fullProcess <- function(X, y, control = c("FWER", "FDR"), alpha = 0.05, test = p
   
   
   ##### part 2 : group-lasso
-  res <- MLGL(X[ind2,], y[ind2], hc = hc, loss = loss)
+  res <- MLGL(X[ind2,], y[ind2], hc = hc, loss = loss, ...)
   
   
   ##### part 3 : testing procedure
@@ -117,7 +117,7 @@ fullProcess <- function(X, y, control = c("FWER", "FDR"), alpha = 0.05, test = p
         # hierarchical testing and selection
         resTest <- hierTestFunction(X[ind1,], y[ind1], res$group[[i]], res$var[[i]], test)
 
-        resSel <- selFunction(resTest, alpha, ...)
+        resSel <- selFunction(resTest, alpha)
         
         # keep outerNode (need for FDR outer = FALSE, do not change in other cases)
         groupSel <- outerNode(resSel$toSel, resTest$hierMatrix)
