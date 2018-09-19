@@ -11,7 +11,7 @@
 #' @param test test used in the testing procedure. Default is partialFtest for loss = "ls" and partialChisqTest for loss = "logit"
 #' @param loss a character string specifying the loss function to use, valid options are: "ls" least squares loss (regression) and "logit" logistic loss (classification)
 #' @param fractionSampleMLGL a real between 0 and 1 : the fraction of individuals to use in the sample for MLGL (see Details).
-#' @param ... Others parameters 
+#' @param ... Others parameters for MLGL
 #'
 #' @return a list containing :
 #' \describe{
@@ -50,7 +50,6 @@
 #' @export
 fullProcess <- function(X, y, control = c("FWER", "FDR"), alpha = 0.05, test = partialFtest, hc = NULL, loss = c("ls", "logit"), fractionSampleMLGL = 1/2, ...)
 {
-  control = match.arg(control)
   loss = match.arg(loss)
   if(loss == "logit" & identical(test, partialFtest))
     test = partialChisqtest
@@ -84,73 +83,9 @@ fullProcess <- function(X, y, control = c("FWER", "FDR"), alpha = 0.05, test = p
   
   
   ##### part 3 : testing procedure
-  t1 <- proc.time()
-  # choose the right function
-  hierTestFunction <- hierarchicalFWER
-  selFunction <- selFWER
-  if(control == "FDR")
-  {
-    hierTestFunction = hierarchicalFDR
-    selFunction = selFDR  
-  }
-    
-  # testing procedure for each lambda
-  REJECT <- list()
-  nbReject <- rep(0, length(res$lambda))
-  prevSelGroup = selGroup <- c()
-  for(i in 1:length(res$lambda))
-  {
-    # if no groups are selected we do nothing
-    if(length(res$group[[i]])>0)
-    {
-      
-      selGroup = unique(res$group[[i]])
-      
-      # if the selected groups have not changed compared with the last iteration, we copy the result
-      if(setequal(prevSelGroup, selGroup))
-      {
-        REJECT[[i]] = REJECT[[i-1]]
-        nbReject[i] = nbReject[i-1]
-      }
-      else
-      {
-        # hierarchical testing and selection
-        resTest <- hierTestFunction(X[ind1,], y[ind1], res$group[[i]], res$var[[i]], test)
+  outTest <- HMT(res, X[ind1,], y[ind1], control, alpha, test)
 
-        resSel <- selFunction(resTest, alpha)
-        
-        # keep outerNode (need for FDR outer = FALSE, do not change in other cases)
-        groupSel <- outerNode(resSel$toSel, resTest$hierMatrix)
-        # Id of rejected groups
-        REJECT[[i]] = (resSel$groupId[resSel$toSel])[groupSel] 
-        
-        # number of rejects for the lambda value
-        nbReject[i] = length(REJECT[[i]])
-      }
-
-    }# end if no selection
-    
-    prevSelGroup = selGroup
-    
-  }# end for lambda
-  t2 <- proc.time()
-  
-  hierTestTime <- (t2-t1)[3]
-  time = c(res$time, hierTestTime)
-  names(time) = c(res$time, "test")
-  
-  # indice of optimal lambda : the one with the greatest number of reject
-  indLambdaOpt <- which(nbReject == max(nbReject))
-  
-
-  
-  # group selected for the lambda optimal
-  indGroupSel <- res$group[[indLambdaOpt[1]]] %in% REJECT[[indLambdaOpt[1]]]
-  group <- res$group[[indLambdaOpt[1]]][indGroupSel]
-  var   <- res$var[[indLambdaOpt[1]]][indGroupSel]
-
-  outObj <- list(res = res, lambdaOpt = res$lambda[indLambdaOpt], selectedGroups = REJECT[[indLambdaOpt[1]]], 
-                 group = group, var = var, test = test, alpha = alpha, reject = REJECT, control = control, time = time)
+  outObj <- c(list(res = res), outTest)
   class(outObj) = "fullProcess"
   
   return(outObj)

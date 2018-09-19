@@ -17,9 +17,10 @@ acpOLStest <- function(X, y, group, var)
   #acp + ols
   newdata = do.call(cbind, tapply(var, group, FUN = function(indvar)
   {
-    respca=PCA(X[,indvar], scale.unit=TRUE, ncp=1)
+    respca = PCA(X[, indvar, drop = FALSE], scale.unit = TRUE, ncp = 1)
     return(respca$ind$coord)
   }))
+  
   #colnames(newdata) = unique(group)
   colnames(newdata) = sort(unique(group))
   

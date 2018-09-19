@@ -30,7 +30,7 @@ fullProcess.formula(formula, data, control = c("FWER", "FDR"),
 
 \item{fractionSampleMLGL}{a real between 0 and 1 : the fraction of individuals to use in the sample for MLGL (see Details).}
 
-\item{...}{Others parameters}
+\item{...}{Others parameters for MLGL}
 
 \item{formula}{an object of class "formula" (or one that can be coerced to that class): a symbolic description of the model to be fitted.}
 
