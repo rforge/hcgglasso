@@ -18,7 +18,7 @@ MLGL.formula(formula, data, hc = NULL, lambda = NULL,
 
 \item{y}{vector of size n. If loss = "logit", elements of y must be in {-1,1}}
 
-\item{hc}{output of \code{\link{hclust}} function. If not provided, \code{\link{hclust}} is run with \code{ward.D2} method}
+\item{hc}{output of \code{\link{hclust}} function. If not provided, \code{\link{hclust}} is run with \code{ward.D2} method. User can also provide the desired method: "single", "complete", "average", "mcquitty", "ward.D", "ward.D2", "centroid", "median".}
 
 \item{lambda}{lambda values for group lasso. If not provided, the function generates its own values of lambda}
 

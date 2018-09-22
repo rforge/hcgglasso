@@ -24,7 +24,7 @@ fullProcess.formula(formula, data, control = c("FWER", "FDR"),
 
 \item{test}{test used in the testing procedure. Default is partialFtest for loss = "ls" and partialChisqTest for loss = "logit"}
 
-\item{hc}{output of \code{\link{hclust}} function. If not provided, \code{\link{hclust}} is run with ward.D2 method}
+\item{hc}{output of \code{\link{hclust}} function. If not provided, \code{\link{hclust}} is run with ward.D2 method. User can also provide the desired method: "single", "complete", "average", "mcquitty", "ward.D", "ward.D2", "centroid", "median".}
 
 \item{loss}{a character string specifying the loss function to use, valid options are: "ls" least squares loss (regression) and "logit" logistic loss (classification)}
 
