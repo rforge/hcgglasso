@@ -9,6 +9,7 @@
 #' @param control either "FDR" or "FWER"
 #' @param alpha control level for testing procedure
 #' @param test test used in the testing procedure. Default is partialFtest for loss = "ls" and partialChisqTest for loss = "logit"
+#' @param ... extra parameters fpr \link{selFDR}
 #' 
 #' @return a list containing :
 #' \describe{
@@ -21,6 +22,10 @@
 #'   \item{test}{Test used in the testing procedure}
 #'   \item{control}{"FDR" or "FWER"}
 #'   \item{time}{Elapsed time}
+#'   \item{hierTest}{list containing the output of the testing function for each lambda. Each element can be used with the \link{selFWER} or \link{selFDR} functions.}
+#'   \item{lambda}{lambda path}
+#'   \item{nGroup}{Number of groups before testing}
+#'   \item{nSelectedGroup}{Numer of groups after testing}
 #' } 
 #' 
 #' @examples
@@ -30,13 +35,17 @@
 #' y <- drop(X[,c(2,7,12)] %*% c(2,2,-2) + rnorm(50, 0, 0.5))
 #' res <- MLGL(X, y)
 #' 
-#' out <- HMT(res, X, y)
+#' # perform hierarchical testing with FWER control
+#' out <- HMT(res, X, y, alpha = 0.05)
+#' 
+#' # test a new value of alpha for a specific lambda
+#' selFWER(out$hierTest[[60]], alpha = 0.1)
 #' 
 #' 
-#' @seealso \link{MLGL} 
+#' @seealso \link{hierarchicalFWER} \link{hierarchicalFDR} \link{selFWER} \link{selFDR}
 #' 
 #' @export
-HMT <- function(res, X, y, control = c("FWER", "FDR"), alpha = 0.05, test = partialFtest)
+HMT <- function(res, X, y, control = c("FWER", "FDR"), alpha = 0.05, test = partialFtest, ...)
 {
   control = match.arg(control)
   
@@ -65,6 +74,7 @@ HMT <- function(res, X, y, control = c("FWER", "FDR"), alpha = 0.05, test = part
       # if the selected groups have not changed compared with the last iteration, we copy the result
       if(setequal(prevSelGroup, selGroup))
       {
+        TEST[[i]] = TEST[[i-1]]
         REJECT[[i]] = REJECT[[i-1]]
         nbReject[i] = nbReject[i-1]
       }
@@ -73,7 +83,7 @@ HMT <- function(res, X, y, control = c("FWER", "FDR"), alpha = 0.05, test = part
         # hierarchical testing and selection
         resTest <- hierTestFunction(X, y, res$group[[i]], res$var[[i]], test)
         
-        resSel <- selFunction(resTest, alpha)
+        resSel <- selFunction(resTest, alpha, ...)
         
         # keep outerNode (need for FDR outer = FALSE, do not change in other cases)
         groupSel <- outerNode(resSel$toSel, resTest$hierMatrix)
@@ -107,7 +117,10 @@ HMT <- function(res, X, y, control = c("FWER", "FDR"), alpha = 0.05, test = part
   var   <- res$var[[indLambdaOpt[1]]][indGroupSel]
   
   
-  out <- list(lambdaOpt = res$lambda[indLambdaOpt], selectedGroups = REJECT[[indLambdaOpt[1]]], 
+  out <- list(lambdaOpt = res$lambda[indLambdaOpt], selectedGroups = REJECT[[indLambdaOpt[1]]], lambda = res$lambda, nGroup = res$nGroup, nSelectedGroup = nbReject, 
               group = group, var = var, test = test, alpha = alpha, reject = REJECT, control = control, time = time, hierTest = TEST)
+  
+  class(out) = "HMT"
+  
   return(out)
 }

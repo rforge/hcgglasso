@@ -224,3 +224,52 @@ plot.fullProcess <- function(x, log.lambda = FALSE, lambda.lines = FALSE, lambda
   text(ifelse(log.lambda, log(lambdaOpt), lambdaOpt), 0, labels = expression(lambda[opt]), col = "red", pos = 2)
   legend("topright", c("before testing", "after testing"), col = c(1, 4), lty = 1:2, cex = 0.6)
 }
+
+
+#'
+#' Plot the path obtained from \code{\link{HMT}} function
+#'
+#' @param x \code{\link{fullProcess}} object
+#' @param log.lambda If TRUE, use log(lambda) instead of lambda in abscissa
+#' @param lambda.lines If TRUE, add vertical lines at lambda values
+#' @param lambda.opt If there is several optimal lambdas, which one to print "min", "max" or "both"
+#' @param ... Other parameters for plot function
+#' 
+#' @examples
+#' set.seed(42)
+#' # Simulate gaussian data with block-diagonal variance matrix containing 12 blocks of size 5
+#' X <- simuBlockGaussian(50, 12, 5, 0.7)
+#' # Generate a response variable
+#' y <- drop(X[,c(2, 7, 12)]%*%c(2, 2, -2) + rnorm(50, 0, 0.5))
+#' # Apply MLGL method
+#' res <- MLGL(X, y)
+#' 
+#' out <- HMT(res, X, y)
+#' plot(out) 
+#' 
+#' 
+#' @method plot HMT
+#' 
+#' @seealso \link{HMT}
+#' 
+#' @export
+plot.HMT <- function(x, log.lambda = FALSE, lambda.lines = FALSE, lambda.opt = c("min", "max", "both"), ...)
+{
+  lambda.opt = match.arg(lambda.opt)
+  
+  lambdaOpt <- switch(lambda.opt,
+                      "min" = x$lambdaOpt[1],
+                      "max" = x$lambdaOpt[length(x$lambdaOpt)],
+                      "both" = c(1, x$lambdaOpt[length(x$lambdaOpt)]))
+  
+  abscissa <- x$lambda
+  if(log.lambda) 
+    abscissa = log(abscissa)
+  
+  matplot(abscissa, cbind(x$nGroup, x$nSelectedGroup), type = "l", col = c(1, 4), xlab = ifelse(log.lambda, expression(paste("log(",lambda,")")), expression(lambda)),
+          ylab = "Number of groups", main = "Number of groups in MLGL path", ...)
+  abline(v = ifelse(log.lambda, log(lambdaOpt), lambdaOpt), col = "red", lty = "dotted")
+  text(ifelse(log.lambda, log(lambdaOpt), lambdaOpt), 0, labels = expression(lambda[opt]), col = "red", pos = 2)
+  legend("topright", c("before testing", "after testing"), col = c(1, 4), lty = 1:2, cex = 0.6)
+}
+

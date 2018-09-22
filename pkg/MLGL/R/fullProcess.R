@@ -67,7 +67,7 @@ fullProcess <- function(X, y, control = c("FWER", "FDR"), alpha = 0.05, test = p
     
     # center variables and sd = 1
     Xb <- scale(X, center = TRUE, scale = FALSE)
-    Xb = scale(Xb, center = FALSE, scale = sqrt(colSums(X^2)/n))
+    Xb = scale(Xb, center = FALSE, scale = sqrt(colSums(Xb^2)/n))
     
     # enclidian distance
     d <- dist(t(Xb[ind1,]))

@@ -9,6 +9,16 @@
 #' 
 #' @method print MLGL
 #' 
+#' @examples 
+#' set.seed(42)
+#' # Simulate gaussian data with block-diagonal variance matrix containing 12 blocks of size 5
+#' X <- simuBlockGaussian(50, 12, 5, 0.7)
+#' # Generate a response variable
+#' y <- drop(X[,c(2,7,12)]%*%c(2,2,-2)+rnorm(50,0,0.5))
+#' # Apply MLGL method
+#' res <- MLGL(X,y)
+#' print(res)
+#' 
 #' @seealso \link{MLGL} \link{summary.MLGL}
 #' 
 #' @export
@@ -30,9 +40,18 @@ print.MLGL <- function(x, ...)
 #' @param object \code{\link{MLGL}} object
 #' @param ... Not used.
 #' 
-#' @return A matrix with fitted values or estimated coefficients for given values of s.
 #' 
 #' @method summary MLGL
+#' 
+#' @examples 
+#' set.seed(42)
+#' # Simulate gaussian data with block-diagonal variance matrix containing 12 blocks of size 5
+#' X <- simuBlockGaussian(50, 12, 5, 0.7)
+#' # Generate a response variable
+#' y <- drop(X[,c(2,7,12)]%*%c(2,2,-2)+rnorm(50,0,0.5))
+#' # Apply MLGL method
+#' res <- MLGL(X,y)
+#' summary(res)
 #' 
 #' @seealso \link{MLGL} \link{print.MLGL}
 #' 
@@ -67,6 +86,15 @@ summary.MLGL <- function(object, ...)
 #' @param x \code{\link{fullProcess}} object
 #' @param ... Not used.
 #' 
+#' @examples 
+#' set.seed(42)
+#' # Simulate gaussian data with block-diagonal variance matrix containing 12 blocks of size 5
+#' X <- simuBlockGaussian(50, 12, 5, 0.7)
+#' # Generate a response variable
+#' y <- drop(X[,c(2,7,12)]%*%c(2,2,-2)+rnorm(50,0,0.5))
+#' # Apply MLGL method
+#' res <- fullProcess(X, y)
+#' print(res)
 #' 
 #' @method print fullProcess
 #' 
@@ -82,10 +110,10 @@ print.fullProcess <- function(x, ...)
   print(x$resnVar)
   cat("$res$nGroup\n")
   print(x$res$nGroup)
-  cat("Test output")
-  cat("$lambdaOpt")
+  cat("Test output\n")
+  cat("$lambdaOpt\n")
   cat(x$lambdaOpt)  
-  cat("$selectedGroups")
+  cat("$selectedGroups\n")
   cat(x$selectedGroups)
 }
 
@@ -97,7 +125,15 @@ print.fullProcess <- function(x, ...)
 #' @param object \code{\link{fullProcess}} object
 #' @param ... Not used.
 #' 
-#' @return A matrix with fitted values or estimated coefficients for given values of s.
+#' @examples 
+#' set.seed(42)
+#' # Simulate gaussian data with block-diagonal variance matrix containing 12 blocks of size 5
+#' X <- simuBlockGaussian(50, 12, 5, 0.7)
+#' # Generate a response variable
+#' y <- drop(X[,c(2,7,12)]%*%c(2,2,-2)+rnorm(50,0,0.5))
+#' # Apply MLGL method
+#' res <- fullProcess(X, y)
+#' summary(res)
 #' 
 #' @method summary fullProcess
 #' 
@@ -106,7 +142,87 @@ print.fullProcess <- function(x, ...)
 #' @export
 summary.fullProcess <- function(object, ...)
 {
-  summary(object$reds)
+  summary(object$res)
+  cat("#### Multiple Hierarchical testing\n")
+  cat("## Data \n")
+  cat("alpha:", object$alpha, "\n")
+  cat("control:", object$control, "\n")
+  cat("optimal lambda:", object$lambdaOpt, "\n")
+  cat("Selected groups:", object$selectedGroups, "\n")
+  cat("Selected variables:", object$var, "\n")
+  cat("Time:", object$time[3],"s\n")
+  cat("\n")
+  cat("Total elapsed time:", sum(object$time, na.rm = TRUE),"s\n")
+}
+
+
+
+#' @title Print Values
+#'
+#' Print a \code{\link{HMT}} object
+#'
+#'  
+#' @param x \code{\link{HMT}} object
+#' @param ... Not used.
+#' 
+#' 
+#' @examples 
+#' set.seed(42)
+#' # Simulate gaussian data with block-diagonal variance matrix containing 12 blocks of size 5
+#' X <- simuBlockGaussian(50, 12, 5, 0.7)
+#' # Generate a response variable
+#' y <- drop(X[,c(2,7,12)]%*%c(2,2,-2)+rnorm(50,0,0.5))
+#' # Apply MLGL method
+#' res <- MLGL(X, y)
+#' out <- HMT(res, X, y)
+#' print(out)
+#' 
+#' @method print HMT
+#' 
+#' @seealso \link{HMT} \link{summary.HMT}
+#' 
+#' @export
+print.HMT <- function(x, ...)
+{
+  cat("$lambda\n")
+  print(x$lambda)
+  cat("$nGroup\n")
+  print(x$nGroup)
+  cat("Test output\n")
+  cat("$nSelectedGroup\n")
+  print(x$nSelectedGroup)
+  cat("$lambdaOpt\n")
+  cat(x$lambdaOpt)  
+  cat("$selectedGroups\n")
+  cat(x$selectedGroups)
+}
+
+#' @title Object Summaries
+#'
+#' Summary of a \code{\link{HMT}} object
+#'  
+#'
+#' @param object \code{\link{HMT}} object
+#' @param ... Not used.
+#' 
+#' @examples 
+#' set.seed(42)
+#' # Simulate gaussian data with block-diagonal variance matrix containing 12 blocks of size 5
+#' X <- simuBlockGaussian(50, 12, 5, 0.7)
+#' # Generate a response variable
+#' y <- drop(X[,c(2,7,12)]%*%c(2,2,-2)+rnorm(50,0,0.5))
+#' # Apply MLGL method
+#' res <- MLGL(X, y)
+#' out <- HMT(res, X, y)
+#' summary(out)
+#' 
+#' @method summary HMT
+#' 
+#' @seealso \link{HMT} \link{print.HMT}
+#' 
+#' @export
+summary.HMT <- function(object, ...)
+{
   cat("#### Multiple Hierarchical testing\n")
   cat("## Data \n")
   cat("alpha:", object$alpha, "\n")

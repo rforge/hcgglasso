@@ -4,6 +4,7 @@ Version 0.5 (15/09/2018):
 - add print and summary functions for MLGL
 - add plot, print and summary functions for fullProcess
 - add a formula version of MLGL and fullProcess functions
+- add HMT function with plot, pritn and summary
 
 Version 0.4 (14/01/2017): 
 - add logistic loss in MLGL, cv.MLGL, stability and overlap

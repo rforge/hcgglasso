@@ -7,7 +7,7 @@
 Apply Hierarchical Multiple Testing procedure on a \code{\link{MLGL}} object}
 \usage{
 HMT(res, X, y, control = c("FWER", "FDR"), alpha = 0.05,
-  test = partialFtest)
+  test = partialFtest, ...)
 }
 \arguments{
 \item{res}{\code{\link{MLGL}} object}
@@ -21,6 +21,8 @@ HMT(res, X, y, control = c("FWER", "FDR"), alpha = 0.05,
 \item{alpha}{control level for testing procedure}
 
 \item{test}{test used in the testing procedure. Default is partialFtest for loss = "ls" and partialChisqTest for loss = "logit"}
+
+\item{...}{extra parameters fpr \link{selFDR}}
 }
 \value{
 a list containing :
@@ -34,6 +36,10 @@ a list containing :
   \item{test}{Test used in the testing procedure}
   \item{control}{"FDR" or "FWER"}
   \item{time}{Elapsed time}
+  \item{hierTest}{list containing the output of the testing function for each lambda. Each element can be used with the \link{selFWER} or \link{selFDR} functions.}
+  \item{lambda}{lambda path}
+  \item{nGroup}{Number of groups before testing}
+  \item{nSelectedGroup}{Numer of groups after testing}
 }
 }
 \description{
@@ -48,10 +54,14 @@ X <- simuBlockGaussian(50, 12, 5, 0.7)
 y <- drop(X[,c(2,7,12)] \%*\% c(2,2,-2) + rnorm(50, 0, 0.5))
 res <- MLGL(X, y)
 
-out <- HMT(res, X, y)
+# perform hierarchical testing with FWER control
+out <- HMT(res, X, y, alpha = 0.05)
+
+# test a new value of alpha for a specific lambda
+selFWER(out$hierTest[[60]], alpha = 0.1)
 
 
 }
 \seealso{
-\link{MLGL}
+\link{hierarchicalFWER} \link{hierarchicalFDR} \link{selFWER} \link{selFDR}
 }
