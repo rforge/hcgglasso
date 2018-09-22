@@ -5,7 +5,7 @@
 #' @author Quentin Grimonprez
 #' @param X matrix of size n*p
 #' @param y vector of size n. If loss = "logit", elements of y must be in {-1,1} 
-#' @param hc output of \code{\link{hclust}} function. If not provided, \code{\link{hclust}} is run with \code{ward.D2} method
+#' @param hc output of \code{\link{hclust}} function. If not provided, \code{\link{hclust}} is run with \code{ward.D2} method. User can also provide the desired method: "single", "complete", "average", "mcquitty", "ward.D", "ward.D2", "centroid", "median".
 #' @param lambda lambda values for group lasso. If not provided, the function generates its own values of lambda
 #' @param weightLevel a vector of size p for each level of the hierarchy. A zero indicates that the level will be ignored. If not provided, use 1/(height between 2 successive levels)
 #' @param weightSizeGroup a vector of size 2*p-1 containing the weight for each group. Default is the square root of the size of each group
@@ -58,14 +58,14 @@ MLGL <- function(X, y, hc = NULL, lambda = NULL, weightLevel = NULL, weightSizeG
   
   ######## hierarchical clustering
   #if no hc output provided, we make one
-  if(is.null(hc))
+  if(is.null(hc) | is.character(hc))
   {
     if(verbose)
       cat("Computing hierarchical clustering...")
     
     t1 <- proc.time()
     d <- dist(t(X))
-    hc = fastcluster::hclust(d, method = "ward.D2")
+    hc = fastcluster::hclust(d, method = ifelse(is.character(hc), hc, "ward.D2"))
     t2 <- proc.time()
     tcah = t2-t1
     if(verbose)
@@ -302,12 +302,19 @@ preliminaryStep <- function(hc, weightLevel = NULL, weightSizeGroup = NULL)
   #check hc
   if(!is.null(hc))
   {
-    #check if hc is a hclust object
-    if(class(hc)!="hclust")
-      stop("hc must be an hclust object.")
-    #check if hc and X are compatible
-    if(length(hc$order)!=ncol(X))
-      stop("hc is not a clustering of the p covariates of X.")
+    if(is.character(hc))
+    {
+      if(!(hc %in% c("single", "complete", "average", "mcquitty", "ward.D", "ward.D2", "centroid", "median")))
+        stop("In character mode, hc must be \"single\", \"complete\", \"average\", \"mcquitty\", \"ward.D\", \"ward.D2\", \"centroid\" or \"median\".")
+    }else{
+      #check if hc is a hclust object
+      if(class(hc)!="hclust")
+        stop("hc must be an hclust object.")
+      #check if hc and X are compatible
+      if(length(hc$order)!=ncol(X))
+        stop("hc is not a clustering of the p covariates of X.")
+    }
+
     
   }
   

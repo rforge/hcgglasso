@@ -5,7 +5,7 @@
 #' @author Quentin Grimonprez
 #' @param X matrix of size n*p
 #' @param y vector of size n. If loss = "logit", elements of y must be in {-1,1} 
-#' @param hc output of \code{\link{hclust}} function. If not provided, \code{\link{hclust}} is run with ward.D2 method
+#' @param hc output of \code{\link{hclust}} function. If not provided, \code{\link{hclust}} is run with ward.D2 method. User can also provide the desired method: "single", "complete", "average", "mcquitty", "ward.D", "ward.D2", "centroid", "median".
 #' @param control either "FDR" or "FWER"
 #' @param alpha control level for testing procedure
 #' @param test test used in the testing procedure. Default is partialFtest for loss = "ls" and partialChisqTest for loss = "logit"
@@ -62,7 +62,7 @@ fullProcess <- function(X, y, control = c("FWER", "FDR"), alpha = 0.05, test = p
   ind1 <- (1:n)[-ind2]
 
   ##### part 1 : hierarchical clustering with half of the data
-  if(is.null(hc))
+  if(is.null(hc) | is.character(hc))
   {
     
     # center variables and sd = 1
@@ -73,7 +73,7 @@ fullProcess <- function(X, y, control = c("FWER", "FDR"), alpha = 0.05, test = p
     d <- dist(t(Xb[ind1,]))
     
     # hierarchical clustering
-    hc = fastcluster::hclust(d, method = "ward.D2")
+    hc = fastcluster::hclust(d, method = ifelse(is.character(hc), hc, "ward.D2"))
       
   }
   
