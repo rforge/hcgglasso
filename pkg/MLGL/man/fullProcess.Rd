@@ -6,27 +6,24 @@
 \title{Full process of MLGL}
 \usage{
 fullProcess(X, y, control = c("FWER", "FDR"), alpha = 0.05,
-  test = partialFtest, hc = NULL, loss = c("ls", "logit"),
-  fractionSampleMLGL = 1/2, ...)
+  test = partialFtest, hc = NULL, fractionSampleMLGL = 1/2, ...)
 
 fullProcess.formula(formula, data, control = c("FWER", "FDR"),
-  alpha = 0.05, test = partialFtest, hc = NULL, loss = c("ls",
-  "logit"), fractionSampleMLGL = 1/2, ...)
+  alpha = 0.05, test = partialFtest, hc = NULL,
+  fractionSampleMLGL = 1/2, ...)
 }
 \arguments{
 \item{X}{matrix of size n*p}
 
-\item{y}{vector of size n. If loss = "logit", elements of y must be in {-1,1}}
+\item{y}{vector of size n.}
 
 \item{control}{either "FDR" or "FWER"}
 
 \item{alpha}{control level for testing procedure}
 
-\item{test}{test used in the testing procedure. Default is partialFtest for loss = "ls" and partialChisqTest for loss = "logit"}
+\item{test}{test used in the testing procedure. Default is \link{partialFtest}}
 
 \item{hc}{output of \code{\link{hclust}} function. If not provided, \code{\link{hclust}} is run with ward.D2 method. User can also provide the desired method: "single", "complete", "average", "mcquitty", "ward.D", "ward.D2", "centroid", "median".}
-
-\item{loss}{a character string specifying the loss function to use, valid options are: "ls" least squares loss (regression) and "logit" logistic loss (classification)}
 
 \item{fractionSampleMLGL}{a real between 0 and 1 : the fraction of individuals to use in the sample for MLGL (see Details).}
 
@@ -52,7 +49,7 @@ a list containing :
 }
 }
 \description{
-Run hierarchical clustering following by a group-lasso on all the different partition and a hierarchical testing procedure.
+Run hierarchical clustering following by a group-lasso on all the different partition and a hierarchical testing procedure. Only for linear regression problem.
 }
 \details{
 Divide the n individuals in two samples. Then the three following steps are done :
@@ -66,10 +63,6 @@ set.seed(42)
 X <- simuBlockGaussian(50, 12, 5, 0.7)
 y <- drop(X[,c(2,7,12)] \%*\% c(2,2,-2) + rnorm(50, 0, 0.5))
 res <- fullProcess(X, y)
-
-# Logistic loss
-y <- 2*(rowSums(X[,1:4]) > 0) - 1
-res <- fullProcess(X, y, loss = "logit", test = partialChisqtest)
 
 
 }

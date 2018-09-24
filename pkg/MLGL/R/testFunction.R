@@ -105,76 +105,76 @@ Ftest <- function(X, y, varToTest)
   anova(lm(y~X[,varToTest]))[["Pr(>F)"]][1]
 }  
 
-#'
-#' Perform a Chi-square test
-#'
-#' @title Chi-square test
-#'
-#' @param X design matrix of size n*p
-#' @param y response vector of length n
-#' @param varToTest vector containing the index of the column of X to test
-#'
-#' @return a vector of the same length as varToTest containing the p-values of the test.
-#' 
-#' @details 
-#' logit model : ln(P(y=1|X)/(1-P(y=1|X))) = X * beta + epsilon
-#' 
-#' null hypothesis : beta[varToTest] = 0
-#' alternative hypothesis : it exists an index k in varToTest such that beta[k] != 0
-#' 
-#' The test statistic is based on a full and a reduced model.
-#' full : ln(P(y=1|X)/(1-P(y=1|X))) = X * beta[varToTest]  + epsilon
-#' reduced : the null model
-#' 
-#' @seealso \link{partialChisqtest}
-#' 
-#' @export
-Chisqtest <- function(X, y, varToTest)
-{
-  y2 <- (y+1)/2
-  anova(glm(y2~X[,varToTest], family = binomial), test = "Chisq")[["Pr(>Chi)"]][2]
-}  
+# #'
+# #' Perform a Chi-square test
+# #'
+# #' @title Chi-square test
+# #'
+# #' @param X design matrix of size n*p
+# #' @param y response vector of length n
+# #' @param varToTest vector containing the index of the column of X to test
+# #'
+# #' @return a vector of the same length as varToTest containing the p-values of the test.
+# #' 
+# #' @details 
+# #' logit model : ln(P(y=1|X)/(1-P(y=1|X))) = X * beta + epsilon
+# #' 
+# #' null hypothesis : beta[varToTest] = 0
+# #' alternative hypothesis : it exists an index k in varToTest such that beta[k] != 0
+# #' 
+# #' The test statistic is based on a full and a reduced model.
+# #' full : ln(P(y=1|X)/(1-P(y=1|X))) = X * beta[varToTest]  + epsilon
+# #' reduced : the null model
+# #' 
+# #' @seealso \link{partialChisqtest}
+# #' 
+# #' @export
+# Chisqtest <- function(X, y, varToTest)
+# {
+#   y2 <- (y+1)/2
+#   anova(glm(y2~X[,varToTest], family = binomial), test = "Chisq")[["Pr(>Chi)"]][2]
+# }  
 
 
-#'
-#' Perform a Chi-square F-test
-#'
-#' @title Chi-square F-test
-#'
-#' @param X design matrix of size n*p
-#' @param y response vector of length n 
-#' @param varToTest vector containing the index of the column of X to test
-#'
-#' @return a vector of the same length as varToTest containing the p-values of the test.
-#' 
-#' @details 
-#' ln(P(y=1|X)/(1-P(y=1|X))) = X * beta + epsilon
-#' 
-#' null hypothesis : beta[varToTest] = 0
-#' alternative hypothesis : it exists an index k in varToTest such that beta[k] != 0
-#' 
-#' The test statistic is based on a full and a reduced model.
-#' full : ln(P(y=1|X)/(1-P(y=1|X))) = X * beta + epsilon
-#' reduced : ln(P(y=1|X)/(1-P(y=1|X))) = X * beta[-varToTest] + epsilon
-#' 
-#' @seealso \link{partialFtest}
-#' 
-#' @export
-partialChisqtest <- function(X, y, varToTest)
-{
-  y2 <- (y+1)/2
-  reduced=c()
-  if(length(varToTest)==ncol(X))
-    reduced = glm(y2 ~ 1, family = binomial)
-  else
-    reduced = glm(y2 ~ X[,-varToTest], family = binomial)
-  
-  full = glm(y2 ~ X, family = binomial)
-  
-  outPartialFtest = anova(reduced, full, test = "Chisq")
-  
-  return(outPartialFtest[["Pr(>Chi)"]][2])
-}
+# #'
+# #' Perform a Chi-square F-test
+# #'
+# #' @title Chi-square F-test
+# #'
+# #' @param X design matrix of size n*p
+# #' @param y response vector of length n
+# #' @param varToTest vector containing the index of the column of X to test
+# #'
+# #' @return a vector of the same length as varToTest containing the p-values of the test.
+# #'
+# #' @details
+# #' ln(P(y=1|X)/(1-P(y=1|X))) = X * beta + epsilon
+# #'
+# #' null hypothesis : beta[varToTest] = 0
+# #' alternative hypothesis : it exists an index k in varToTest such that beta[k] != 0
+# #'
+# #' The test statistic is based on a full and a reduced model.
+# #' full : ln(P(y=1|X)/(1-P(y=1|X))) = X * beta + epsilon
+# #' reduced : ln(P(y=1|X)/(1-P(y=1|X))) = X * beta[-varToTest] + epsilon
+# #'
+# #' @seealso \link{partialFtest}
+# #'
+# #' @export
+# partialChisqtest <- function(X, y, varToTest)
+# {
+#   y2 <- (y+1)/2
+#   reduced=c()
+#   if(length(varToTest)==ncol(X))
+#     reduced = glm(y2 ~ 1, family = binomial)
+#   else
+#     reduced = glm(y2 ~ X[,-varToTest], family = binomial)
+# 
+#   full = glm(y2 ~ X, family = binomial)
+# 
+#   outPartialFtest = anova(reduced, full, test = "Chisq")
+# 
+#   return(outPartialFtest[["Pr(>Chi)"]][2])
+# }
 
 
 # #'

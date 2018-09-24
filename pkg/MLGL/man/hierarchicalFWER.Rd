@@ -43,10 +43,6 @@ y = drop(X[,c(2,7,12)]\%*\%c(2,2,-2)+rnorm(50,0,0.5))
 res = MLGL(X,y)
 test = hierarchicalFWER(X, y, res$group[[20]], res$var[[20]])
 
-# logistic loss
-y <- 2*(rowSums(X[,1:4])>0)-1
-res = MLGL(X,y, loss = "logit")
-test = hierarchicalFWER(X, y, res$group[[80]], res$var[[80]], test = partialChisqtest)
 
 }
 \references{

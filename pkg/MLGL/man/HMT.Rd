@@ -14,13 +14,13 @@ HMT(res, X, y, control = c("FWER", "FDR"), alpha = 0.05,
 
 \item{X}{matrix of size n*p}
 
-\item{y}{vector of size n. If loss = "logit", elements of y must be in {-1,1}}
+\item{y}{vector of size n.}
 
 \item{control}{either "FDR" or "FWER"}
 
 \item{alpha}{control level for testing procedure}
 
-\item{test}{test used in the testing procedure. Default is partialFtest for loss = "ls" and partialChisqTest for loss = "logit"}
+\item{test}{test used in the testing procedure. Default is \link{partialFtest}}
 
 \item{...}{extra parameters fpr \link{selFDR}}
 }
@@ -48,7 +48,6 @@ Hierarchical Multiple Testing procedure
 Apply Hierarchical Multiple Testing procedure on a \code{\link{MLGL}} object
 }
 \examples{
-# least square loss
 set.seed(42)
 X <- simuBlockGaussian(50, 12, 5, 0.7)
 y <- drop(X[,c(2,7,12)] \%*\% c(2,2,-2) + rnorm(50, 0, 0.5))

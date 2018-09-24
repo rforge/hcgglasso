@@ -1,15 +1,14 @@
-#' Run hierarchical clustering following by a group-lasso on all the different partition and a hierarchical testing procedure.
+#' Run hierarchical clustering following by a group-lasso on all the different partition and a hierarchical testing procedure. Only for linear regression problem.
 #'
 #' @title Full process of MLGL
 #' 
 #' @author Quentin Grimonprez
 #' @param X matrix of size n*p
-#' @param y vector of size n. If loss = "logit", elements of y must be in {-1,1} 
+#' @param y vector of size n. 
 #' @param hc output of \code{\link{hclust}} function. If not provided, \code{\link{hclust}} is run with ward.D2 method. User can also provide the desired method: "single", "complete", "average", "mcquitty", "ward.D", "ward.D2", "centroid", "median".
 #' @param control either "FDR" or "FWER"
 #' @param alpha control level for testing procedure
-#' @param test test used in the testing procedure. Default is partialFtest for loss = "ls" and partialChisqTest for loss = "logit"
-#' @param loss a character string specifying the loss function to use, valid options are: "ls" least squares loss (regression) and "logit" logistic loss (classification)
+#' @param test test used in the testing procedure. Default is \link{partialFtest}
 #' @param fractionSampleMLGL a real between 0 and 1 : the fraction of individuals to use in the sample for MLGL (see Details).
 #' @param ... Others parameters for MLGL
 #'
@@ -39,20 +38,16 @@
 #' X <- simuBlockGaussian(50, 12, 5, 0.7)
 #' y <- drop(X[,c(2,7,12)] %*% c(2,2,-2) + rnorm(50, 0, 0.5))
 #' res <- fullProcess(X, y)
-#' 
-#' # Logistic loss
-#' y <- 2*(rowSums(X[,1:4]) > 0) - 1
-#' res <- fullProcess(X, y, loss = "logit", test = partialChisqtest)
 #'
 #'
 #' @seealso \link{MLGL}, \link{hierarchicalFDR}, \link{hierarchicalFWER}, \link{selFDR}, \link{selFWER}
 #'
 #' @export
-fullProcess <- function(X, y, control = c("FWER", "FDR"), alpha = 0.05, test = partialFtest, hc = NULL, loss = c("ls", "logit"), fractionSampleMLGL = 1/2, ...)
+fullProcess <- function(X, y, control = c("FWER", "FDR"), alpha = 0.05, test = partialFtest, hc = NULL, fractionSampleMLGL = 1/2, ...)
 {
-  loss = match.arg(loss)
-  if(loss == "logit" & identical(test, partialFtest))
-    test = partialChisqtest
+  loss = "ls"
+  # if(loss == "logit" & identical(test, partialFtest))
+  #   test = partialChisqtest
   .checkFullProcess(X, y, hc, alpha, test, fractionSampleMLGL, loss)
   
   n <- nrow(X)
@@ -99,7 +94,7 @@ fullProcess <- function(X, y, control = c("FWER", "FDR"), alpha = 0.05, test = p
 #' @rdname fullProcess
 #' 
 #' @export
-fullProcess.formula <- function(formula, data, control = c("FWER", "FDR"), alpha = 0.05, test = partialFtest, hc = NULL, loss = c("ls", "logit"), fractionSampleMLGL = 1/2, ...)
+fullProcess.formula <- function(formula, data, control = c("FWER", "FDR"), alpha = 0.05, test = partialFtest, hc = NULL, fractionSampleMLGL = 1/2, ...)
 {
   cl <- match.call()
   mf <- match.call(expand.dots = FALSE)
@@ -114,7 +109,7 @@ fullProcess.formula <- function(formula, data, control = c("FWER", "FDR"), alpha
   X <- model.matrix(mt, mf)
   X = as.matrix(X)
   
-  res <- fullProcess(X, y, control, alpha, test, hc, loss, fractionSampleMLGL, ...)
+  res <- fullProcess(X, y, control, alpha, test, hc, fractionSampleMLGL, ...)
   
   return(res)
 }

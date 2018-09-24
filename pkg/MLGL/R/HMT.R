@@ -5,10 +5,10 @@
 #'  
 #' @param res \code{\link{MLGL}} object
 #' @param X matrix of size n*p
-#' @param y vector of size n. If loss = "logit", elements of y must be in {-1,1} 
+#' @param y vector of size n.
 #' @param control either "FDR" or "FWER"
 #' @param alpha control level for testing procedure
-#' @param test test used in the testing procedure. Default is partialFtest for loss = "ls" and partialChisqTest for loss = "logit"
+#' @param test test used in the testing procedure. Default is \link{partialFtest}
 #' @param ... extra parameters fpr \link{selFDR}
 #' 
 #' @return a list containing :
@@ -29,7 +29,6 @@
 #' } 
 #' 
 #' @examples
-#' # least square loss
 #' set.seed(42)
 #' X <- simuBlockGaussian(50, 12, 5, 0.7)
 #' y <- drop(X[,c(2,7,12)] %*% c(2,2,-2) + rnorm(50, 0, 0.5))
