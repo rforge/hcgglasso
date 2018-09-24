@@ -54,13 +54,13 @@ fullProcess <- function(X, y, control = c("FWER", "FDR"), alpha = 0.05, test = p
   if(loss == "logit" & identical(test, partialFtest))
     test = partialChisqtest
   .checkFullProcess(X, y, hc, alpha, test, fractionSampleMLGL, loss)
-    
+  
   n <- nrow(X)
   
   # Split the data in 2
   ind2 <- sample(n, floor(n * fractionSampleMLGL))
   ind1 <- (1:n)[-ind2]
-
+  
   ##### part 1 : hierarchical clustering with half of the data
   if(is.null(hc) | is.character(hc))
   {
@@ -74,7 +74,7 @@ fullProcess <- function(X, y, control = c("FWER", "FDR"), alpha = 0.05, test = p
     
     # hierarchical clustering
     hc = fastcluster::hclust(d, method = ifelse(is.character(hc), hc, "ward.D2"))
-      
+    
   }
   
   
@@ -84,7 +84,7 @@ fullProcess <- function(X, y, control = c("FWER", "FDR"), alpha = 0.05, test = p
   
   ##### part 3 : testing procedure
   outTest <- HMT(res, X[ind1,], y[ind1], control, alpha, test)
-
+  
   outObj <- c(list(res = res), outTest)
   class(outObj) = "fullProcess"
   
@@ -145,13 +145,18 @@ fullProcess.formula <- function(formula, data, control = c("FWER", "FDR"), alpha
   #check hc
   if(!is.null(hc))
   {
-    #check if hc is a hclust object
-    if(class(hc)!="hclust")
-      stop("hc must be an hclust object.")
-    #check if hc and X are compatible
-    if(length(hc$order)!=ncol(X))
-      stop("hc is not a clustering of the p covariates of X.")
-    
+    if(is.character(hc))
+    {
+      if(!(hc %in% c("single", "complete", "average", "mcquitty", "ward.D", "ward.D2", "centroid", "median")))
+        stop("In character mode, hc must be \"single\", \"complete\", \"average\", \"mcquitty\", \"ward.D\", \"ward.D2\", \"centroid\" or \"median\".")
+    }else{
+      #check if hc is a hclust object
+      if(class(hc)!="hclust")
+        stop("hc must be an hclust object.")
+      #check if hc and X are compatible
+      if(length(hc$order)!=ncol(X))
+        stop("hc is not a clustering of the p covariates of X.")
+    }
   }
   
   #alpha
