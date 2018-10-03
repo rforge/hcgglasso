@@ -29,4 +29,6 @@ Predict fitted values from a \code{\link{MLGL}} object
 }
 \author{
 original code from \pkg{gglasso} package Author: Yi Yang <yiyang@umn.edu>, Hui Zou <hzou@stat.umn.edu>
+
+function inspired from predict function from gglasso package by Yi Yang and Hui Zou.
 }

@@ -13,6 +13,8 @@
 #' 
 #' @method predict MLGL
 #' 
+#' @author function inspired from predict function from gglasso package by Yi Yang and Hui Zou.
+#' 
 #' @seealso \link{MLGL}
 #' 
 #' @export
@@ -72,15 +74,17 @@ predict.MLGL <- function(object, newx = NULL, s = NULL, type = c("fit","coeffici
 predict.cv.MLGL <- function(object, newx = NULL, s = c("lambda.1se","lambda.min"), type = c("fit","coefficients"),...)
 {
   #check s
-  s=match.arg(s)
+  s = match.arg(s)
   
   #check type
-  type=match.arg(type)
+  type = match.arg(type)
   
   #get the desired value of lambda
-  lambda=switch(s,lambda.1se=object$lambda.1se,lambda.min=object$lambda.min)
+  lambda = switch(s, 
+                  lambda.1se = object$lambda.1se, 
+                  lambda.min = object$lambda.min)
   
-  return(predict(object,newx,s=lambda,type="fit"),...)
+  return(predict(object, newx, s = lambda, type = "fit"),...)
 }
 
 
