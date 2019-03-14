@@ -158,9 +158,9 @@ MLGL.formula <- function(formula, data, hc = NULL, lambda = NULL, weightLevel = 
 # @param X data
 # @param frac fraction of sample used at each replicate
 # @param B number of replicates
-# @param hc desired method: "single", "complete", "average", "mcquitty", "ward.D", "ward.D2", "centroid", "median".
+# @param method desired method: "single", "complete", "average", "mcquitty", "ward.D", "ward.D2", "centroid", "median".
 #
-bootstrapHclust <- function(X, frac = 0.5, B = 20, hc = "ward.D2")
+bootstrapHclust <- function(X, frac = 0.5, B = 20, method = "ward.D2")
 {
   t1 <- proc.time()
   n <- nrow(X)
@@ -179,7 +179,7 @@ bootstrapHclust <- function(X, frac = 0.5, B = 20, hc = "ward.D2")
   
   d = Reduce("+", d)/B
   
-  hc = fastcluster::hclust(d, method = ifelse(is.character(hc), hc, "ward.D2"))
+  hc = fastcluster::hclust(d, method = ifelse(is.character(method), method, "ward.D2"))
   t2 <- proc.time()
   tcah <- t2-t1
   
