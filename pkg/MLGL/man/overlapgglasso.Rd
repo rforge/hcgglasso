@@ -57,7 +57,7 @@ The new dataset is used to solve the group-lasso with overlapping groups running
 # Least square loss
 set.seed(42)
 X <- simuBlockGaussian(50, 12, 5, 0.7)
-y <- drop(X[, c(2, 7, 12)]\%*\%c(2, 2, -2) + rnorm(50, 0, 0.5))
+y <- X[, c(2, 7, 12)]\%*\%c(2, 2, -2) + rnorm(50, 0, 0.5)
 var <- c(1:60, 1:8, 7:15)
 group <- c(rep(1:12, each = 5), rep(13, 8), rep(14, 9))
 res <- overlapgglasso(X, y, var, group)

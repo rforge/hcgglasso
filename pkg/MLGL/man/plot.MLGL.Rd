@@ -23,7 +23,7 @@ Plot the path obtained from \code{\link{MLGL}} function
 set.seed(42)
 X <- simuBlockGaussian(50, 12, 5, 0.7)
 # Generate a response variable
-y <- drop(X[,c(2,7,12)]\%*\%c(2,2,-2) + rnorm(50,0,0.5))
+y <- X[,c(2,7,12)]\%*\%c(2,2,-2) + rnorm(50,0,0.5)
 # Apply MLGL method
 res <- MLGL(X, y)
 # Plot the solution path

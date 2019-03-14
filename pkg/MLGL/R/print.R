@@ -14,7 +14,7 @@
 #' # Simulate gaussian data with block-diagonal variance matrix containing 12 blocks of size 5
 #' X <- simuBlockGaussian(50, 12, 5, 0.7)
 #' # Generate a response variable
-#' y <- drop(X[,c(2,7,12)]%*%c(2,2,-2)+rnorm(50,0,0.5))
+#' y <- X[,c(2,7,12)]%*%c(2,2,-2) + rnorm(50, 0, 0.5)
 #' # Apply MLGL method
 #' res <- MLGL(X,y)
 #' print(res)
@@ -48,7 +48,7 @@ print.MLGL <- function(x, ...)
 #' # Simulate gaussian data with block-diagonal variance matrix containing 12 blocks of size 5
 #' X <- simuBlockGaussian(50, 12, 5, 0.7)
 #' # Generate a response variable
-#' y <- drop(X[,c(2,7,12)]%*%c(2,2,-2)+rnorm(50,0,0.5))
+#' y <- X[,c(2,7,12)]%*%c(2,2,-2) + rnorm(50,0,0.5)
 #' # Apply MLGL method
 #' res <- MLGL(X,y)
 #' summary(res)
@@ -91,7 +91,7 @@ summary.MLGL <- function(object, ...)
 #' # Simulate gaussian data with block-diagonal variance matrix containing 12 blocks of size 5
 #' X <- simuBlockGaussian(50, 12, 5, 0.7)
 #' # Generate a response variable
-#' y <- drop(X[,c(2,7,12)]%*%c(2,2,-2)+rnorm(50,0,0.5))
+#' y <- X[,c(2,7,12)]%*%c(2,2,-2) + rnorm(50,0,0.5)
 #' # Apply MLGL method
 #' res <- fullProcess(X, y)
 #' print(res)
@@ -130,7 +130,7 @@ print.fullProcess <- function(x, ...)
 #' # Simulate gaussian data with block-diagonal variance matrix containing 12 blocks of size 5
 #' X <- simuBlockGaussian(50, 12, 5, 0.7)
 #' # Generate a response variable
-#' y <- drop(X[,c(2,7,12)]%*%c(2,2,-2)+rnorm(50,0,0.5))
+#' y <- X[,c(2,7,12)]%*%c(2,2,-2) + rnorm(50,0,0.5)
 #' # Apply MLGL method
 #' res <- fullProcess(X, y)
 #' summary(res)
@@ -173,7 +173,7 @@ summary.fullProcess <- function(object, ...)
 #' # Simulate gaussian data with block-diagonal variance matrix containing 12 blocks of size 5
 #' X <- simuBlockGaussian(50, 12, 5, 0.7)
 #' # Generate a response variable
-#' y <- drop(X[,c(2,7,12)]%*%c(2,2,-2)+rnorm(50,0,0.5))
+#' y <- X[,c(2,7,12)]%*%c(2,2,-2) + rnorm(50,0,0.5)
 #' # Apply MLGL method
 #' res <- MLGL(X, y)
 #' out <- HMT(res, X, y)
@@ -212,7 +212,7 @@ print.HMT <- function(x, ...)
 #' # Simulate gaussian data with block-diagonal variance matrix containing 12 blocks of size 5
 #' X <- simuBlockGaussian(50, 12, 5, 0.7)
 #' # Generate a response variable
-#' y <- drop(X[,c(2,7,12)]%*%c(2,2,-2)+rnorm(50,0,0.5))
+#' y <- X[,c(2,7,12)]%*%c(2,2,-2) + rnorm(50,0,0.5)
 #' # Apply MLGL method
 #' res <- MLGL(X, y)
 #' out <- HMT(res, X, y)

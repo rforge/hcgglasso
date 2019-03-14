@@ -12,7 +12,7 @@
 #' set.seed(42)
 #' X <- simuBlockGaussian(50, 12, 5, 0.7)
 #' # Generate a response variable
-#' y <- drop(X[,c(2,7,12)]%*%c(2,2,-2) + rnorm(50,0,0.5))
+#' y <- X[,c(2,7,12)]%*%c(2,2,-2) + rnorm(50,0,0.5)
 #' # Apply MLGL method
 #' res <- MLGL(X, y)
 #' # Plot the solution path
@@ -67,7 +67,7 @@ plot.MLGL <- function(x, log.lambda = FALSE, lambda.lines = FALSE,...)
 #' # Simulate gaussian data with block-diagonal variance matrix containing 12 blocks of size 5
 #' X <- simuBlockGaussian(50, 12, 5, 0.7)
 #' # Generate a response variable
-#' y <- drop(X[,c(2,7,12)]%*%c(2,2,-2)+rnorm(50,0,0.5))
+#' y <- X[,c(2,7,12)]%*%c(2,2,-2) + rnorm(50,0,0.5)
 #' # Apply cv.MLGL method
 #' res <- cv.MLGL(X,y)
 #' # Plot the cv error curve
@@ -124,7 +124,7 @@ plot.cv.MLGL <- function(x, log.lambda = FALSE,...)
 #' # Simulate gaussian data with block-diagonal variance matrix containing 12 blocks of size 5
 #' X <- simuBlockGaussian(50, 12, 5, 0.7)
 #' # Generate a response variable
-#' y <- drop(X[,c(2,7,12)]%*%c(2,2,-2)+rnorm(50,0,0.5))
+#' y <- X[,c(2,7,12)]%*%c(2,2,-2) + rnorm(50,0,0.5)
 #' # Apply stability.MLGL method
 #' res <- stability.MLGL(X,y)
 #' selected <- plot(res)
@@ -189,7 +189,7 @@ plot.stability.MLGL <- function(x, log.lambda = FALSE, threshold = 0.75,...)
 #' # Simulate gaussian data with block-diagonal variance matrix containing 12 blocks of size 5
 #' X <- simuBlockGaussian(50, 12, 5, 0.7)
 #' # Generate a response variable
-#' y <- drop(X[,c(2, 7, 12)]%*%c(2, 2, -2) + rnorm(50, 0, 0.5))
+#' y <- X[,c(2, 7, 12)]%*%c(2, 2, -2) + rnorm(50, 0, 0.5)
 #' # Apply MLGL method
 #' res <- fullProcess(X, y)
 #' # Plot the solution path
@@ -240,7 +240,7 @@ plot.fullProcess <- function(x, log.lambda = FALSE, lambda.lines = FALSE, lambda
 #' # Simulate gaussian data with block-diagonal variance matrix containing 12 blocks of size 5
 #' X <- simuBlockGaussian(50, 12, 5, 0.7)
 #' # Generate a response variable
-#' y <- drop(X[,c(2, 7, 12)]%*%c(2, 2, -2) + rnorm(50, 0, 0.5))
+#' y <- X[,c(2, 7, 12)]%*%c(2, 2, -2) + rnorm(50, 0, 0.5)
 #' # Apply MLGL method
 #' res <- MLGL(X, y)
 #' 

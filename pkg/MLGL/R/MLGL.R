@@ -38,9 +38,9 @@
 #' # Simulate gaussian data with block-diagonal variance matrix containing 12 blocks of size 5
 #' X <- simuBlockGaussian(50, 12, 5, 0.7)
 #' # Generate a response variable
-#' y <- drop(X[,c(2,7,12)]%*%c(2,2,-2)+rnorm(50,0,0.5))
+#' y <- X[,c(2, 7, 12)] %*% c(2, 2, -2) + rnorm(50, 0, 0.5)
 #' # Apply MLGL method
-#' res <- MLGL(X,y)
+#' res <- MLGL(X, y)
 #' 
 #' @seealso \link{cv.MLGL}, \link{stability.MLGL}, \link{listToMatrix}, \link{predict.MLGL}, \link{coef.MLGL}, \link{plot.cv.MLGL}
 #' 
@@ -54,10 +54,10 @@ MLGL <- function(X, y, hc = NULL, lambda = NULL, weightLevel = NULL, weightSizeG
   # define some usefull variables
   n <- nrow(X)
   p <- ncol(X)
-  tcah <- rep(NA, 3)
+  tcah <- NA
   
   ######## hierarchical clustering
-  #if no hc output provided, we make one
+  # if hc output not provided, we perform one
   if(is.null(hc) | is.character(hc))
   {
     if(verbose)
@@ -67,9 +67,12 @@ MLGL <- function(X, y, hc = NULL, lambda = NULL, weightLevel = NULL, weightSizeG
     d <- dist(t(X))
     hc = fastcluster::hclust(d, method = ifelse(is.character(hc), hc, "ward.D2"))
     t2 <- proc.time()
-    tcah = t2-t1
+    
+    hc$time = as.numeric((t2-t1)[3])
+    tcah = hc$time
+    
     if(verbose)
-      cat("DONE in ",tcah[3],"s\n")
+      cat("DONE in ", tcah, "s\n")
   }
   
   ######## compute weight, active variables and groups
@@ -91,28 +94,28 @@ MLGL <- function(X, y, hc = NULL, lambda = NULL, weightLevel = NULL, weightSizeG
   t1 = proc.time()
   res <- gglasso(Xb, y, prelim$group, pf = prelim$weight, lambda = lambda, intercept = intercept, loss = loss, ...)
   t2 = proc.time()
-  tgglasso <- t2-t1
+  tgglasso <- as.numeric((t2-t1)[3])
   if(verbose)
-    cat("DONE in ",tgglasso[3],"s\n")
+    cat("DONE in ", tgglasso,"s\n")
   
   ########  create output object
   res2 <- list()
   res2$lambda = res$lambda
-  non0 = apply(res$beta,2,FUN=function(x){which(x!=0)})
-  res2$var = lapply(non0,FUN=function(x){prelim$var[x]})
-  res2$nVar = sapply(res2$var,FUN=function(x){length(unique(x))})
-  res2$group = lapply(non0,FUN=function(x){prelim$group[x]})
-  res2$nGroup = sapply(res2$group,FUN=function(x){length(unique(x))})
-  res2$beta = lapply(1:length(res$lambda),FUN=function(x){res$beta[non0[[x]],x]})
+  non0 = apply(res$beta, 2, FUN = function(x){which(x!=0)})
+  res2$var = lapply(non0, FUN = function(x){prelim$var[x]})
+  res2$nVar = sapply(res2$var, FUN = function(x){length(unique(x))})
+  res2$group = lapply(non0, FUN = function(x){prelim$group[x]})
+  res2$nGroup = sapply(res2$group, FUN = function(x){length(unique(x))})
+  res2$beta = lapply(1:length(res$lambda), FUN = function(x){res$beta[non0[[x]],x]})
   res2$b0 = res$b0
   res2$structure = prelim
   res2$dim = dim(X)
   res2$hc = hc
-  res2$time = c(tcah[3],tgglasso[3])
+  res2$time = c(tcah, tgglasso)
+  names(res2$time) = c("hclust","glasso")    
   res2$call = match.call()
   res2$intercept = intercept
   res2$loss = loss
-  names(res2$time) = c("hclust","glasso")    
   class(res2) = "MLGL"
   
   
@@ -146,6 +149,43 @@ MLGL.formula <- function(formula, data, hc = NULL, lambda = NULL, weightLevel = 
   res <- MLGL(X, y, hc, lambda, weightLevel, weightSizeGroup, intercept, loss, verbose, ...)
   
   return(res)
+}
+
+
+#
+# estimate the distance matrix using bootstrap replicates
+#
+# @param X data
+# @param frac fraction of sample used at each replicate
+# @param B number of replicates
+# @param hc desired method: "single", "complete", "average", "mcquitty", "ward.D", "ward.D2", "centroid", "median".
+#
+bootstrapHclust <- function(X, frac = 0.5, B = 20, hc = "ward.D2")
+{
+  t1 <- proc.time()
+  n <- nrow(X)
+  
+  if(frac <= 0 | frac > 1)
+    stop("frac must be between 0 and 1.")
+    
+    
+  nInd <- floor(n * frac)
+  d <- list()
+  for(i in 1:B)
+  {
+    ind <- sample(n, nInd)
+    d[[i]] = dist(t(X[ind,]))
+  }
+  
+  d = Reduce("+", d)/B
+  
+  hc = fastcluster::hclust(d, method = ifelse(is.character(hc), hc, "ward.D2"))
+  t2 <- proc.time()
+  tcah <- t2-t1
+  
+  hc$tcah = as.numeric((t2-t1)[3])
+  
+  return(hc)
 }
 
 

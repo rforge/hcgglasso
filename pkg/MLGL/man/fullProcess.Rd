@@ -6,7 +6,8 @@
 \title{Full process of MLGL}
 \usage{
 fullProcess(X, y, control = c("FWER", "FDR"), alpha = 0.05,
-  test = partialFtest, hc = NULL, fractionSampleMLGL = 1/2, ...)
+  test = partialFtest, hc = NULL, fractionSampleMLGL = 1/2,
+  fracHclust = 0.5, BHclust = 20, ...)
 
 fullProcess.formula(formula, data, control = c("FWER", "FDR"),
   alpha = 0.05, test = partialFtest, hc = NULL,
@@ -26,6 +27,10 @@ fullProcess.formula(formula, data, control = c("FWER", "FDR"),
 \item{hc}{output of \code{\link{hclust}} function. If not provided, \code{\link{hclust}} is run with ward.D2 method. User can also provide the desired method: "single", "complete", "average", "mcquitty", "ward.D", "ward.D2", "centroid", "median".}
 
 \item{fractionSampleMLGL}{a real between 0 and 1 : the fraction of individuals to use in the sample for MLGL (see Details).}
+
+\item{fracHclust}{fraction of data used for each replicate}
+
+\item{BHclust}{number of replicates for computing the distance matrix for the hierarchical clustering tree}
 
 \item{...}{Others parameters for MLGL}
 
@@ -61,7 +66,7 @@ Divide the n individuals in two samples. Then the three following steps are done
 # least square loss
 set.seed(42)
 X <- simuBlockGaussian(50, 12, 5, 0.7)
-y <- drop(X[,c(2,7,12)] \%*\% c(2,2,-2) + rnorm(50, 0, 0.5))
+y <- X[,c(2,7,12)] \%*\% c(2,2,-2) + rnorm(50, 0, 0.5)
 res <- fullProcess(X, y)
 
 

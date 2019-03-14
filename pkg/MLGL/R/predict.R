@@ -150,22 +150,22 @@ lambda.interp <- function(lambda, s) {
   #   fraction
   ### Note: lambda decreases. you take:
   ### sfrac*left+(1-sfrac*right)
-  if (length(lambda) == 1) {
-    nums <- length(s)
-    left <- rep(1, nums)
+  if (length(lambda) == 1) 
+  {
+    left <- rep(1, length(s))
     right <- left
-    sfrac <- rep(1, nums)
+    sfrac <- rep(1, length(s))
   } else {
-    s[s > max(lambda)] <- max(lambda)
-    s[s < min(lambda)] <- min(lambda)
+    s[s > max(lambda)] = max(lambda)
+    s[s < min(lambda)] = min(lambda)
     k <- length(lambda)
     sfrac <- (lambda[1] - s)/(lambda[1] - lambda[k])
-    lambda <- (lambda[1] - lambda)/(lambda[1] - lambda[k])
+    lambda = (lambda[1] - lambda)/(lambda[1] - lambda[k])
     coord <- approx(lambda, seq(lambda), sfrac)$y
     left <- floor(coord)
     right <- ceiling(coord)
-    sfrac <- (sfrac - lambda[right])/(lambda[left] - lambda[right])
-    sfrac[left == right] <- 1
+    sfrac = (sfrac - lambda[right])/(lambda[left] - lambda[right])
+    sfrac[left == right] = 1
   }
   list(left = left, right = right, frac = sfrac)
 }
