@@ -11,7 +11,6 @@
 #' @param test test used in the testing procedure. Default is \link{partialFtest}
 #' @param fractionSampleMLGL a real between 0 and 1 : the fraction of individuals to use in the sample for MLGL (see Details).
 #' @param BHclust number of replicates for computing the distance matrix for the hierarchical clustering tree
-#' @param fracHclust fraction of data used for each replicate
 #' @param ... Others parameters for MLGL
 #'
 #' @return a list containing :
@@ -45,7 +44,7 @@
 #' @seealso \link{MLGL}, \link{hierarchicalFDR}, \link{hierarchicalFWER}, \link{selFDR}, \link{selFWER}
 #'
 #' @export
-fullProcess <- function(X, y, control = c("FWER", "FDR"), alpha = 0.05, test = partialFtest, hc = NULL, fractionSampleMLGL = 1/2, fracHclust = 0.5, BHclust = 20, ...)
+fullProcess <- function(X, y, control = c("FWER", "FDR"), alpha = 0.05, test = partialFtest, hc = NULL, fractionSampleMLGL = 1/2, BHclust = 20, ...)
 {
   loss = "ls"
   # if(loss == "logit" & identical(test, partialFtest))
@@ -61,14 +60,13 @@ fullProcess <- function(X, y, control = c("FWER", "FDR"), alpha = 0.05, test = p
   ##### part 1 : hierarchical clustering with half of the data
   if(is.null(hc) | is.character(hc))
   {
-    
     # center variables and sd = 1
     Xb <- scale(X, center = TRUE, scale = FALSE)
     Xb = scale(Xb, center = FALSE, scale = sqrt(colSums(Xb^2)/n))
     
     
     # hierarchical clustering
-    hc = bootstrapHclust(Xb, frac = fracHclust, B = BHclust, method = ifelse(is.character(hc), hc, "ward.D2"))
+    hc = bootstrapHclust(Xb, frac = 1, B = BHclust, method = ifelse(is.character(hc), hc, "ward.D2"))
   }
   
   

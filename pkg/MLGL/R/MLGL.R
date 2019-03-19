@@ -160,7 +160,7 @@ MLGL.formula <- function(formula, data, hc = NULL, lambda = NULL, weightLevel = 
 # @param B number of replicates
 # @param method desired method: "single", "complete", "average", "mcquitty", "ward.D", "ward.D2", "centroid", "median".
 #
-bootstrapHclust <- function(X, frac = 0.5, B = 20, method = "ward.D2")
+bootstrapHclust <- function(X, frac = 1, B = 20, method = "ward.D2")
 {
   t1 <- proc.time()
   n <- nrow(X)
@@ -173,7 +173,7 @@ bootstrapHclust <- function(X, frac = 0.5, B = 20, method = "ward.D2")
   d <- list()
   for(i in 1:B)
   {
-    ind <- sample(n, nInd)
+    ind <- sample(n, nInd, replace = TRUE)
     d[[i]] = dist(t(X[ind,]))
   }
   
