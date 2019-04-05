@@ -44,7 +44,7 @@
 #' @seealso \link{MLGL}, \link{hierarchicalFDR}, \link{hierarchicalFWER}, \link{selFDR}, \link{selFWER}
 #'
 #' @export
-fullProcess <- function(X, y, control = c("FWER", "FDR"), alpha = 0.05, test = partialFtest, hc = NULL, fractionSampleMLGL = 1/2, BHclust = 20, ...)
+fullProcess <- function(X, y, control = c("FWER", "FDR"), alpha = 0.05, test = partialFtest, hc = NULL, fractionSampleMLGL = 1/2, BHclust = 50, ...)
 {
   loss = "ls"
   # if(loss == "logit" & identical(test, partialFtest))

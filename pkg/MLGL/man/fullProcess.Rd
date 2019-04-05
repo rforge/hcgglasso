@@ -7,7 +7,7 @@
 \usage{
 fullProcess(X, y, control = c("FWER", "FDR"), alpha = 0.05,
   test = partialFtest, hc = NULL, fractionSampleMLGL = 1/2,
-  BHclust = 20, ...)
+  BHclust = 50, ...)
 
 fullProcess.formula(formula, data, control = c("FWER", "FDR"),
   alpha = 0.05, test = partialFtest, hc = NULL,
