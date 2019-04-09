@@ -7,7 +7,7 @@
 \usage{
 fullProcess(X, y, control = c("FWER", "FDR"), alpha = 0.05,
   test = partialFtest, hc = NULL, fractionSampleMLGL = 1/2,
-  BHclust = 50, ...)
+  BHclust = 50, nCore = NULL, ...)
 
 fullProcess.formula(formula, data, control = c("FWER", "FDR"),
   alpha = 0.05, test = partialFtest, hc = NULL,
@@ -29,6 +29,8 @@ fullProcess.formula(formula, data, control = c("FWER", "FDR"),
 \item{fractionSampleMLGL}{a real between 0 and 1 : the fraction of individuals to use in the sample for MLGL (see Details).}
 
 \item{BHclust}{number of replicates for computing the distance matrix for the hierarchical clustering tree}
+
+\item{nCore}{number of cores used for distance computation. Use all cores by default.}
 
 \item{...}{Others parameters for MLGL}
 

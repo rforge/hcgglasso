@@ -159,8 +159,8 @@ MLGL.formula <- function(formula, data, hc = NULL, lambda = NULL, weightLevel = 
 # @param frac fraction of sample used at each replicate
 # @param B number of replicates
 # @param method desired method: "single", "complete", "average", "mcquitty", "ward.D", "ward.D2", "centroid", "median".
-#
-bootstrapHclust <- function(X, frac = 1, B = 50, method = "ward.D2")
+# @param nThread number of cores
+bootstrapHclust <- function(X, frac = 1, B = 50, method = "ward.D2", nThread = NULL)
 {
   t1 <- proc.time()
   n <- nrow(X)
@@ -174,7 +174,7 @@ bootstrapHclust <- function(X, frac = 1, B = 50, method = "ward.D2")
   for(i in 1:B)
   {
     ind <- sample(n, nInd, replace = TRUE)
-    d = d + parDist(t(X[ind,]))
+    d = d + parDist(t(X[ind,]), threads = nThread)
   }
   
   d = d/B

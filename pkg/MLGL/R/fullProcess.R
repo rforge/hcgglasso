@@ -11,6 +11,7 @@
 #' @param test test used in the testing procedure. Default is \link{partialFtest}
 #' @param fractionSampleMLGL a real between 0 and 1 : the fraction of individuals to use in the sample for MLGL (see Details).
 #' @param BHclust number of replicates for computing the distance matrix for the hierarchical clustering tree
+#' @param nCore number of cores used for distance computation. Use all cores by default.
 #' @param ... Others parameters for MLGL
 #'
 #' @return a list containing :
@@ -44,7 +45,7 @@
 #' @seealso \link{MLGL}, \link{hierarchicalFDR}, \link{hierarchicalFWER}, \link{selFDR}, \link{selFWER}
 #'
 #' @export
-fullProcess <- function(X, y, control = c("FWER", "FDR"), alpha = 0.05, test = partialFtest, hc = NULL, fractionSampleMLGL = 1/2, BHclust = 50, ...)
+fullProcess <- function(X, y, control = c("FWER", "FDR"), alpha = 0.05, test = partialFtest, hc = NULL, fractionSampleMLGL = 1/2, BHclust = 50, nCore = NULL, ...)
 {
   loss = "ls"
   # if(loss == "logit" & identical(test, partialFtest))
@@ -66,7 +67,7 @@ fullProcess <- function(X, y, control = c("FWER", "FDR"), alpha = 0.05, test = p
     
     
     # hierarchical clustering
-    hc = bootstrapHclust(Xb, frac = 1, B = BHclust, method = ifelse(is.character(hc), hc, "ward.D2"))
+    hc = bootstrapHclust(Xb, frac = 1, B = BHclust, method = ifelse(is.character(hc), hc, "ward.D2"), nThread = nCore)
   }
   
   
