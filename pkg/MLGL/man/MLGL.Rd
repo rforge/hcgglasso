@@ -22,9 +22,9 @@ MLGL.formula(formula, data, hc = NULL, lambda = NULL,
 
 \item{lambda}{lambda values for group lasso. If not provided, the function generates its own values of lambda}
 
-\item{weightLevel}{a vector of size p for each level of the hierarchy. A zero indicates that the level will be ignored. If not provided, use 1/(height between 2 successive levels)}
+\item{weightLevel}{a vector of size p for each level of the hierarchy. A zero indicates that the level will be ignored. If not provided, use 1/(height between 2 successive levels). Only if \code{hc} is provided}
 
-\item{weightSizeGroup}{a vector of size 2*p-1 containing the weight for each group. Default is the square root of the size of each group}
+\item{weightSizeGroup}{a vector of size 2*p-1 containing the weight for each group. Default is the square root of the size of each group. Only if \code{hc} is provided}
 
 \item{intercept}{should an intercept be included in the model ?}
 

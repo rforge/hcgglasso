@@ -7,8 +7,8 @@
 #' @param y vector of size n. If loss = "logit", elements of y must be in {-1,1} 
 #' @param hc output of \code{\link{hclust}} function. If not provided, \code{\link{hclust}} is run with \code{ward.D2} method. User can also provide the desired method: "single", "complete", "average", "mcquitty", "ward.D", "ward.D2", "centroid", "median".
 #' @param lambda lambda values for group lasso. If not provided, the function generates its own values of lambda
-#' @param weightLevel a vector of size p for each level of the hierarchy. A zero indicates that the level will be ignored. If not provided, use 1/(height between 2 successive levels)
-#' @param weightSizeGroup a vector of size 2*p-1 containing the weight for each group. Default is the square root of the size of each group
+#' @param weightLevel a vector of size p for each level of the hierarchy. A zero indicates that the level will be ignored. If not provided, use 1/(height between 2 successive levels). Only if \code{hc} is provided
+#' @param weightSizeGroup a vector of size 2*p-1 containing the weight for each group. Default is the square root of the size of each group. Only if \code{hc} is provided
 #' @param intercept should an intercept be included in the model ?
 #' @param loss a character string specifying the loss function to use, valid options are: "ls" least squares loss (regression) and "logit" logistic loss (classification)
 #' @param verbose print some information
@@ -190,7 +190,7 @@ bootstrapHclust <- function(X, frac = 1, B = 50, method = "ward.D2", nThread = N
 
 
 #
-# compute the mnimimum weight of each group
+# compute the mimimum weight of each group
 # 
 # @param hc outup of hclust function
 #
@@ -218,6 +218,40 @@ levelMinWeight <- function(hc, weightLevel = NULL)
   
   return(minLevelWeight)
 }
+
+
+
+#
+# Compute the group size weight with an authorized maximal size
+# 
+# @param hc outup of hclust 
+# @param sizeMax maximum size of cluster to consider
+#
+# @examples
+# set.seed(42)
+# # Simulate gaussian data with block-diagonal variance matrix containing 12 blocks of size 5
+# X <- simuBlockGaussian(50, 12, 5, 0.7)
+# # Generate a response variable
+# y <- X[,c(2, 7, 12)] %*% c(2, 2, -2) + rnorm(50, 0, 0.5)
+# # use 20 as the maximal number of group
+# hc <- hclust(dist(t(X))
+# w <- computeGroupSizeWeight(hc), sizeMax = 20)
+# # Apply MLGL method
+# res <- MLGL(X, y, hc = hc, weightSizeGroup = w)
+# 
+computeGroupSizeWeight <- function(hc, sizeMax = NULL)
+{
+  uni <- uniqueGroupHclust(hc)
+  weight <- as.vector(table(uni$indexGroup))
+  
+  if(!is.null(sizeMax)) 
+    weight[weight > sizeMax] = 0
+  
+  weight = sqrt(weight)
+  
+  return(weight)
+}
+
 
 #
 # @param hc output of hierarchical clustering
@@ -346,6 +380,11 @@ preliminaryStep <- function(hc, weightLevel = NULL, weightSizeGroup = NULL)
     {
       if(!(hc %in% c("single", "complete", "average", "mcquitty", "ward.D", "ward.D2", "centroid", "median")))
         stop("In character mode, hc must be \"single\", \"complete\", \"average\", \"mcquitty\", \"ward.D\", \"ward.D2\", \"centroid\" or \"median\".")
+      
+      if(!is.null(weightLevel))
+        stop("weightLevel requires a computed hc")
+      if(!is.null(weightSizeGroup))
+        stop("weightSizeGroup requires a computed hc")
     }else{
       #check if hc is a hclust object
       if(class(hc)!="hclust")
@@ -353,9 +392,19 @@ preliminaryStep <- function(hc, weightLevel = NULL, weightSizeGroup = NULL)
       #check if hc and X are compatible
       if(length(hc$order)!=ncol(X))
         stop("hc is not a clustering of the p covariates of X.")
+      
+      if(!is.null(weightLevel) && length(weightLevel) != 2*ncol(X)-1)
+        stop("weightLevel must be of size 2*p-1")
+      if(!is.null(weightSizeGroup) && length(weightSizeGroup) != 2*ncol(X)-1)
+        stop("weightSizeGroup must be of size 2*p-1")
     }
 
     
+  }else{
+    if(!is.null(weightLevel))
+      stop("weightLevel requires the hc argument")
+    if(!is.null(weightSizeGroup))
+      stop("weightSizeGroup requires the hc argument")
   }
   
   #check if lambda is a vector of positive real
