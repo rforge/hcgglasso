@@ -11,6 +11,7 @@
 #' @param weightSizeGroup a vector of size 2*p-1 containing the weight for each group. Default is the square root of the size of each group. Only if \code{hc} is provided
 #' @param intercept should an intercept be included in the model ?
 #' @param loss a character string specifying the loss function to use, valid options are: "ls" least squares loss (regression) and "logit" logistic loss (classification)
+#' @param sizeMaxGroup maximum size of selected groups. If NULL, no restriction
 #' @param verbose print some information
 #' @param ... Others parameters for \code{\link{gglasso}} function
 #'
@@ -45,11 +46,11 @@
 #' @seealso \link{cv.MLGL}, \link{stability.MLGL}, \link{listToMatrix}, \link{predict.MLGL}, \link{coef.MLGL}, \link{plot.cv.MLGL}
 #' 
 #' @export
-MLGL <- function(X, y, hc = NULL, lambda = NULL, weightLevel = NULL, weightSizeGroup = NULL, intercept = TRUE, loss = c("ls", "logit"), verbose = FALSE, ...)
+MLGL <- function(X, y, hc = NULL, lambda = NULL, weightLevel = NULL, weightSizeGroup = NULL, intercept = TRUE, loss = c("ls", "logit"), sizeMaxGroup = NULL, verbose = FALSE, ...)
 {
   #check parameters 
   loss <- match.arg(loss)
-  .checkParameters(X, y, hc, lambda, weightLevel, weightSizeGroup, intercept, verbose, loss)
+  .checkParameters(X, y, hc, lambda, weightLevel, weightSizeGroup, intercept, verbose, loss, sizeMaxGroup)
 
   # define some usefull variables
   n <- nrow(X)
@@ -79,7 +80,7 @@ MLGL <- function(X, y, hc = NULL, lambda = NULL, weightLevel = NULL, weightSizeG
   if(verbose)
     cat("Preliminary step...")
   t1 = proc.time()
-  prelim <- preliminaryStep(hc, weightLevel, weightSizeGroup)  
+  prelim <- preliminaryStep(hc, weightLevel, weightSizeGroup, sizeMaxGroup)  
 
 
   #duplicate data
@@ -309,7 +310,7 @@ levelGroupHC <- function(hc)
 #
 # preliminary step for MLGL. Compute weight, active variables and groups
 #
-preliminaryStep <- function(hc, weightLevel = NULL, weightSizeGroup = NULL)
+preliminaryStep <- function(hc, weightLevel = NULL, weightSizeGroup = NULL, sizeGroupMax = NULL)
 {
   #find unique groups of the hclust output
   uni <- uniqueGroupHclust(hc)
@@ -324,6 +325,9 @@ preliminaryStep <- function(hc, weightLevel = NULL, weightSizeGroup = NULL)
   #weight for group size
   if(is.null(weightSizeGroup))
     weightSizeGroup = as.vector(sqrt(table(uni$indexGroup)))
+  
+  if(!is.null(sizeGroupMax))
+    weightSizeGroup[weightSizeGroup > sqrt(sizeGroupMax)] = 0
   
   #weight for each group
   weight <- weightSizeGroup * weightLevelGroup
@@ -360,7 +364,7 @@ preliminaryStep <- function(hc, weightLevel = NULL, weightSizeGroup = NULL)
 }
 
 # check parameters of MLGL function
-.checkParameters <- function(X, y, hc, lambda, weightLevel, weightSizeGroup, intercept, verbose, loss)
+.checkParameters <- function(X, y, hc, lambda, weightLevel, weightSizeGroup, intercept, verbose, loss, sizeMaxGroup)
 {
   #check X
   if(!is.matrix(X)) 
@@ -456,6 +460,16 @@ preliminaryStep <- function(hc, weightLevel = NULL, weightSizeGroup = NULL)
     stop("verbose must be a boolean.")
   if(!is.logical(verbose))
     stop("verbose must be a boolean.")
+  
+  #check if sizeMaxGroup is a positive integer
+  if(!is.null(sizeMaxGroup))
+  {
+    if(length(sizeMaxGroup)!=1)
+      stop("sizeMaxGroup must be a positive integer.")
+    if(!.is.wholenumber(sizeMaxGroup))
+      stop("sizeMaxGroup must be a positive integer.")
+  }
+
   
   invisible(return(NULL))
 }

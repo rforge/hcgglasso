@@ -14,6 +14,7 @@ MLGL(
   weightSizeGroup = NULL,
   intercept = TRUE,
   loss = c("ls", "logit"),
+  sizeMaxGroup = NULL,
   verbose = FALSE,
   ...
 )
@@ -47,6 +48,8 @@ MLGL.formula(
 \item{intercept}{should an intercept be included in the model ?}
 
 \item{loss}{a character string specifying the loss function to use, valid options are: "ls" least squares loss (regression) and "logit" logistic loss (classification)}
+
+\item{sizeMaxGroup}{maximum size of selected groups. If NULL, no restriction}
 
 \item{verbose}{print some information}
 

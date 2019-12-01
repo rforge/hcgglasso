@@ -14,6 +14,7 @@ cv.MLGL(
   weightSizeGroup = NULL,
   loss = c("ls", "logit"),
   intercept = TRUE,
+  sizeMaxGroup = NULL,
   verbose = FALSE,
   ...
 )
@@ -36,6 +37,8 @@ cv.MLGL(
 \item{loss}{a character string specifying the loss function to use, valid options are: "ls" least squares loss (regression) and "logit" logistic loss (classification)}
 
 \item{intercept}{should an intercept be included in the model ?}
+
+\item{sizeMaxGroup}{maximum size of selected groups. If NULL, no restriction}
 
 \item{verbose}{print some informations}
 
