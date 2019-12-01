@@ -2,7 +2,7 @@ Package: MLGL
 Type: Package
 Title: Multi-Layer Group-Lasso
 Version: 0.5.1
-Date: 2019-06-19
+Date: 2019-12-01
 Authors@R: c(person("Quentin", "Grimonprez", role = c("aut", "cre"), email = "quentin.grimonprez@inria.fr"),
              person("Samuel", "Blanck", role = "ctb"),
              person("Alain", "Celisse", role = "ths"),
@@ -19,6 +19,5 @@ Imports:
     fastcluster,
     FactoMineR,
     parallelDist
-Roxygen: list(wrap = FALSE)
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.1
 Encoding: UTF-8

@@ -152,14 +152,21 @@ MLGL.formula <- function(formula, data, hc = NULL, lambda = NULL, weightLevel = 
 }
 
 
-#
-# estimate the distance matrix using bootstrap replicates
-#
-# @param X data
-# @param frac fraction of sample used at each replicate
-# @param B number of replicates
-# @param method desired method: "single", "complete", "average", "mcquitty", "ward.D", "ward.D2", "centroid", "median".
-# @param nThread number of cores
+#' Hierarchical Clustering with distance matrix computed using bootstrap replicates
+#'
+#' @param X data
+#' @param frac fraction of sample used at each replicate
+#' @param B number of replicates
+#' @param method desired method: "single", "complete", "average", "mcquitty", "ward.D", "ward.D2", "centroid", "median".
+#' @param nThread number of cores
+#' 
+#' @return An object of class \code{hclust}
+#' 
+#' 
+#' @examples
+#' hc <- bootstrapHclust(USArrests, nThread = 1)
+#' 
+#' @export 
 bootstrapHclust <- function(X, frac = 1, B = 50, method = "ward.D2", nThread = NULL)
 {
   t1 <- proc.time()
@@ -221,24 +228,26 @@ levelMinWeight <- function(hc, weightLevel = NULL)
 
 
 
-#
-# Compute the group size weight with an authorized maximal size
-# 
-# @param hc outup of hclust 
-# @param sizeMax maximum size of cluster to consider
-#
-# @examples
-# set.seed(42)
-# # Simulate gaussian data with block-diagonal variance matrix containing 12 blocks of size 5
-# X <- simuBlockGaussian(50, 12, 5, 0.7)
-# # Generate a response variable
-# y <- X[,c(2, 7, 12)] %*% c(2, 2, -2) + rnorm(50, 0, 0.5)
-# # use 20 as the maximal number of group
-# hc <- hclust(dist(t(X))
-# w <- computeGroupSizeWeight(hc), sizeMax = 20)
-# # Apply MLGL method
-# res <- MLGL(X, y, hc = hc, weightSizeGroup = w)
-# 
+#' Compute the group size weight vector with an authorized maximal size
+#' 
+#' @param hc outup of hclust 
+#' @param sizeMax maximum size of cluster to consider
+#'
+#' @return the weight vector 
+#'
+#' @examples
+#' set.seed(42)
+#' # Simulate gaussian data with block-diagonal variance matrix containing 12 blocks of size 5
+#' X <- simuBlockGaussian(50, 12, 5, 0.7)
+#' # Generate a response variable
+#' y <- X[,c(2, 7, 12)] %*% c(2, 2, -2) + rnorm(50, 0, 0.5)
+#' # use 20 as the maximal number of group
+#' hc <- hclust(dist(t(X)))
+#' w <- computeGroupSizeWeight(hc, sizeMax = 20)
+#' # Apply MLGL method
+#' res <- MLGL(X, y, hc = hc, weightSizeGroup = w)
+#'
+#' @export 
 computeGroupSizeWeight <- function(hc, sizeMax = NULL)
 {
   uni <- uniqueGroupHclust(hc)

@@ -5,13 +5,31 @@
 \alias{MLGL.formula}
 \title{Multi-Layer Group-Lasso}
 \usage{
-MLGL(X, y, hc = NULL, lambda = NULL, weightLevel = NULL,
-  weightSizeGroup = NULL, intercept = TRUE, loss = c("ls", "logit"),
-  verbose = FALSE, ...)
+MLGL(
+  X,
+  y,
+  hc = NULL,
+  lambda = NULL,
+  weightLevel = NULL,
+  weightSizeGroup = NULL,
+  intercept = TRUE,
+  loss = c("ls", "logit"),
+  verbose = FALSE,
+  ...
+)
 
-MLGL.formula(formula, data, hc = NULL, lambda = NULL,
-  weightLevel = NULL, weightSizeGroup = NULL, intercept = TRUE,
-  loss = c("ls", "logit"), verbose = FALSE, ...)
+MLGL.formula(
+  formula,
+  data,
+  hc = NULL,
+  lambda = NULL,
+  weightLevel = NULL,
+  weightSizeGroup = NULL,
+  intercept = TRUE,
+  loss = c("ls", "logit"),
+  verbose = FALSE,
+  ...
+)
 }
 \arguments{
 \item{X}{matrix of size n*p}

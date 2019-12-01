@@ -4,8 +4,7 @@
 \alias{hierarchicalFWER}
 \title{Hierachical testing with FWER control}
 \usage{
-hierarchicalFWER(X, y, group, var, test = partialFtest,
-  Shaffer = FALSE)
+hierarchicalFWER(X, y, group, var, test = partialFtest, Shaffer = FALSE)
 }
 \arguments{
 \item{X}{original data}

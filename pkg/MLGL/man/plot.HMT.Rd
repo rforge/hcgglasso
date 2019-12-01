@@ -4,8 +4,13 @@
 \alias{plot.HMT}
 \title{Plot the path obtained from \code{\link{HMT}} function}
 \usage{
-\method{plot}{HMT}(x, log.lambda = FALSE, lambda.lines = FALSE,
-  lambda.opt = c("min", "max", "both"), ...)
+\method{plot}{HMT}(
+  x,
+  log.lambda = FALSE,
+  lambda.lines = FALSE,
+  lambda.opt = c("min", "max", "both"),
+  ...
+)
 }
 \arguments{
 \item{x}{\code{\link{fullProcess}} object}

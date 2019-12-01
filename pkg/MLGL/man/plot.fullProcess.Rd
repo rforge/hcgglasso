@@ -4,8 +4,13 @@
 \alias{plot.fullProcess}
 \title{Plot the path obtained from \code{\link{fullProcess}} function}
 \usage{
-\method{plot}{fullProcess}(x, log.lambda = FALSE, lambda.lines = FALSE,
-  lambda.opt = c("min", "max", "both"), ...)
+\method{plot}{fullProcess}(
+  x,
+  log.lambda = FALSE,
+  lambda.lines = FALSE,
+  lambda.opt = c("min", "max", "both"),
+  ...
+)
 }
 \arguments{
 \item{x}{\code{\link{fullProcess}} object}

@@ -4,9 +4,20 @@
 \alias{stability.MLGL}
 \title{Stability Selection for Multi-Layer Group-lasso}
 \usage{
-stability.MLGL(X, y, B = 50, fraction = 0.5, hc = NULL,
-  lambda = NULL, weightLevel = NULL, weightSizeGroup = NULL,
-  loss = c("ls", "logit"), intercept = TRUE, verbose = FALSE, ...)
+stability.MLGL(
+  X,
+  y,
+  B = 50,
+  fraction = 0.5,
+  hc = NULL,
+  lambda = NULL,
+  weightLevel = NULL,
+  weightSizeGroup = NULL,
+  loss = c("ls", "logit"),
+  intercept = TRUE,
+  verbose = FALSE,
+  ...
+)
 }
 \arguments{
 \item{X}{matrix of size n*p}

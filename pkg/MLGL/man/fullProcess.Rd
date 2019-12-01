@@ -5,13 +5,29 @@
 \alias{fullProcess.formula}
 \title{Full process of MLGL}
 \usage{
-fullProcess(X, y, control = c("FWER", "FDR"), alpha = 0.05,
-  test = partialFtest, hc = NULL, fractionSampleMLGL = 1/2,
-  BHclust = 50, nCore = NULL, ...)
+fullProcess(
+  X,
+  y,
+  control = c("FWER", "FDR"),
+  alpha = 0.05,
+  test = partialFtest,
+  hc = NULL,
+  fractionSampleMLGL = 1/2,
+  BHclust = 50,
+  nCore = NULL,
+  ...
+)
 
-fullProcess.formula(formula, data, control = c("FWER", "FDR"),
-  alpha = 0.05, test = partialFtest, hc = NULL,
-  fractionSampleMLGL = 1/2, ...)
+fullProcess.formula(
+  formula,
+  data,
+  control = c("FWER", "FDR"),
+  alpha = 0.05,
+  test = partialFtest,
+  hc = NULL,
+  fractionSampleMLGL = 1/2,
+  ...
+)
 }
 \arguments{
 \item{X}{matrix of size n*p}

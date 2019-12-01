@@ -4,8 +4,7 @@
 \alias{predict.MLGL}
 \title{Predict fitted values from a \code{\link{MLGL}} object}
 \usage{
-\method{predict}{MLGL}(object, newx = NULL, s = NULL, type = c("fit",
-  "coefficients"), ...)
+\method{predict}{MLGL}(object, newx = NULL, s = NULL, type = c("fit", "coefficients"), ...)
 }
 \arguments{
 \item{object}{\code{\link{MLGL}} object}

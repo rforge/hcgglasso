@@ -7,8 +7,17 @@
 Laurent Jacob, Guillaume Obozinski, and Jean-Philippe Vert. 2009. Group lasso with overlap and graph lasso. In Proceedings of the 26th Annual International Conference on Machine Learning (ICML '09).
 }
 \usage{
-overlapgglasso(X, y, var, group, lambda = NULL, weight = NULL,
-  loss = c("ls", "logit"), intercept = TRUE, ...)
+overlapgglasso(
+  X,
+  y,
+  var,
+  group,
+  lambda = NULL,
+  weight = NULL,
+  loss = c("ls", "logit"),
+  intercept = TRUE,
+  ...
+)
 }
 \arguments{
 \item{X}{matrix of size n*p}

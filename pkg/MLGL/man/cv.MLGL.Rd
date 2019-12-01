@@ -4,9 +4,19 @@
 \alias{cv.MLGL}
 \title{Multi-Layer Group-Lasso with cross V-fold validation}
 \usage{
-cv.MLGL(X, y, nfolds = 5, lambda = NULL, hc = NULL,
-  weightLevel = NULL, weightSizeGroup = NULL, loss = c("ls",
-  "logit"), intercept = TRUE, verbose = FALSE, ...)
+cv.MLGL(
+  X,
+  y,
+  nfolds = 5,
+  lambda = NULL,
+  hc = NULL,
+  weightLevel = NULL,
+  weightSizeGroup = NULL,
+  loss = c("ls", "logit"),
+  intercept = TRUE,
+  verbose = FALSE,
+  ...
+)
 }
 \arguments{
 \item{X}{matrix of size n*p}

@@ -4,8 +4,13 @@
 \alias{predict.cv.MLGL}
 \title{Predict fitted values from a \code{\link{cv.MLGL}} object}
 \usage{
-\method{predict}{cv.MLGL}(object, newx = NULL, s = c("lambda.1se",
-  "lambda.min"), type = c("fit", "coefficients"), ...)
+\method{predict}{cv.MLGL}(
+  object,
+  newx = NULL,
+  s = c("lambda.1se", "lambda.min"),
+  type = c("fit", "coefficients"),
+  ...
+)
 }
 \arguments{
 \item{object}{\code{\link{cv.MLGL}} object}

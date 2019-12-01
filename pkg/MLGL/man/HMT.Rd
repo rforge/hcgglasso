@@ -6,8 +6,15 @@
 
 Apply Hierarchical Multiple Testing procedure on a \code{\link{MLGL}} object}
 \usage{
-HMT(res, X, y, control = c("FWER", "FDR"), alpha = 0.05,
-  test = partialFtest, ...)
+HMT(
+  res,
+  X,
+  y,
+  control = c("FWER", "FDR"),
+  alpha = 0.05,
+  test = partialFtest,
+  ...
+)
 }
 \arguments{
 \item{res}{\code{\link{MLGL}} object}
