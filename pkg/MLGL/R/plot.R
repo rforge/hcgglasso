@@ -123,10 +123,12 @@ plot.cv.MLGL <- function(x, log.lambda = FALSE,...)
 #' set.seed(42)
 #' # Simulate gaussian data with block-diagonal variance matrix containing 12 blocks of size 5
 #' X <- simuBlockGaussian(50, 12, 5, 0.7)
+#' 
 #' # Generate a response variable
-#' y <- X[,c(2,7,12)]%*%c(2,2,-2) + rnorm(50,0,0.5)
+#' y <- X[,c(2,7,12)]%*%c(2,2,-2) + rnorm(50, 0, 0.5)
+#' 
 #' # Apply stability.MLGL method
-#' res <- stability.MLGL(X,y)
+#' res <- stability.MLGL(X, y)
 #' selected <- plot(res)
 #' print(selected)
 #' }
@@ -151,11 +153,9 @@ plot.stability.MLGL <- function(x, log.lambda = FALSE, threshold = 0.75,...)
   
   #abscissa : log or not ?
   absc <- x$lambda
-  lam <- c(x$lambda.min,x$lambda.1se)
   if(log.lambda)
   {
     absc = log(absc)
-    lam = log(lam)
   }
   
   #determine color according to threshold
@@ -164,7 +164,7 @@ plot.stability.MLGL <- function(x, log.lambda = FALSE, threshold = 0.75,...)
   #plot
   matplot(absc, x$stability, type = "l", lty = 1,col = col,
           xlab = ifelse(log.lambda, expression(paste("log(",lambda,")")), expression(lambda)), ylab = "Probability selection",...)
-  abline(v = lam,col = "blue",lty = "dashed")
+  abline(h = threshold, col = "blue", lty = "dashed")
   
   #determine selected groups and variables
   selectedGroup <- which(col==2)

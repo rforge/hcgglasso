@@ -67,10 +67,12 @@ levels of the hierarchy are used in the differents run of MLGL for estimating th
 set.seed(42)
 # Simulate gaussian data with block-diagonal variance matrix containing 12 blocks of size 5
 X <- simuBlockGaussian(50, 12, 5, 0.7)
+
 # Generate a response variable
-y <- X[,c(2,7,12)]\%*\%c(2,2,-2) + rnorm(50,0,0.5)
+y <- X[,c(2,7,12)]\%*\%c(2,2,-2) + rnorm(50, 0, 0.5)
+
 # Apply stability.MLGL method
-res <- stability.MLGL(X,y)
+res <- stability.MLGL(X, y)
 }
 
 }
