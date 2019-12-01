@@ -477,7 +477,7 @@ selFWER <- function(out, alpha = 0.05)
     stop("alpha must be a real between 0 and 1.")
   if((alpha <=0) || (alpha>1))
     stop("alpha must be a real between 0 and 1.")
-  print("ici")  
+ 
   # hierMatrix
   if(!is.matrix(hierMatrix)) 
     stop("hierMatrix has to be a matrix.")
@@ -485,16 +485,16 @@ selFWER <- function(out, alpha = 0.05)
     stop("Missing values in hierMatrix not allowed.")
   if(!is.logical(hierMatrix))
     stop("hierMatrix has to be a matrix of boolean.")
-  print("la")
+
   # adjPvalues
   print(adjPvalues)
   if(!is.numeric(adjPvalues))
     stop("adjPvalues has to be a vector of real between 0 and 1.")
-  print("la2")
+
   # if(any(is.na(adjPvalues))) 
   #   stop("Missing values in adjPvalues not allowed.")
   if(any(adjPvalues[!is.na(adjPvalues)] <= 0) || any(adjPvalues[!is.na(adjPvalues)]  > 1))
     stop("adjPvalues has to be a vector of real between 0 and 1.")
-  print("fin")
+
   invisible(return(NULL))
 }
