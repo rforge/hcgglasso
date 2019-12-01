@@ -67,7 +67,7 @@ fullProcess <- function(X, y, control = c("FWER", "FDR"), alpha = 0.05, test = p
     
     
     # hierarchical clustering
-    hc = bootstrapHclust(Xb, frac = 1, B = BHclust, method = ifelse(is.character(hc), hc, "ward.D2"), nThread = nCore)
+    hc = bootstrapHclust(Xb, frac = 1, B = BHclust, method = ifelse(is.character(hc), hc, "ward.D2"), nCore = nCore)
   }
   
   

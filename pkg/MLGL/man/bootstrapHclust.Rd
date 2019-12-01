@@ -4,7 +4,7 @@
 \alias{bootstrapHclust}
 \title{Hierarchical Clustering with distance matrix computed using bootstrap replicates}
 \usage{
-bootstrapHclust(X, frac = 1, B = 50, method = "ward.D2", nThread = NULL)
+bootstrapHclust(X, frac = 1, B = 50, method = "ward.D2", nCore = NULL)
 }
 \arguments{
 \item{X}{data}
@@ -15,7 +15,7 @@ bootstrapHclust(X, frac = 1, B = 50, method = "ward.D2", nThread = NULL)
 
 \item{method}{desired method: "single", "complete", "average", "mcquitty", "ward.D", "ward.D2", "centroid", "median".}
 
-\item{nThread}{number of cores}
+\item{nCore}{number of cores}
 }
 \value{
 An object of class \code{hclust}
@@ -24,6 +24,6 @@ An object of class \code{hclust}
 Hierarchical Clustering with distance matrix computed using bootstrap replicates
 }
 \examples{
-hc <- bootstrapHclust(USArrests, nThread = 1)
+hc <- bootstrapHclust(USArrests, nCore = 1)
 
 }

@@ -159,16 +159,16 @@ MLGL.formula <- function(formula, data, hc = NULL, lambda = NULL, weightLevel = 
 #' @param frac fraction of sample used at each replicate
 #' @param B number of replicates
 #' @param method desired method: "single", "complete", "average", "mcquitty", "ward.D", "ward.D2", "centroid", "median".
-#' @param nThread number of cores
+#' @param nCore number of cores
 #' 
 #' @return An object of class \code{hclust}
 #' 
 #' 
 #' @examples
-#' hc <- bootstrapHclust(USArrests, nThread = 1)
+#' hc <- bootstrapHclust(USArrests, nCore = 1)
 #' 
 #' @export 
-bootstrapHclust <- function(X, frac = 1, B = 50, method = "ward.D2", nThread = NULL)
+bootstrapHclust <- function(X, frac = 1, B = 50, method = "ward.D2", nCore = NULL)
 {
   t1 <- proc.time()
   n <- nrow(X)
@@ -182,7 +182,7 @@ bootstrapHclust <- function(X, frac = 1, B = 50, method = "ward.D2", nThread = N
   for(i in 1:B)
   {
     ind <- sample(n, nInd, replace = TRUE)
-    d = d + parDist(t(X[ind,]), threads = nThread)
+    d = d + parDist(t(X[ind,]), threads = nCore)
   }
   
   d = d/B
