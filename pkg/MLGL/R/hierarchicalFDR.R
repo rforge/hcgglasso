@@ -8,7 +8,7 @@ hierarchicalFDRTesting <- function(hierMat, group, grouplm, X, y, test = partial
 {
   # root of the tree
   indRoot <- findRoot2(hierMat)
-  #   print("pas laaa")
+
   # output container
   pvalues    <- rep(0, nrow(hierMat))
   adjPvalues <- rep(0, nrow(hierMat))

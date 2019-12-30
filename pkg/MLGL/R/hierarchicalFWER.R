@@ -487,7 +487,6 @@ selFWER <- function(out, alpha = 0.05)
     stop("hierMatrix has to be a matrix of boolean.")
 
   # adjPvalues
-  print(adjPvalues)
   if(!is.numeric(adjPvalues))
     stop("adjPvalues has to be a vector of real between 0 and 1.")
 
