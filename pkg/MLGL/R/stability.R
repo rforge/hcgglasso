@@ -53,7 +53,7 @@ stability.MLGL <- function(X, y, B = 50, fraction = 0.5, hc = NULL, lambda = NUL
   
   #check parameters 
   loss = match.arg(loss)
-  .checkParameters(X, y, hc, lambda, weightLevel, weightSizeGroup, intercept, verbose, loss)
+  .checkParameters(X, y, hc, lambda, weightLevel, weightSizeGroup, intercept, verbose, loss, NULL)
   
   #B
   if( !is.numeric(B) | (length(B)!=1) )
